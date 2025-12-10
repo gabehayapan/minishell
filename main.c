@@ -6,13 +6,15 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2025/12/09 20:55:37 by hanakamu         ###   ########.fr       */
+/*   Updated: 2025/12/10 13:05:02 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+//#include "minishell.h"
+#include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include "libft/header/libft.h"
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -29,9 +31,9 @@ int	main(int argc, char **argv, char **envp)
 		prompt = readline("minishell> ");
 		if (prompt == NULL)
 			exit(EXIT_FAILURE);
-		execute_prompt(prompt); /* parse prompt and execute command */
-		add_history(line);
-		free(line);
+//		execute_prompt(prompt); /* parse prompt and execute command */
+		add_history(prompt);
+		free(prompt);
 	}
 	return (EXIT_SUCCESS);
 }
