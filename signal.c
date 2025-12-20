@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:59:55 by hanakamu          #+#    #+#             */
-/*   Updated: 2025/12/09 20:02:45 by hanakamu         ###   ########.fr       */
+/*   Updated: 2025/12/11 16:12:38 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,16 @@ void	*signal_handler(int signum)
 
 void	handle_sigint()
 {
+	while (1)
+	{
+		g_signal = 0;
+		whiel (g_signal == 0)
+			;
+		if (g_signal == SIGINT)
+		{
+			ft_putstr_fd("^C", 2);
+		}
+	}
 }
 
 void	handle_sigquit()
