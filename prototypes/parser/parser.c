@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2025/12/29 15:21:15 by hanakamu         ###   ########.fr       */
+/*   Updated: 2025/12/29 18:37:57 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,7 @@ int	get_execution(char **exec, size_t size, t_token **tokens)
 	return (SUCCESS);
 }
 
-char	**create_exec(t_token **tokens, t_parser *parser)
+char	**new_exec(t_token **tokens, t_parser *parser)
 {
 	char	**exec;
 	size_t	size;
@@ -256,25 +256,92 @@ void	init_parser(t_parser *parser)
 	parser->exec_tree = NULL;
 }
 
+t_exec	*set_last_node(t_parser *parser, char **exec, t_exec *node_exec)
+{
+	node_exec->tk_type = END;
+	node_exec->left = NULL;
+	node_exec->right = NULL;
+	node_exec->exec = exec;
+	if (parser->exec_tree != NULL)
+	{
+		(parser->exec_tree)->right = node_exec;
+		return (parser->exec_tree);
+	}
+	else
+		return (node_exec);
+}
+
+t_exec	*set_new_node(char **exec, t_exec *node_exec, t_exec *ctrl_op_node)
+{
+	ctrl_op_node->left = node_exec;
+	node_exec->tk_type = WORD;
+	node_exec->left = NULL;
+	node_exec->right = NULL;
+	node_exec->exec = exec;
+	return (ctrl_op_node);
+}
+
+t_exec	*new_ctrl_op_node(t_parser *parser, t_token *token)
+{
+	t_exec	*ctrl_op_node;
+
+	ctrl_op_node = (t_exec *)malloc(sizeof(t_exec));
+	if (ctrl_op_node == NULL)
+		return (NULL);
+	ctrl_op_node->tk_type = token->tk_type;
+	ctrl_op_node->left = NULL;
+	ctrl_op_node->right = NULL;
+	ctrl_op_node->exec = NULL;
+	if (parser->exec_tree != NULL)
+		(parser->exec_tree)->right = ctrl_op_node;
+	return (ctrl_op_node);
+}
+
+t_exec	*new_exec_tree(t_parser *parser, t_token **tokens, char **exec)
+{
+	t_exec	*node_exec;
+	t_exec	*ctrl_op_node;
+
+	ctrl_op_node = NULL;
+	if (*tokens != NULL)
+	{
+		ctrl_op_node = new_ctrl_op_node(parser, *tokens);
+		if (ctrl_op_node == NULL)
+			return (NULL);
+		clear_token(tokens, *tokens, free);
+	}
+	node_exec = (t_exec *)malloc(sizeof(t_exec));
+	if (node_exec == NULL)
+		return (NULL);
+	if (ctrl_op_node == NULL)
+		return (set_last_node(parser, exec, node_exec));
+	else
+		return (set_new_node(exec, node_exec, ctrl_op_node));
+}
+
 t_parser	*parser(t_token **tokens)
 {
 	t_parser	*parser;
+	char		**exec;
 
 	parser = (t_parser *)malloc(sizeof(t_parser));
 	if (parser == NULL)
 		return (NULL);
 	init_parser(parser);
-	parser->exec_tree = (t_exec *)malloc(sizeof(t_exec));
-	if (parser->exec_tree == NULL)
+	while (*tokens != NULL)
 	{
-		free(parser);
-		return (NULL);
-	}
-	(parser->exec_tree)->exec = create_exec(tokens, parser);
-	if ((parser->exec_tree)->exec == NULL)
-	{
-		free(parser);
-		return (NULL);
+		exec = new_exec(tokens, parser);
+		if (exec == NULL)
+		{
+			free(parser);
+			return (NULL);
+		}
+		parser->exec_tree = new_exec_tree(parser, tokens, exec);
+		if (exec == NULL)
+		{
+			free(parser);
+			return (NULL);
+		}
 	}
 	return (parser);
 }
