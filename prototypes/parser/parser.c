@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2025/12/29 10:09:05 by hanakamu         ###   ########.fr       */
+/*   Updated: 2025/12/29 13:07:32 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	clear_token(t_token **tokens, t_token *target, void (*del)(void *))
 	free(target);
 }
 
-size_t	count_array_size(t_token *tokens)
+size_t	count_array_size(t_token *tokens, t_parser *parser)
 {
 	size_t	counter;
 
@@ -42,10 +42,15 @@ size_t	count_array_size(t_token *tokens)
 	while (tokens != NULL && tokens->tk_type != LOGICAL_OPERATOR
 		&& tokens->tk_type != SEMICOLON)
 	{
+		if (tokens->tk_type == SINGLE_REDIRECTION && *(tokens->word) == '<')
+			parser->num_infile += 1;
+		if (tokens->tk_type == SINGLE_REDIRECTION && *(tokens->word) == '>')
+			parser->num_outfile += 1;
 		if (tokens->tk_type == PIPE)
 			counter = counter + 1;
 		tokens = tokens->next;
 	}
+	parser->num_command = counter - parser->num_infile - parser->num_outfile;
 	return (counter);
 }
 
@@ -107,7 +112,7 @@ int	get_outfile(t_token *tokens, char **exec)
 	return (SUCCESS);
 }
 
-int	get_infile_outfile(t_token **tokens, char **exec, size_t size)
+int	get_redirect_file(t_token **tokens, char **exec, size_t size)
 {
 	int		is_success;
 	t_token	*tmp_token;
@@ -133,24 +138,104 @@ int	get_infile_outfile(t_token **tokens, char **exec, size_t size)
 	return (SUCCESS);
 }
 
+size_t	get_len_command(t_token *tokens)
+{
+	size_t	len_command;
+
+	len_command = 0;
+	while (tokens != NULL && tokens->tk_type != LOGICAL_OPERATOR
+		 && tokens->tk_type != SEMICOLON && tokens->tk_type != PIPE)
+	{
+		while (*(tokens->word) != '\0')
+		{
+			len_command = len_command + 1;
+			(tokens->word)++;
+		}
+		len_command = len_command + 1;
+		tokens = tokens->next;
+	}
+	return (len_command);
+}
+
+void	get_command(char *exec, t_token *tokens)
+{
+	size_t	len_exec;
+	size_t	len_word;
+
+	len_exec = 0;
+	len_word = 0;
+	while (tokens != NULL && tokens->tk_type != LOGICAL_OPERATOR
+		&& tokens->tk_type != SEMICOLON && tokens->tk_type != PIPE)
+	{
+		len_exec = len_exec + len_word;
+		len_word = ft_strlen(tokens->word);
+		ft_strlcat(exec, tokens->word, len_exec + len_word + 1);
+		tokens = tokens->next;
+	}
+	len_exec = len_exec + len_word;
+	ft_strlcat(exec, "\n", len_exec + 2);
+}
+
+int	get_execution(char **exec, t_token **tokens)
+{
+	size_t	len_command;
+
+	len_command = get_len_command(*tokens);
+	*(exec + 1) = (char *)ft_calloc(len_command + 1, sizeof(char));
+	if (*(exec + 1) == NULL)
+		return (FAILURE);
+	get_command(*(exec + 1), *tokens);
+	return (SUCCESS);
+}
+
+char	**create_exec(t_token **tokens, t_parser *parser)
+{
+	char	**exec;
+	size_t	size;
+	int		is_success;
+
+	size = count_array_size(*tokens, parser);
+	exec = (char **)malloc(sizeof(char *) * (size + 1));
+	if (exec == NULL)
+		return (NULL);
+	is_success = get_redirect_file(tokens, exec, size);
+	if (is_success == FAILURE)
+	{
+		free(exec);
+		return (NULL);
+	}
+//	expand_specials();
+	get_execution(exec, tokens);
+	return (exec);
+}
+
+void	init_parser(t_parser *parser)
+{
+	parser->num_infile = 0;
+	parser->num_outfile = 0;
+	parser->is_heredoc = 0;
+	parser->num_command = 0;
+	parser->exec_tree = NULL;
+}
+
 t_parser	*parser(t_token **tokens)
 {
 	t_parser	*parser;
-	size_t		size;
-	char		**exec;
-	int			is_success;
 
 	parser = (t_parser *)malloc(sizeof(t_parser));
 	if (parser == NULL)
 		return (NULL);
-	size = count_array_size(*tokens);
-	exec = (char **)malloc(sizeof(char *) * (size + 1));
-	if (exec == NULL)
-		return (NULL);
-	is_success = get_infile_outfile(tokens, exec, size);
-	if (is_success == FAILURE)
+	init_parser(parser);
+	parser->exec_tree = (t_exec *)malloc(sizeof(t_exec));
+	if (parser->exec_tree == NULL)
 	{
-		free(exec);
+		free(parser);
+		return (NULL);
+	}
+	(parser->exec_tree)->exec = create_exec(tokens, parser);
+	if ((parser->exec_tree)->exec == NULL)
+	{
+		free(parser);
 		return (NULL);
 	}
 	return (parser);
