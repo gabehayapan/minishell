@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2025/12/29 13:47:39 by hanakamu         ###   ########.fr       */
+/*   Updated: 2025/12/29 15:21:15 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,8 +172,11 @@ void	get_command(char *exec, t_token *tokens)
 		len_word = ft_strlen(tokens->word);
 		ft_strlcat(exec, tokens->word, len_exec + len_word + 1);
 		len_exec = len_exec + len_word;
-		ft_strlcat(exec, " ", len_exec + 2);
-		len_exec = len_exec + 1;
+		if (tokens->tk_type != OPTION)
+		{
+			ft_strlcat(exec, " ", len_exec + 2);
+			len_exec = len_exec + 1;
+		}
 		tokens = tokens->next;
 	}
 	if (len_exec > 0)
@@ -181,10 +184,9 @@ void	get_command(char *exec, t_token *tokens)
 	ft_strlcat(exec, "\n", len_exec + 2);
 }
 
-int	get_execution(char **exec, t_token **tokens)
+int	get_execution(char **exec, size_t size, t_token **tokens)
 {
 	size_t	len_command;
-	t_token	*tmp_token;
 	size_t	i;
 
 	len_command = get_len_command(*tokens);
@@ -194,7 +196,12 @@ int	get_execution(char **exec, t_token **tokens)
 	{
 		*(exec + i) = (char *)ft_calloc(len_command + 1, sizeof(char));
 		if (*(exec + i) == NULL)
+		{
+			while (i--)
+				free(*(exec + i));
+			free(*(exec + size - 1));
 			return (FAILURE);
+		}
 		get_command(*(exec + i), *tokens);
 		while (*tokens != NULL && (*tokens)->tk_type != LOGICAL_OPERATOR
 			&& (*tokens)->tk_type != SEMICOLON && (*tokens)->tk_type != PIPE)
@@ -223,14 +230,20 @@ char	**create_exec(t_token **tokens, t_parser *parser)
 		return (NULL);
 	}
 //	expand_specials();
-	get_execution(exec, tokens);
-//	for (int i = 0; i < size; i++)
-//	{
-//		if (i == 0 || i == size - 1)
-//			printf("%s\n", exec[i]);
-//		else
-//			printf("%s", exec[i]);
-//	}
+	is_success = get_execution(exec, size, tokens);
+	if (is_success == FAILURE)
+	{
+		free(exec);
+		return (NULL);
+	}
+//	display exec
+	for (size_t i = 0; i < size; i++)
+	{
+		if (i == 0 || i == size - 1)
+			printf("%s\n", exec[i]);
+		else
+			printf("%s", exec[i]);
+	}
 	return (exec);
 }
 
