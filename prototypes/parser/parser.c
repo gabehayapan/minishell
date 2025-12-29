@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2025/12/29 13:07:32 by hanakamu         ###   ########.fr       */
+/*   Updated: 2025/12/29 13:47:39 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ t_token	*get_token_outfile(t_token *tokens)
 	while (tokens != NULL && tokens->tk_type != LOGICAL_OPERATOR
 		&& tokens->tk_type != SEMICOLON)
 	{
-		if (*(tokens->word) == '<' && tokens->tk_type == SINGLE_REDIRECTION)
+		if (*(tokens->word) == '>' && tokens->tk_type == SINGLE_REDIRECTION)
 			return (tokens);
 		tokens = tokens->next;
 	}
@@ -141,15 +141,17 @@ int	get_redirect_file(t_token **tokens, char **exec, size_t size)
 size_t	get_len_command(t_token *tokens)
 {
 	size_t	len_command;
+	size_t	i;
 
 	len_command = 0;
 	while (tokens != NULL && tokens->tk_type != LOGICAL_OPERATOR
 		 && tokens->tk_type != SEMICOLON && tokens->tk_type != PIPE)
 	{
-		while (*(tokens->word) != '\0')
+		i = 0;
+		while ((tokens->word)[i] != '\0')
 		{
 			len_command = len_command + 1;
-			(tokens->word)++;
+			i++;
 		}
 		len_command = len_command + 1;
 		tokens = tokens->next;
@@ -167,24 +169,40 @@ void	get_command(char *exec, t_token *tokens)
 	while (tokens != NULL && tokens->tk_type != LOGICAL_OPERATOR
 		&& tokens->tk_type != SEMICOLON && tokens->tk_type != PIPE)
 	{
-		len_exec = len_exec + len_word;
 		len_word = ft_strlen(tokens->word);
 		ft_strlcat(exec, tokens->word, len_exec + len_word + 1);
+		len_exec = len_exec + len_word;
+		ft_strlcat(exec, " ", len_exec + 2);
+		len_exec = len_exec + 1;
 		tokens = tokens->next;
 	}
-	len_exec = len_exec + len_word;
+	if (len_exec > 0)
+		exec[len_exec - 1] = '\0';
 	ft_strlcat(exec, "\n", len_exec + 2);
 }
 
 int	get_execution(char **exec, t_token **tokens)
 {
 	size_t	len_command;
+	t_token	*tmp_token;
+	size_t	i;
 
 	len_command = get_len_command(*tokens);
-	*(exec + 1) = (char *)ft_calloc(len_command + 1, sizeof(char));
-	if (*(exec + 1) == NULL)
-		return (FAILURE);
-	get_command(*(exec + 1), *tokens);
+	i = 1;
+	while (*tokens != NULL && (*tokens)->tk_type != LOGICAL_OPERATOR
+		&& (*tokens)->tk_type != SEMICOLON && (*tokens)->tk_type != PIPE)
+	{
+		*(exec + i) = (char *)ft_calloc(len_command + 1, sizeof(char));
+		if (*(exec + i) == NULL)
+			return (FAILURE);
+		get_command(*(exec + i), *tokens);
+		while (*tokens != NULL && (*tokens)->tk_type != LOGICAL_OPERATOR
+			&& (*tokens)->tk_type != SEMICOLON && (*tokens)->tk_type != PIPE)
+			clear_token(tokens, *tokens, free);
+		if (*tokens != NULL && (*tokens)->tk_type == PIPE)
+			clear_token(tokens, *tokens, free);
+		i++;
+	}
 	return (SUCCESS);
 }
 
@@ -206,6 +224,13 @@ char	**create_exec(t_token **tokens, t_parser *parser)
 	}
 //	expand_specials();
 	get_execution(exec, tokens);
+//	for (int i = 0; i < size; i++)
+//	{
+//		if (i == 0 || i == size - 1)
+//			printf("%s\n", exec[i]);
+//		else
+//			printf("%s", exec[i]);
+//	}
 	return (exec);
 }
 
