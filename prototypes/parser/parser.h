@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2025/12/29 10:25:47 by hanakamu         ###   ########.fr       */
+/*   Updated: 2025/12/31 11:31:31 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "../tokenize/tokenize.h"
 # include "../../libft/header/libft.h"
+# include "../env_var/env_var.h"
 
 typedef struct s_exec
 {

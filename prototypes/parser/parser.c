@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2025/12/29 18:37:57 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/01 14:24:44 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,6 +211,10 @@ int	get_execution(char **exec, size_t size, t_token **tokens)
 		i++;
 	}
 	return (SUCCESS);
+}
+
+int	expand_specials()
+{
 }
 
 char	**new_exec(t_token **tokens, t_parser *parser)
