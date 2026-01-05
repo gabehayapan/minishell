@@ -6,17 +6,17 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 21:56:26 by hanakamu          #+#    #+#             */
-/*   Updated: 2025/12/31 22:08:05 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/05 15:47:56 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../env_var.h"
 
-t_env	*get_env_var_ptr(t_env *env_lst, char *rm_env)
+t_env	*get_env_var_ptr(t_env *env_lst, char *rm_env_key)
 {
 	while (env_lst != NULL)
 	{
-		if (ft_strcmp(env_lst->key, rm_env) == 0)
+		if (ft_strcmp(env_lst->key, rm_env_key) == 0)
 			return (env_lst);
 		env_lst = env_lst->next;
 	}

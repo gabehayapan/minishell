@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:50:38 by hanakamu          #+#    #+#             */
-/*   Updated: 2025/12/31 19:58:22 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/05 15:46:03 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ int	export(t_env *env_lst, char *new_env_var)
 		return (FAILURE);
 	}
 	last_env = get_last_env(env_lst);
-	last_env->next = new_env_ptr;
+	if (last_env == NULL)
+		env_lst = new_env_ptr;
+	else
+		last_env->next = new_env_ptr;
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/01 14:24:44 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/05 15:42:40 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,29 +159,70 @@ size_t	get_len_command(t_token *tokens)
 	return (len_command);
 }
 
+void	add_space(char *exec, size_t *len_exec)
+{
+	ft_strlcat(exec + *len_exec, " ", *len_exec + 2);
+	*len_exec = *len_exec + 1;
+}
+
+void	set_end_of_exec(char *exec, size_t len_exec)
+{
+	if (len_exec > 0)
+		exec[len_exec] = '\0';
+	ft_strlcat(exec + len_exec, "\n", len_exec + 2);
+}
+
+void	get_quoted_command(char *exec, t_token **token, size_t *len_exec,
+			int is_space)
+{
+	size_t		len_word;
+
+	if (is_space == 1)
+		add_space(exec, len_exec);
+	*token = (*token)->next;
+	if ((*token)->tk_type == SINGLE_QUOTE || (*token)->tk_type == DOUBLE_QUOTE)
+		return ;
+	while ((*token)->tk_type != SINGLE_QUOTE
+		&& (*token)->tk_type != DOUBLE_QUOTE)
+	{
+		len_word = ft_strlen((*token)->word);
+		ft_strlcat(exec + *len_exec, (*token)->word, *len_exec + len_word + 1);
+		*len_exec = *len_exec + len_word;
+		if ((*token)->tk_type != DOLLAR
+			&& ((*token)->next)->tk_type != DOUBLE_QUOTE)
+			add_space(exec, len_exec);
+		*token = (*token)->next;
+	}
+	*token = (*token)->next;
+}
+
 void	get_command(char *exec, t_token *tokens)
 {
 	size_t	len_exec;
 	size_t	len_word;
+	int		is_space;
 
 	len_exec = 0;
 	len_word = 0;
+	is_space = 0;
 	while (tokens != NULL && tokens->tk_type != LOGICAL_OPERATOR
 		&& tokens->tk_type != SEMICOLON && tokens->tk_type != PIPE)
 	{
-		len_word = ft_strlen(tokens->word);
-		ft_strlcat(exec, tokens->word, len_exec + len_word + 1);
-		len_exec = len_exec + len_word;
-		if (tokens->tk_type != OPTION)
+		if (tokens->tk_type == SINGLE_QUOTE || tokens->tk_type == DOUBLE_QUOTE)
 		{
-			ft_strlcat(exec, " ", len_exec + 2);
-			len_exec = len_exec + 1;
+			get_quoted_command(exec, &tokens, &len_exec, is_space);
+			is_space = 1;
+			continue ;
 		}
+		len_word = ft_strlen(tokens->word);
+		ft_strlcat(exec + len_exec, tokens->word, len_exec + len_word + 1);
+		len_exec = len_exec + len_word;
+		if (tokens->tk_type != OPTION && tokens->tk_type != TILDE
+			&& tokens->next != NULL)
+			add_space(exec, &len_exec);
 		tokens = tokens->next;
 	}
-	if (len_exec > 0)
-		exec[len_exec - 1] = '\0';
-	ft_strlcat(exec, "\n", len_exec + 2);
+	set_end_of_exec(exec, len_exec);
 }
 
 int	get_execution(char **exec, size_t size, t_token **tokens)
@@ -213,8 +254,57 @@ int	get_execution(char **exec, size_t size, t_token **tokens)
 	return (SUCCESS);
 }
 
-int	expand_specials()
+int	expand_dollar(t_token **tokens, t_token *current, t_env *env_lst)
 {
+	t_token	*next;
+	char	*env_var;
+
+	next = current->next;
+	env_var = ft_getenv(env_lst, next->word);
+	free(current->word);
+	clear_token(tokens, next, free);
+	if (env_var == NULL)
+		current->word = ft_strdup("");
+	else
+		current->word = ft_strdup(env_var);
+	if (current->word == NULL)
+		return (FAILURE);
+	return (SUCCESS);
+}
+
+int	expand_tilde(t_token *current, t_env *env_lst)
+{
+	char	*path_home;
+
+	path_home = ft_getenv(env_lst, "HOME");
+	free(current->word);
+	if (path_home == NULL)
+		current->word = ft_strdup("");
+	else
+		current->word = ft_strdup(path_home);
+	if (current->word == NULL)
+		return (FAILURE);
+	return (SUCCESS);
+}
+
+int	expand_specials(t_token **tokens, t_env *env_lst)
+{
+	t_token	*current;
+	int		is_success;
+
+	current = *tokens;
+	is_success = SUCCESS;
+	while (current != NULL)
+	{
+		if (current->tk_type == DOLLAR)
+			is_success = expand_dollar(tokens, current, env_lst);
+		else if (current->tk_type == TILDE)
+			is_success = expand_tilde(current, env_lst);
+		if (is_success == FAILURE)
+			return (FAILURE);
+		current = current->next;
+	}
+	return (SUCCESS);
 }
 
 char	**new_exec(t_token **tokens, t_parser *parser)
@@ -233,7 +323,6 @@ char	**new_exec(t_token **tokens, t_parser *parser)
 		free(exec);
 		return (NULL);
 	}
-//	expand_specials();
 	is_success = get_execution(exec, size, tokens);
 	if (is_success == FAILURE)
 	{
@@ -323,7 +412,7 @@ t_exec	*new_exec_tree(t_parser *parser, t_token **tokens, char **exec)
 		return (set_new_node(exec, node_exec, ctrl_op_node));
 }
 
-t_parser	*parser(t_token **tokens)
+t_parser	*parser(t_token **tokens, t_env *env_lst)
 {
 	t_parser	*parser;
 	char		**exec;
@@ -332,6 +421,7 @@ t_parser	*parser(t_token **tokens)
 	if (parser == NULL)
 		return (NULL);
 	init_parser(parser);
+	expand_specials(tokens, env_lst);
 	while (*tokens != NULL)
 	{
 		exec = new_exec(tokens, parser);
@@ -350,13 +440,17 @@ t_parser	*parser(t_token **tokens)
 	return (parser);
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
 	t_token	*tokens;
 	t_token	*tmp;
+	t_env	*env_lst;
 	char	*line;
 	void	*ptr;
 
+	(void)argc;
+	(void)argv;
+	env_lst = init_env_list(envp);
 	line = readline("prompt> ");
 	printf("line:%s\n", line);
 	tokens = tokenizer(line);
@@ -371,7 +465,7 @@ int	main(void)
 		printf("word:%s, token type:%d\n", tmp->word, tmp->tk_type);
 		tmp = tmp->next;
 	}
-	ptr = parser(&tokens);
+	ptr = parser(&tokens, env_lst);
 //	printf("%s\n", (char *)ptr);
 	free(line);
 //	exit(1);
