@@ -6,11 +6,12 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 10:48:00 by hanakamu          #+#    #+#             */
-/*   Updated: 2025/12/30 14:03:33 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/09 18:33:34 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_var.h"
+#include "ftprintf.h"
 
 char	*get_env_key(char **env)
 {
@@ -20,6 +21,8 @@ char	*get_env_key(char **env)
 	start = *env;
 	while (**env != '=' && **env != '\0')
 		(*env)++;
+	if (**env == '\0')
+		return (NULL);
 	env_key = ft_substr(start, 0, *env - start);
 	if (env_key == NULL)
 		return (NULL);

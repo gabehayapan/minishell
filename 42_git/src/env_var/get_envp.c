@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 20:59:41 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/09 18:06:29 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/09 18:16:49 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ char	**get_envp(t_env *env_lst)
 	t_envp_len	envp_info;
 
 	size = count_size_env_lst(env_lst);
-	envp = (char **)ft_calloc(size + 1, sizeof(char));
+	envp = (char **)malloc(sizeof(char *) * (size + 1));
 	if (envp == NULL)
 		return (NULL);
 	ret = envp;
 	while (env_lst != NULL)
 	{
 		set_envp_info(env_lst, &envp_info);
-		*envp = (char *)malloc(sizeof(char) * (envp_info.size_len + 1));
+		*envp = (char *)ft_calloc(envp_info.size_len + 1, sizeof(char));
 		if (*envp == NULL)
 		{
 			free_strs(ret, envp - ret);

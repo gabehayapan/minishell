@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 11:54:45 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/08 16:58:22 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/09 18:41:50 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,6 @@ t_token	*tokenizer(char *str)
 	t_token		*current;
 	t_tk_type	tk_type;
 
-	if (str == NULL)
-		return (NULL);
 	head.next = NULL;
 	current = &head;
 	while (*str != '\0')
