@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 14:23:21 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/08 18:52:26 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/09 16:55:08 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@ void	init_node_exec(t_exec *node_exec)
 	node_exec->exec = NULL;
 }
 
-void	free_exec(t_exec *node_exec)
+void	free_strs(char **strs, size_t size)
 {
 	size_t	i;
 
 	i = 0;
-	while (i < node_exec->size_exec)
+	while (i < size)
 	{
-		free((node_exec->exec)[i]);
+		free(strs[i]);
 		i++;
 	}
-	free(node_exec->exec);
+	free(strs);
 }
 
 void	free_node_exec(t_exec *node_exec)
@@ -40,7 +40,7 @@ void	free_node_exec(t_exec *node_exec)
 		return ;
 	free_node_exec(node_exec->left);
 	free_node_exec(node_exec->right);
-	free_exec(node_exec);
+	free_strs(node_exec->exec, node_exec->size_exec);
 	free(node_exec);
 }
 

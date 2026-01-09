@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/08 20:32:07 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/09 16:53:54 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_exec		*handle_input(char *input, t_env *env_lst);
 t_exec		*parser(t_token **tokens, t_env *env_lst);
 int			get_redirect_file(t_token **tokens, char **exec, size_t size);
 void		init_node_exec(t_exec *node_exec);
-void		free_exec(t_exec *node_exec);
+void		free_strs(char **strs, size_t size);
 void		free_node_exec(t_exec *node_exec);
 void		clear_token(t_token **tokens, t_token *target, void (*del)(void *));
 size_t		count_array_size(t_token *tokens, t_exec *node_exec);
