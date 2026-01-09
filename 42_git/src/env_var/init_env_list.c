@@ -6,24 +6,11 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 13:57:47 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/09 17:23:36 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/09 17:49:45 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_var.h"
-
-size_t	get_array_size(char **strs)
-{
-	size_t	count;
-
-	count = 0;
-	while (*strs != NULL)
-	{
-		count = count + 1;
-		strs++;
-	}
-	return (count);
-}
 
 t_env	*init_env_list(char **envp)
 {

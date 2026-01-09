@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 10:46:39 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/09 17:20:46 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/09 17:50:41 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,27 @@ typedef struct s_init_env
 	t_env	*last;
 }	t_init_env;
 
-t_env	*init_env_list(char **envp);
-size_t	get_array_size(char **strs);
+// env_var/env_var.c
 int		new_env_var(t_env *current, char *env);
-void	free_env_lst(t_env *env_lst);
+
+// env_var/env_var_utils.c
 size_t	count_size_env_lst(t_env *env_lst);
+void	free_env_lst(t_env *env_lst);
+
+// env_var/init_env_list.c
+t_env	*init_env_list(char **envp);
+
+// env_var/ft_getenv.c
 char	*ft_getenv(t_env *env_lst, const char *target);
 int		ft_strcmp(const char *s1, const char *s2);
+
+// env_var/get_envp.c
 char	**get_envp(t_env *env_lst);
 
+// env_var/export/export.c
 int		export(t_env *env_lst, char *new_env);
+
+// env_var/unset/unset.c
 void	unset(t_env **env_lst, char *rm_env_key);
 
 #endif
