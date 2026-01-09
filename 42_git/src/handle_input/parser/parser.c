@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/08 20:21:22 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/09 17:03:52 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ t_exec	*parser(t_token **tokens, t_env *env_lst)
 
 	top = NULL;
 	expand_specials(tokens, env_lst);
-	while(*tokens != NULL)
+	while (*tokens != NULL)
 	{
 		is_success = new_exec_tree(tokens, &top);
 		if (is_success == FAILURE)

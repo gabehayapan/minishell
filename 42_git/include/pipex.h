@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:58:59 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/08 18:43:40 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/09 17:15:01 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # include "ftprintf.h"
+# include "parser.h"
 
 # include <unistd.h>
 # include <fcntl.h>
@@ -49,7 +50,7 @@ typedef struct s_pipex
 }	t_pipex;
 
 // main.c
-int		execute(int argc, char **argv, char **envp);
+int		execute(t_exec *exec_node, t_env *env_lst);
 
 // pipex.c
 int		pipex(char **av, char **ev);

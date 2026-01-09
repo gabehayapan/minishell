@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/08 19:03:37 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/09 17:08:38 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	display_minishell(void)
 	return (SUCCESS);
 }
 
-int	read_and_execute(t_env *env_lst, char **envp)
+int	read_and_execute(t_env *env_lst)
 {
 	char	*input;
 	t_exec	*exec_tree;
@@ -53,7 +53,7 @@ int	read_and_execute(t_env *env_lst, char **envp)
 		exec_tree = handle_input(input, env_lst);
 		if (exec_tree == NULL)
 			return (FAILURE);
-		is_success = check_execution_success(exec_tree, env_lst, envp);
+		is_success = check_execution_success(exec_tree, env_lst);
 		if (is_success == FAILURE)
 			return (FAILURE);
 		add_history(input);
@@ -78,7 +78,7 @@ int	main(int argc, char **argv, char **envp)
 	env_lst = init_env_list(envp);
 	if (env_lst == NULL)
 		return (EXIT_FAILURE);
-	is_success = read_and_execute(env_lst, envp);
+	is_success = read_and_execute(env_lst);
 	if (is_success == FAILURE)
 	{
 		free_env_lst(env_lst);
