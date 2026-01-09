@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 13:57:47 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/08 18:58:11 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/09 17:23:36 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,30 +27,28 @@ size_t	get_array_size(char **strs)
 
 t_env	*init_env_list(char **envp)
 {
-	t_env	head;
-	t_env	*current;
-	t_env	*prev;
-	int		is_success;
+	t_init_env	init_vars;
+	int			is_success;
 
-	head.next = NULL;
-	prev = NULL;
+	(init_vars.head).next = NULL;
+	init_vars.last = NULL;
 	while (*envp != NULL)
 	{
-		current = (t_env *)malloc(sizeof(t_env));
-		if (current == NULL)
+		init_vars.current = (t_env *)malloc(sizeof(t_env));
+		if (init_vars.current == NULL)
 			return (NULL);
-		if (head.next == NULL)
-			head.next = current;
-		is_success = new_env_var(current, *envp);
+		if ((init_vars.head).next == NULL)
+			(init_vars.head).next = init_vars.current;
+		is_success = new_env_var(init_vars.current, *envp);
 		if (is_success == FAILURE)
 		{
-			free_env_lst(head.next);
+			free_env_lst((init_vars.head).next);
 			return (NULL);
 		}
-		if (prev != NULL)
-			prev->next = current;
-		prev = current;
+		if (init_vars.last != NULL)
+			(init_vars.last)->next = init_vars.current;
+		init_vars.last = init_vars.current;
 		envp++;
 	}
-	return (head.next);
+	return ((init_vars.head).next);
 }

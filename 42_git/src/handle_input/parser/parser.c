@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/09 17:03:52 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/09 17:25:35 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,16 @@ size_t	get_len_command(t_token *tokens)
 	return (len_command);
 }
 
+void	get_left_tokens(t_token **tokens)
+{
+	while (*tokens != NULL
+		&& (*tokens)->tk_type != AND && (*tokens)->tk_type != OR
+		&& (*tokens)->tk_type != SEMICOLON && (*tokens)->tk_type != PIPE)
+		clear_token(tokens, *tokens, free);
+	if (*tokens != NULL && (*tokens)->tk_type == PIPE)
+		clear_token(tokens, *tokens, free);
+}
+
 int	get_execution(char **exec, size_t size, t_token **tokens)
 {
 	size_t	len_command;
@@ -53,12 +63,7 @@ int	get_execution(char **exec, size_t size, t_token **tokens)
 			return (FAILURE);
 		}
 		get_command(*(exec + i), *tokens);
-		while (*tokens != NULL
-			&& (*tokens)->tk_type != AND && (*tokens)->tk_type != OR
-			&& (*tokens)->tk_type != SEMICOLON && (*tokens)->tk_type != PIPE)
-			clear_token(tokens, *tokens, free);
-		if (*tokens != NULL && (*tokens)->tk_type == PIPE)
-			clear_token(tokens, *tokens, free);
+		get_left_tokens(tokens);
 		i++;
 	}
 	return (SUCCESS);

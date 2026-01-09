@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 10:46:39 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/09 17:16:12 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/09 17:20:46 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,13 @@ typedef struct s_envp_len
 	size_t	len_key;
 	size_t	len_value;
 }	t_envp_len;
+
+typedef struct s_init_env
+{
+	t_env	head;
+	t_env	*current;
+	t_env	*last;
+}	t_init_env;
 
 t_env	*init_env_list(char **envp);
 size_t	get_array_size(char **strs);
