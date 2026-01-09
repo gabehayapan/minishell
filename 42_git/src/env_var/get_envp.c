@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 20:59:41 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/09 17:46:36 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/09 18:06:29 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	set_envp_info(t_env *env_lst, t_envp_len *envp_info)
 {
 	envp_info->len_key = ft_strlen(env_lst->key);
 	envp_info->len_value = ft_strlen(env_lst->value);
-	envp_info->size_len = envp_info->len_key + envp_info->len_value + 2;
+	envp_info->size_len = envp_info->len_key + envp_info->len_value + 1;
 }
 
 void	fill_envp_str(char *envp, t_env *env_lst, t_envp_len envp_info)
