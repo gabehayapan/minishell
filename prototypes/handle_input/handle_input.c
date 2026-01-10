@@ -1,34 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_var.h                                          :+:      :+:    :+:   */
+/*   handle_input.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/30 10:46:39 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/07 10:49:54 by hanakamu         ###   ########.fr       */
+/*   Created: 2026/01/08 11:33:49 by hanakamu          #+#    #+#             */
+/*   Updated: 2026/01/08 11:45:03 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENV_VAR_H
-# define ENV_VAR_H
-
-# include <stdlib.h>
-# include "../../libft/header/ftprintf.h"
-
-# define SUCCESS 0
-# define FAILURE 1
-
-typedef struct s_env
+t_exec	*handle_input(char *input, t_env *env_lst)
 {
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-}	t_env;
+	t_token	*tokens;
+	t_exec	*exec_tree;
 
-t_env	*init_env_list(char **envp);
-char	*ft_getenv(t_env *env_lst, const char *target);
-int		ft_strcmp(const char *s1, const char *s2);
-void	free_env_lst(t_env *env_lst);
-
-#endif
+	tokens = tokenizer(input);
+	if (tokens == NULL)
+		return (NULL);
+	exec_tree = parser(&tokens, env_lst);
+	free_token(tokens);
+	if (exec_tree == NULL)
+		return (NULL);
+	return (exec_tree);
+}

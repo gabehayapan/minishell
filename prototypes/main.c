@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2025/12/10 13:05:02 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/08 11:48:21 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,33 @@
 #include <readline/history.h>
 #include "libft/header/libft.h"
 
+int	read_and_execute(t_env *env_lst)
+{
+	char	*input;
+	t_exec	*exec_tree;
+	int		is_success;
+
+	while (1)
+	{
+		input = readline("minishell> ");
+		if (input == NULL)
+			exit(EXIT_FAILURE);
+		exec_tree = handle_input(input, env_lst);
+		if (exec_tree == NULL)
+			return (FAILURE);
+		is_success = check_execution_success(exec_tree, env_lst);
+		if (is_success == FAILURE)
+			return (FAILURE);
+		add_history(input);
+		free(input);
+	}
+	return (SUCCESS);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
-	char	*prompt;
+	t_env	*env_lst
+	int		is_success;
 
 	(void)argv;
 	if (argc != 1)
@@ -26,14 +50,14 @@ int	main(int argc, char **argv, char **envp)
 		ft_putstr_fd("Usage: ./minishell", 2);
 		return (EXIT_FAILURE);
 	}
-	while (1)
+	env_lst = init_env_list(envp);
+	if (env_lst == NULL)
+		return (EXIT_FAILURE);
+	is_success = read_and_execute(env_lst);
+	if (is_success == FAILURE)
 	{
-		prompt = readline("minishell> ");
-		if (prompt == NULL)
-			exit(EXIT_FAILURE);
-//		execute_prompt(prompt); /* parse prompt and execute command */
-		add_history(prompt);
-		free(prompt);
+		free_env_lst(env_Lst);
+		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }

@@ -6,11 +6,34 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/05 15:42:40 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/08 11:25:29 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+void	free_exec(t_exec *node_exec)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < node_exec->size_exec)
+	{
+		free((node_exec->exec)[i]);
+		i++;
+	}
+	free(node_exec->exec);
+}
+
+void	free_node_exec(t_exec *node_exec)
+{
+	if (node_exec == NULL)
+		return ;
+	free_node_exec(node_exec->left);
+	free_node_exec(node_exec->right);
+	free_exec(node_exec);
+	free(node_exec);
+}
 
 void	syntax_error_redirection(void)
 {
@@ -34,29 +57,30 @@ void	clear_token(t_token **tokens, t_token *target, void (*del)(void *))
 	free(target);
 }
 
-size_t	count_array_size(t_token *tokens, t_parser *parser)
+size_t	count_array_size(t_token *tokens, t_exec *node_exec)
 {
 	size_t	counter;
 
 	counter = 3;
-	while (tokens != NULL && tokens->tk_type != LOGICAL_OPERATOR
+	while (tokens != NULL && tokens->tk_type != AND && tokens->tk_type != OR
 		&& tokens->tk_type != SEMICOLON)
 	{
 		if (tokens->tk_type == SINGLE_REDIRECTION && *(tokens->word) == '<')
-			parser->num_infile += 1;
+			node_exec->num_infile += 1;
 		if (tokens->tk_type == SINGLE_REDIRECTION && *(tokens->word) == '>')
-			parser->num_outfile += 1;
+			node_exec->num_outfile += 1;
 		if (tokens->tk_type == PIPE)
 			counter = counter + 1;
 		tokens = tokens->next;
 	}
-	parser->num_command = counter - parser->num_infile - parser->num_outfile;
+	node_exec->num_command = counter
+		- node_exec->num_infile - node_exec->num_outfile;
 	return (counter);
 }
 
 t_token	*get_token_infile(t_token *tokens)
 {
-	while (tokens != NULL && tokens->tk_type != LOGICAL_OPERATOR
+	while (tokens != NULL && tokens->tk_type != AND && tokens->tk_type != OR
 		&& tokens->tk_type != SEMICOLON)
 	{
 		if (*(tokens->word) == '<' && tokens->tk_type == SINGLE_REDIRECTION)
@@ -85,7 +109,7 @@ int	get_infile(t_token *tokens, char **exec)
 
 t_token	*get_token_outfile(t_token *tokens)
 {
-	while (tokens != NULL && tokens->tk_type != LOGICAL_OPERATOR
+	while (tokens != NULL && tokens->tk_type != AND && tokens->tk_type != OR
 		&& tokens->tk_type != SEMICOLON)
 	{
 		if (*(tokens->word) == '>' && tokens->tk_type == SINGLE_REDIRECTION)
@@ -144,7 +168,7 @@ size_t	get_len_command(t_token *tokens)
 	size_t	i;
 
 	len_command = 0;
-	while (tokens != NULL && tokens->tk_type != LOGICAL_OPERATOR
+	while (tokens != NULL && tokens->tk_type != AND && tokens->tk_type != OR
 		 && tokens->tk_type != SEMICOLON && tokens->tk_type != PIPE)
 	{
 		i = 0;
@@ -161,15 +185,13 @@ size_t	get_len_command(t_token *tokens)
 
 void	add_space(char *exec, size_t *len_exec)
 {
-	ft_strlcat(exec + *len_exec, " ", *len_exec + 2);
+	ft_strlcat(exec + *len_exec, " ", 2);
 	*len_exec = *len_exec + 1;
 }
 
 void	set_end_of_exec(char *exec, size_t len_exec)
 {
-	if (len_exec > 0)
-		exec[len_exec] = '\0';
-	ft_strlcat(exec + len_exec, "\n", len_exec + 2);
+	ft_strlcat(exec + len_exec, "\n", 2);
 }
 
 void	get_quoted_command(char *exec, t_token **token, size_t *len_exec,
@@ -186,7 +208,7 @@ void	get_quoted_command(char *exec, t_token **token, size_t *len_exec,
 		&& (*token)->tk_type != DOUBLE_QUOTE)
 	{
 		len_word = ft_strlen((*token)->word);
-		ft_strlcat(exec + *len_exec, (*token)->word, *len_exec + len_word + 1);
+		ft_strlcat(exec + *len_exec, (*token)->word, len_word + 1);
 		*len_exec = *len_exec + len_word;
 		if ((*token)->tk_type != DOLLAR
 			&& ((*token)->next)->tk_type != DOUBLE_QUOTE)
@@ -205,7 +227,7 @@ void	get_command(char *exec, t_token *tokens)
 	len_exec = 0;
 	len_word = 0;
 	is_space = 0;
-	while (tokens != NULL && tokens->tk_type != LOGICAL_OPERATOR
+	while (tokens != NULL && tokens->tk_type != AND && tokens->tk_type != OR
 		&& tokens->tk_type != SEMICOLON && tokens->tk_type != PIPE)
 	{
 		if (tokens->tk_type == SINGLE_QUOTE || tokens->tk_type == DOUBLE_QUOTE)
@@ -215,7 +237,7 @@ void	get_command(char *exec, t_token *tokens)
 			continue ;
 		}
 		len_word = ft_strlen(tokens->word);
-		ft_strlcat(exec + len_exec, tokens->word, len_exec + len_word + 1);
+		ft_strlcat(exec + len_exec, tokens->word, len_word + 1);
 		len_exec = len_exec + len_word;
 		if (tokens->tk_type != OPTION && tokens->tk_type != TILDE
 			&& tokens->next != NULL)
@@ -232,10 +254,11 @@ int	get_execution(char **exec, size_t size, t_token **tokens)
 
 	len_command = get_len_command(*tokens);
 	i = 1;
-	while (*tokens != NULL && (*tokens)->tk_type != LOGICAL_OPERATOR
+	while (*tokens != NULL
+		&& (*tokens)->tk_type != AND && (*tokens)->tk_type != OR
 		&& (*tokens)->tk_type != SEMICOLON && (*tokens)->tk_type != PIPE)
 	{
-		*(exec + i) = (char *)ft_calloc(len_command + 1, sizeof(char));
+		*(exec + i) = (char *)ft_calloc(len_command + 2, sizeof(char));
 		if (*(exec + i) == NULL)
 		{
 			while (i--)
@@ -244,7 +267,8 @@ int	get_execution(char **exec, size_t size, t_token **tokens)
 			return (FAILURE);
 		}
 		get_command(*(exec + i), *tokens);
-		while (*tokens != NULL && (*tokens)->tk_type != LOGICAL_OPERATOR
+		while (*tokens != NULL
+			&& (*tokens)->tk_type != AND && (*tokens)->tk_type != OR
 			&& (*tokens)->tk_type != SEMICOLON && (*tokens)->tk_type != PIPE)
 			clear_token(tokens, *tokens, free);
 		if (*tokens != NULL && (*tokens)->tk_type == PIPE)
@@ -307,14 +331,14 @@ int	expand_specials(t_token **tokens, t_env *env_lst)
 	return (SUCCESS);
 }
 
-char	**new_exec(t_token **tokens, t_parser *parser)
+char	**new_exec(t_token **tokens, t_exec *node_exec)
 {
 	char	**exec;
 	size_t	size;
 	int		is_success;
 
-	size = count_array_size(*tokens, parser);
-	exec = (char **)malloc(sizeof(char *) * (size + 1));
+	size = count_array_size(*tokens, node_exec);
+	exec = (char **)malloc(sizeof(char *) * size);
 	if (exec == NULL)
 		return (NULL);
 	is_success = get_redirect_file(tokens, exec, size);
@@ -329,52 +353,50 @@ char	**new_exec(t_token **tokens, t_parser *parser)
 		free(exec);
 		return (NULL);
 	}
-//	display exec
+	node_exec->size_exec = size;
 	for (size_t i = 0; i < size; i++)
 	{
 		if (i == 0 || i == size - 1)
-			printf("%s\n", exec[i]);
+			ft_printf("%s\n", exec[i]);
 		else
-			printf("%s", exec[i]);
+			ft_printf("%s", exec[i]);
 	}
 	return (exec);
 }
 
-void	init_parser(t_parser *parser)
+void	init_node_exec(t_exec *node_exec)
 {
-	parser->num_infile = 0;
-	parser->num_outfile = 0;
-	parser->is_heredoc = 0;
-	parser->num_command = 0;
-	parser->exec_tree = NULL;
+	node_exec->num_infile = 0;
+	node_exec->num_outfile = 0;
+	node_exec->is_heredoc = 0;
+	node_exec->num_command = 0;
+	node_exec->exec = NULL;
 }
 
-t_exec	*set_last_node(t_parser *parser, char **exec, t_exec *node_exec)
+t_exec	*set_last_node(t_exec *top, t_exec *node_exec)
 {
 	node_exec->tk_type = END;
 	node_exec->left = NULL;
 	node_exec->right = NULL;
-	node_exec->exec = exec;
-	if (parser->exec_tree != NULL)
+	if (top != NULL)
 	{
-		(parser->exec_tree)->right = node_exec;
-		return (parser->exec_tree);
+		top->right = node_exec;
+		return (top);
 	}
 	else
 		return (node_exec);
 }
 
-t_exec	*set_new_node(char **exec, t_exec *node_exec, t_exec *ctrl_op_node)
+t_exec	*set_new_node(t_exec *node_exec, t_exec *ctrl_op_node)
 {
 	ctrl_op_node->left = node_exec;
 	node_exec->tk_type = WORD;
 	node_exec->left = NULL;
 	node_exec->right = NULL;
-	node_exec->exec = exec;
 	return (ctrl_op_node);
 }
 
-t_exec	*new_ctrl_op_node(t_parser *parser, t_token *token)
+t_exec	*new_ctrl_op_node(t_token *token, t_exec *top)
 {
 	t_exec	*ctrl_op_node;
 
@@ -385,59 +407,61 @@ t_exec	*new_ctrl_op_node(t_parser *parser, t_token *token)
 	ctrl_op_node->left = NULL;
 	ctrl_op_node->right = NULL;
 	ctrl_op_node->exec = NULL;
-	if (parser->exec_tree != NULL)
-		(parser->exec_tree)->right = ctrl_op_node;
+	if (top != NULL)
+		top->right = ctrl_op_node;
 	return (ctrl_op_node);
 }
 
-t_exec	*new_exec_tree(t_parser *parser, t_token **tokens, char **exec)
+t_exec	*set_exec_elem(t_token **tokens, t_exec *top, t_exec *node_exec)
 {
-	t_exec	*node_exec;
 	t_exec	*ctrl_op_node;
 
 	ctrl_op_node = NULL;
 	if (*tokens != NULL)
 	{
-		ctrl_op_node = new_ctrl_op_node(parser, *tokens);
+		ctrl_op_node = new_ctrl_op_node(*tokens, top);
 		if (ctrl_op_node == NULL)
 			return (NULL);
 		clear_token(tokens, *tokens, free);
 	}
-	node_exec = (t_exec *)malloc(sizeof(t_exec));
-	if (node_exec == NULL)
-		return (NULL);
 	if (ctrl_op_node == NULL)
-		return (set_last_node(parser, exec, node_exec));
+		return (set_last_node(top, node_exec));
 	else
-		return (set_new_node(exec, node_exec, ctrl_op_node));
+		return (set_new_node(node_exec, ctrl_op_node));
 }
 
-t_parser	*parser(t_token **tokens, t_env *env_lst)
+int	new_exec_tree(t_token **tokens, t_exec **top)
 {
-	t_parser	*parser;
-	char		**exec;
+	char	**exec;
+	t_exec	*node_exec;
 
-	parser = (t_parser *)malloc(sizeof(t_parser));
-	if (parser == NULL)
-		return (NULL);
-	init_parser(parser);
+	node_exec = (t_exec *)malloc(sizeof(t_exec));
+	if (node_exec == NULL)
+		return (FAILURE);
+	init_node_exec(node_exec);
+	node_exec->exec = new_exec(tokens, node_exec);
+	if (node_exec->exec == NULL)
+		return (FAILURE);
+	*top = set_exec_elem(tokens, *top, node_exec);
+	if (*top == NULL)
+		return (FAILURE);
+	return (SUCCESS);
+}
+
+t_exec	*parser(t_token **tokens, t_env *env_lst)
+{
+	t_exec	*top;
+	int		is_success;
+
+	top = NULL;
 	expand_specials(tokens, env_lst);
 	while (*tokens != NULL)
 	{
-		exec = new_exec(tokens, parser);
-		if (exec == NULL)
-		{
-			free(parser);
+		is_success = new_exec_tree(tokens, &top);
+		if (is_success == FAILURE)
 			return (NULL);
-		}
-		parser->exec_tree = new_exec_tree(parser, tokens, exec);
-		if (exec == NULL)
-		{
-			free(parser);
-			return (NULL);
-		}
 	}
-	return (parser);
+	return (top);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -446,7 +470,7 @@ int	main(int argc, char **argv, char **envp)
 	t_token	*tmp;
 	t_env	*env_lst;
 	char	*line;
-	void	*ptr;
+	t_exec	*top;
 
 	(void)argc;
 	(void)argv;
@@ -465,10 +489,10 @@ int	main(int argc, char **argv, char **envp)
 		printf("word:%s, token type:%d\n", tmp->word, tmp->tk_type);
 		tmp = tmp->next;
 	}
-	ptr = parser(&tokens, env_lst);
-//	printf("%s\n", (char *)ptr);
+	top = parser(&tokens, env_lst);
 	free(line);
-//	exit(1);
 	free_token(tokens);
+	free_node_exec(top);
+	free_env_lst(env_lst);
 	return (0);
 }
