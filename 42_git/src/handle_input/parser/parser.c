@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/09 17:25:35 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/11 17:52:34 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	get_left_tokens(t_token **tokens)
 		clear_token(tokens, *tokens, free);
 }
 
-int	get_execution(char **exec, size_t size, t_token **tokens)
+int	get_execution(t_token **tokens, char **exec, size_t size)
 {
 	size_t	len_command;
 	size_t	i;
@@ -54,7 +54,7 @@ int	get_execution(char **exec, size_t size, t_token **tokens)
 		&& (*tokens)->tk_type != AND && (*tokens)->tk_type != OR
 		&& (*tokens)->tk_type != SEMICOLON && (*tokens)->tk_type != PIPE)
 	{
-		*(exec + i) = (char *)ft_calloc(len_command + 2, sizeof(char));
+		*(exec + i) = (char *)ft_calloc(len_command, sizeof(char));
 		if (*(exec + i) == NULL)
 		{
 			while (i--)
@@ -85,7 +85,7 @@ char	**new_exec(t_token **tokens, t_exec *node_exec)
 		free(exec);
 		return (NULL);
 	}
-	is_success = get_execution(exec, size, tokens);
+	is_success = get_execution(tokens, exec, size);
 	if (is_success == FAILURE)
 	{
 		free(exec);
