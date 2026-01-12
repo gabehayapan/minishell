@@ -23,7 +23,7 @@ SRCS_PARSER =\
 	../src/handle_input/parser/expand_specials.c\
 	../src/env_var/env_var.c\
 	../src/env_var/env_var_utils.c\
-	../src/env_var/ft_getenv.c\
+	../src/env_var/env_module/env_lookup.c\
 	../src/env_var/init_env_list.c\
 
 SRCS_ENV_VAR =\
@@ -49,7 +49,7 @@ OBJS_PARSER =\
 	obj/expand_specials.o\
 	obj/env_var.o\
 	obj/env_var_utils.o\
-	obj/ft_getenv.o\
+	obj/env_lookup.o\
 	obj/init_env_list.o\
 
 OBJS_ENV_VAR =\

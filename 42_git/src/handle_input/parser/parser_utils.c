@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 14:23:21 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/12 14:11:30 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/12 18:01:16 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	init_node_exec(t_exec *node_exec)
 	node_exec->right = NULL;
 	node_exec->exec = NULL;
 	node_exec->size_exec = 0;
-	node_exec->is_heredoc = 0;
+	node_exec->num_heredoc = 0;
 	node_exec->num_infile = 0;
 	node_exec->num_command = 0;
 	node_exec->num_outfile = 0;

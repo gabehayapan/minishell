@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 11:06:32 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/09 17:17:38 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/12 18:00:26 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	handle_ctrl_op(t_exec *exec_node, t_env *env_lst)
 			return (execute_command(exec_node, env_lst));
 		return (ret);
 	}
-	else if (exec_node->tk_type == SEMICOLON)
+	else if (exec_node->tk_type == SEMI)
 	{
 		execute_command(exec_node, env_lst);
 		execute_command(exec_node, env_lst);

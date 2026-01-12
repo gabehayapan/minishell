@@ -7,7 +7,7 @@ SRCS =\
 	./src/main.c\
 	./src/env_var/env_var.c\
 	./src/env_var/env_var_utils.c\
-	./src/env_var/ft_getenv.c\
+	./src/env_var/env_module/env_lookup.c\
 	./src/env_var/init_env_list.c\
 	./src/env_var/get_envp.c\
 	./src/env_var/export/export.c\
@@ -39,7 +39,7 @@ OBJS =\
 	./obj/main.o\
 	./obj/env_var.o\
 	./obj/env_var_utils.o\
-	./obj/ft_getenv.o\
+	./obj/env_lookup.o\
 	./obj/init_env_list.o\
 	./obj/get_envp.o\
 	./obj/export.o\
@@ -69,7 +69,7 @@ OBJS =\
 LIBFT_DIR = libft/
 LIBFT = libft.a
 
-vpath %.c ./src/ ./src/env_var ./src/env_var/export/ ./src/env_var/unset/ ./src/execution ./src/handle_input/ ./src/handle_input/tokenizer/ ./src/handle_input/parser/ ./src/pipe/
+vpath %.c ./src/ ./src/env_var/ ./src/env_var/export/ ./src/env_var/unset/ ./src/env_var/env_module/ ./src/execution ./src/handle_input/ ./src/handle_input/tokenizer/ ./src/handle_input/parser/ ./src/pipe/
 
 all: $(NAME)
 
@@ -93,5 +93,8 @@ fclean: clean
 	rm -f $(NAME) $(LIBFT_DIR)$(LIBFT)
 
 re: fclean all
+
+debug:
+	$(CC) $(CFLAGS) -pg $(OBJS) $(LIBFT_DIR)$(LIBFT) -lcurses -lreadline
 
 .PHONY: all clean fclean re
