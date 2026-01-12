@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 10:46:39 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/12 17:57:29 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/12 20:45:09 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_init_env
 
 // env_var/env_var.c
 int		new_env_var(t_env *current, char *env);
+char	*get_env_value(char *env);
 
 // env_var/env_var_utils.c
 size_t	count_size_env_lst(t_env *env_lst);
