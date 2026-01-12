@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:49:58 by hanakamu          #+#    #+#             */
-/*   Updated: 2025/12/21 12:52:24 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/12 12:49:48 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ void	*ft_realloc(void *ptr, size_t size)
 
 char	get_missing_char(t_tk_type tk_type)
 {
-	if (tk_type == SINGLE_QUOTE)
+	if (tk_type == SGL_QTE)
 		return ('\'');
-	else if (tk_type == DOUBLE_QUOTE)
+	else if (tk_type == DBL_QTE)
 		return ('"');
-	else if (tk_type == PARENTHESIS)
+	else if (tk_type == C_PAREN)
 		return (')');
 	else
 		return ('\0');

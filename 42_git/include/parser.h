@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/09 17:58:15 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/11 18:08:35 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_exec
 	size_t			num_infile;
 	size_t			num_command;
 	size_t			num_outfile;
+	int				is_subshell;
 }	t_exec;
 
 // handle_input/handle_input.c

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:53:06 by hanakamu          #+#    #+#             */
-/*   Updated: 2025/12/21 14:01:29 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/12 12:57:27 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,17 @@ t_token	*tokenize_parenthesis(char **str, t_token *current)
 {
 	char	*tmp;
 
-	current = create_new_token(str, current, PARENTHESIS);
+	current = create_new_token(str, current, O_PAREN);
 	if (current == NULL)
 		return (NULL);
 	while (**str != ')')
 	{
 		tmp = *str;
-		while (get_token_type(*str) != PARENTHESIS
+		while (get_token_type(*str) != C_PAREN
 			&& get_token_type(*str) != END)
 			(*str)++;
 		if (get_token_type(*str) == END)
-			*str = syntax_error(tmp, PARENTHESIS);
+			*str = syntax_error(tmp, C_PAREN);
 		else
 		{
 			current = new_token_quoted_str(tmp, *str, current);
@@ -34,7 +34,7 @@ t_token	*tokenize_parenthesis(char **str, t_token *current)
 				return (NULL);
 		}
 	}
-	current = create_new_token(str, current, PARENTHESIS);
+	current = create_new_token(str, current, C_PAREN);
 	if (current == NULL)
 		return (NULL);
 	return (current);
@@ -46,7 +46,7 @@ t_token	*tokenize_env_var(char **str, t_token *current)
 
 	tmp = *str;
 	while (get_token_type(*str) != SPACES && get_token_type(*str) != END
-		&& get_token_type(*str) != DOUBLE_QUOTE)
+		&& get_token_type(*str) != DBL_QTE)
 		(*str)++;
 	current = new_token_quoted_str(tmp, *str, current);
 	if (current == NULL)

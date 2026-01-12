@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:57:43 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/08 16:57:45 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/12 12:46:58 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,24 @@ void	*free_token(t_token *token)
 t_tk_type	get_token_type_util(char *str)
 {
 	if (*str == '\'')
-		return (SINGLE_QUOTE);
+		return (SGL_QTE);
 	if (*str == '"')
-		return (DOUBLE_QUOTE);
+		return (DBL_QTE);
 	if (*str == '$' && ft_isalnum(*(str + 1)) == 1)
 		return (DOLLAR);
 	if (*str == '-' && ft_isalnum(*(str + 1)) == 1)
-		return (OPTION);
-	if (*str == '(' || *str == ')')
-		return (PARENTHESIS);
+		return (HYPHEN);
+	if (*str == '(')
+		return (O_PAREN);
+	if (*str == ')')
+		return (C_PAREN);
 	if (*str == '*')
 		return (WILDCARD);
 	if (*str == '~'
 		&& (*(str + 1) == '/' || *(str + 1) == ' ' || *(str + 1) == '\0'))
 		return (TILDE);
 	if (*str == ';')
-		return (SEMICOLON);
+		return (SEMI);
 	if (ft_isspace(*str))
 		return (SPACES);
 	return (WORD);
@@ -54,14 +56,18 @@ t_tk_type	get_token_type(char *str)
 {
 	if (*str == '\0')
 		return (END);
-	if (ft_strncmp(str, "<<", 2) == 0 || ft_strncmp(str, ">>", 2) == 0)
-		return (DOUBLE_REDIRECTION);
-	if (*str == '<' || *str == '>')
-		return (SINGLE_REDIRECTION);
+	if (ft_strncmp(str, "<<", 2) == 0)
+		return (DBL_INRDT);
+	if (ft_strncmp(str, ">>", 2) == 0)
+		return (DBL_OUTRDT);
+	if (*str == '<')
+		return (SGL_INRDT);
+	if (*str == '>')
+		return (SGL_OUTRDT);
 	if (ft_strncmp(str, "!!", 2) == 0)
-		return (DOUBLE_HISTORY);
+		return (DBL_HIS);
 	if (*str == '!' && ft_isspace(*(str + 1)) == 0)
-		return (SINGLE_HISTORY);
+		return (SGL_HIS);
 	if (ft_strncmp(str, "&&", 2) == 0)
 		return (AND);
 	if (ft_strncmp(str, "||", 2) == 0)

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:01:56 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/09 18:02:22 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/12 12:46:48 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,25 +22,29 @@
 
 typedef enum e_tk_type
 {
-	SINGLE_REDIRECTION,	/* >, < */
-	DOUBLE_REDIRECTION,	/* <<, >> */
-	SINGLE_HISTORY,		/* ! */
-	DOUBLE_HISTORY,		/* !! */
-	WILDCARD,			/* * */
-	PIPE,				/* | */
-	SINGLE_QUOTE,		/* ' */
-	DOUBLE_QUOTE,		/* " */
-	DOLLAR,				/* $ */
-	OPTION,				/* - */
-	PARENTHESIS,		/* () */
-	BRACES,				/* {} */
-	AND,				/* && */
-	OR,					/* || */
-	TILDE,				/* ~ */
-	SEMICOLON,			/* ; */
-	END,				/* \0 */
-	WORD,				/* string */
-	SPACES,				/* white space */
+	SGL_INRDT,	/* < */
+	SGL_OUTRDT,	/* > */
+	DBL_INRDT,	/* << */
+	DBL_OUTRDT,	/* >> */
+	SGL_HIS,	/* ! */
+	DBL_HIS,	/* !! */
+	WILDCARD,	/* * */
+	PIPE,		/* | */
+	SGL_QTE,	/* ' */
+	DBL_QTE,	/* " */
+	DOLLAR,		/* $ */
+	HYPHEN,		/* - */
+	O_PAREN,	/* ( */
+	C_PAREN,	/* ) */
+	O_BRACE,	/* { */
+	C_BRACE,	/* } */
+	AND,		/* && */
+	OR,			/* || */
+	TILDE,		/* ~ */
+	SEMI,		/* ; */
+	END,		/* \0 */
+	WORD,		/* string */
+	SPACES,		/* white space */
 }	t_tk_type;
 
 typedef struct s_token

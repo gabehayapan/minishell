@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/11 17:52:34 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/12 12:47:40 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ size_t	get_len_command(t_token *tokens)
 
 	len_command = 0;
 	while (tokens != NULL && tokens->tk_type != AND && tokens->tk_type != OR
-		&& tokens->tk_type != SEMICOLON && tokens->tk_type != PIPE)
+		&& tokens->tk_type != SEMI && tokens->tk_type != PIPE)
 	{
 		i = 0;
 		while ((tokens->word)[i] != '\0')
@@ -37,7 +37,7 @@ void	get_left_tokens(t_token **tokens)
 {
 	while (*tokens != NULL
 		&& (*tokens)->tk_type != AND && (*tokens)->tk_type != OR
-		&& (*tokens)->tk_type != SEMICOLON && (*tokens)->tk_type != PIPE)
+		&& (*tokens)->tk_type != SEMI && (*tokens)->tk_type != PIPE)
 		clear_token(tokens, *tokens, free);
 	if (*tokens != NULL && (*tokens)->tk_type == PIPE)
 		clear_token(tokens, *tokens, free);
@@ -52,7 +52,7 @@ int	get_execution(t_token **tokens, char **exec, size_t size)
 	i = 1;
 	while (*tokens != NULL
 		&& (*tokens)->tk_type != AND && (*tokens)->tk_type != OR
-		&& (*tokens)->tk_type != SEMICOLON && (*tokens)->tk_type != PIPE)
+		&& (*tokens)->tk_type != SEMI && (*tokens)->tk_type != PIPE)
 	{
 		*(exec + i) = (char *)ft_calloc(len_command, sizeof(char));
 		if (*(exec + i) == NULL)

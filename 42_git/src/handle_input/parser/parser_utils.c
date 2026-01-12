@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 14:23:21 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/09 16:55:08 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/12 12:56:31 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,11 @@ size_t	count_array_size(t_token *tokens, t_exec *node_exec)
 
 	counter = 3;
 	while (tokens != NULL && tokens->tk_type != AND && tokens->tk_type != OR
-		&& tokens->tk_type != SEMICOLON)
+		&& tokens->tk_type != SEMI)
 	{
-		if (tokens->tk_type == SINGLE_REDIRECTION && *(tokens->word) == '<')
+		if (tokens->tk_type == SGL_INRDT)
 			node_exec->num_infile += 1;
-		if (tokens->tk_type == SINGLE_REDIRECTION && *(tokens->word) == '>')
+		if (tokens->tk_type == SGL_OUTRDT)
 			node_exec->num_outfile += 1;
 		if (tokens->tk_type == PIPE)
 			counter = counter + 1;

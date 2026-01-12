@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 11:54:45 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/09 18:41:50 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/12 12:52:29 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	get_word(char **str, t_token *new_token, t_tk_type tk_type)
 	char	*tmp;
 
 	tmp = *str;
-	if (tk_type == DOUBLE_REDIRECTION || tk_type == DOUBLE_HISTORY
+	if (tk_type == DBL_INRDT || tk_type == DBL_OUTRDT || tk_type == DBL_HIS
 		|| tk_type == AND || tk_type == OR)
 		len = 2;
 	else if (tk_type == WORD)
@@ -71,7 +71,7 @@ t_token	*tokenizer(char *str)
 		current = create_new_token(&str, current, tk_type);
 		if (current == NULL)
 			return (free_token(head.next));
-		if (tk_type == SINGLE_QUOTE || tk_type == DOUBLE_QUOTE)
+		if (tk_type == SGL_QTE || tk_type == DBL_QTE)
 		{
 			current = handle_quote(&str, current, tk_type);
 			if (current == NULL)
