@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 14:23:21 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/12 12:56:31 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/12 14:11:30 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,16 @@
 
 void	init_node_exec(t_exec *node_exec)
 {
-	node_exec->num_infile = 0;
-	node_exec->num_outfile = 0;
-	node_exec->is_heredoc = 0;
-	node_exec->num_command = 0;
+	node_exec->left = NULL;
+	node_exec->right = NULL;
 	node_exec->exec = NULL;
+	node_exec->size_exec = 0;
+	node_exec->is_heredoc = 0;
+	node_exec->num_infile = 0;
+	node_exec->num_command = 0;
+	node_exec->num_outfile = 0;
+	node_exec->is_append = 0;
+	node_exec->is_subshell = 0;
 }
 
 void	free_strs(char **strs, size_t size)
@@ -71,9 +76,20 @@ size_t	count_array_size(t_token *tokens, t_exec *node_exec)
 	{
 		if (tokens->tk_type == SGL_INRDT)
 			node_exec->num_infile += 1;
-		if (tokens->tk_type == SGL_OUTRDT)
+		else if (tokens->tk_type == SGL_OUTRDT)
+		{
 			node_exec->num_outfile += 1;
-		if (tokens->tk_type == PIPE)
+			node_exec->is_append = 0;
+		}
+		else if (tokens->tk_type == DBL_INRDT)
+		{
+		}
+		else if (tokens->tk_type == DBL_OUTRDT)
+		{
+			node_exec->num_outfile += 1;
+			node_exec->is_append = 1;
+		}
+		else if (tokens->tk_type == PIPE)
 			counter = counter + 1;
 		tokens = tokens->next;
 	}
