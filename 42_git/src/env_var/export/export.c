@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:50:38 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/08 19:00:31 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/12 20:43:33 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,16 @@ t_env	*get_last_env(t_env *env_lst)
 	return (env_lst);
 }
 
-int	export(t_env *env_lst, char *new_env)
+int	update_env_value(t_env *target, char *new_env)
+{
+	free(target->value);
+	target->value = get_env_value(new_env);
+	if (target->value == NULL)
+		return (FAILURE);
+	return (SUCCESS);
+}
+
+int	store_new_env_var(t_env *env_lst, char *new_env)
 {
 	t_env	*new_env_ptr;
 	t_env	*last_env;
@@ -42,4 +51,17 @@ int	export(t_env *env_lst, char *new_env)
 	else
 		last_env->next = new_env_ptr;
 	return (SUCCESS);
+}
+
+int	export(t_env *env_lst, char *new_env)
+{
+	t_env	*target;
+	int		is_success;
+
+	target = env_find(env_lst, new_env);
+	if (target != NULL)
+		is_success = update_env_value(target, new_env);
+	else
+		is_success = store_new_env_var(env_lst, new_env);
+	return (is_success);
 }

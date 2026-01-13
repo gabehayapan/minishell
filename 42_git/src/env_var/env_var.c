@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 10:48:00 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/09 18:33:34 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/12 20:38:10 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,15 @@ char	*get_env_value(char *env)
 {
 	char	*env_value;
 
-	env_value = ft_strdup(env);
-	if (env_value == NULL)
-		return (NULL);
+	env_value = NULL;
+	while (*env != '=' || *env != '\0')
+		env++;
+	if (*env == '=')
+	{
+		env_value = ft_strdup(env + 1);
+		if (env_value == NULL)
+			return (NULL);
+	}
 	return (env_value);
 }
 
@@ -44,7 +50,7 @@ int	new_env_var(t_env *current, char *env)
 	current->key = get_env_key(&env);
 	if (current->key == NULL)
 		return (FAILURE);
-	current->value = get_env_value(env + 1);
+	current->value = get_env_value(env);
 	if (current->value == NULL)
 	{
 		free(current->key);
