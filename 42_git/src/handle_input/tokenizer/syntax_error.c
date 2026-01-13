@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:49:58 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/12 12:49:48 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/13 12:23:32 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	get_missing_char(t_tk_type tk_type)
 
 void	*error_unexpected_eof(void)
 {
-	ft_putstr_fd("Unexpected EOF\n", 2);
+	ft_dprintf(2, "Unexpected EOF\n");
 	return (NULL);
 }
 
@@ -78,8 +78,7 @@ char	*syntax_error(char *start, t_tk_type tk_type)
 	t_syntax_err	syn_err;
 
 	syn_err.c = get_missing_char(tk_type);
-	ft_putchar_fd(syn_err.c, 2);
-	ft_putstr_fd(" is missing\n", 2);
+	ft_dprintf(2, "%c is missing\n", syn_err.c);
 	syn_err.input = NULL;
 	syn_err.new_input = NULL;
 	syn_err.input = get_new_input(syn_err.input, &syn_err.new_input);

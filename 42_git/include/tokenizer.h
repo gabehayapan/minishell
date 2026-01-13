@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:01:56 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/12 12:46:48 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/13 12:23:31 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include "../libft/header/libft.h"
+# include "../libft/header/ft_dprintf.h"
 
 typedef enum e_tk_type
 {
