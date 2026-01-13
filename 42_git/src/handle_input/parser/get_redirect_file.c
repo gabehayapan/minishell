@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 14:19:41 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/12 12:55:33 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/13 16:15:19 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_token	*get_token_infile(t_token *tokens)
 {
 	while (tokens != NULL && tokens->tk_type != AND && tokens->tk_type != OR
-		&& tokens->tk_type != SEMI)
+		&& tokens->tk_type != PIPE && tokens->tk_type != SEMI)
 	{
 		if (tokens->tk_type == SGL_INRDT)
 			return (tokens);
@@ -44,7 +44,7 @@ int	get_infile(t_token *tokens, char **exec)
 t_token	*get_token_outfile(t_token *tokens)
 {
 	while (tokens != NULL && tokens->tk_type != AND && tokens->tk_type != OR
-		&& tokens->tk_type != SEMI)
+		&& tokens->tk_type != PIPE && tokens->tk_type != SEMI)
 	{
 		if (tokens->tk_type == SGL_OUTRDT)
 			return (tokens);

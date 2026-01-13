@@ -6,13 +6,33 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:45:43 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/12 12:57:51 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/13 15:41:26 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
 
-t_token	*handle_single_quote(char **str, t_token *current)
+t_token	*new_token_quoted_str(char *start, char *end, t_token *current)
+{
+	t_token	*new_token;
+
+	new_token = (t_token *)malloc(sizeof(t_token));
+	if (new_token == NULL)
+		return (NULL);
+	new_token->tk_type = WORD;
+	new_token->next = NULL;
+	new_token->word = ft_substr(start, 0, end - start);
+	if (new_token->word == NULL)
+	{
+		free(new_token);
+		return (NULL);
+	}
+	current->next = new_token;
+	current = new_token;
+	return (new_token);
+}
+
+t_token	*tokenize_single_quote(char **str, t_token *current)
 {
 	char	*start;
 
@@ -34,7 +54,7 @@ t_token	*handle_single_quote(char **str, t_token *current)
 	return (create_new_token(str, current, SGL_QTE));
 }
 
-t_token	*handle_double_quote(char **str, t_token *current)
+t_token	*tokenize_double_quote(char **str, t_token *current)
 {
 	char	*tmp;
 
@@ -63,10 +83,10 @@ t_token	*handle_double_quote(char **str, t_token *current)
 	return (create_new_token(str, current, DBL_QTE));
 }
 
-t_token	*handle_quote(char **str, t_token *current, t_tk_type tk_type)
+t_token	*tokenize_quote(char **str, t_token *current, t_tk_type tk_type)
 {
 	if (tk_type == SGL_QTE)
-		return (handle_single_quote(str, current));
+		return (tokenize_single_quote(str, current));
 	else
-		return (handle_double_quote(str, current));
+		return (tokenize_double_quote(str, current));
 }

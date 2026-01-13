@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 20:59:41 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/09 18:16:49 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/13 16:36:08 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	fill_envp_str(char *envp, t_env *env_lst, t_envp_len envp_info)
 		envp_info.len_value + 1);
 }
 
-char	**get_envp(t_env *env_lst)
+char	**convert_to_envp(t_env *env_lst)
 {
 	char		**envp;
 	char		**ret;

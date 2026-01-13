@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:01:56 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/13 12:23:31 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/13 15:55:53 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef enum e_tk_type
 	DBL_OUTRDT,	/* >> */
 	SGL_HIS,	/* ! */
 	DBL_HIS,	/* !! */
+	BACKSLASH,	/* \ */
 	WILDCARD,	/* * */
 	PIPE,		/* | */
 	SGL_QTE,	/* ' */
@@ -43,6 +44,7 @@ typedef enum e_tk_type
 	OR,			/* || */
 	TILDE,		/* ~ */
 	SEMI,		/* ; */
+	BACK_QTE,	/* ` */
 	END,		/* \0 */
 	WORD,		/* string */
 	SPACES,		/* white space */
@@ -73,7 +75,7 @@ t_tk_type	get_token_type(char *str);
 t_token		*new_token_quoted_str(char *start, char *end, t_token *current);
 
 // handle_input/tokenizer/tokenize_quote.c
-t_token		*handle_quote(char **str, t_token *current, t_tk_type tk_type);
+t_token		*tokenize_quote(char **str, t_token *current, t_tk_type tk_type);
 
 // handle_input/tokenizer/tokenize_keywords.c
 t_token		*tokenize_parenthesis(char **str, t_token *current);

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 11:54:45 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/12 12:52:29 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/13 15:40:23 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ t_token	*tokenizer(char *str)
 			return (free_token(head.next));
 		if (tk_type == SGL_QTE || tk_type == DBL_QTE)
 		{
-			current = handle_quote(&str, current, tk_type);
+			current = tokenize_quote(&str, current, tk_type);
 			if (current == NULL)
 				return (free_token(head.next));
 		}

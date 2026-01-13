@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:57:43 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/12 12:46:58 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/13 15:56:37 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ t_tk_type	get_token_type_util(char *str)
 		return (TILDE);
 	if (*str == ';')
 		return (SEMI);
+	if (*str == '`')
+		return (BACK_QTE);
 	if (ft_isspace(*str))
 		return (SPACES);
 	return (WORD);
@@ -74,25 +76,7 @@ t_tk_type	get_token_type(char *str)
 		return (OR);
 	if (*str == '|')
 		return (PIPE);
+	if (*str == '\\')
+		return (BACKSLASH);
 	return (get_token_type_util(str));
-}
-
-t_token	*new_token_quoted_str(char *start, char *end, t_token *current)
-{
-	t_token	*new_token;
-
-	new_token = (t_token *)malloc(sizeof(t_token));
-	if (new_token == NULL)
-		return (NULL);
-	new_token->tk_type = WORD;
-	new_token->next = NULL;
-	new_token->word = ft_substr(start, 0, end - start);
-	if (new_token->word == NULL)
-	{
-		free(new_token);
-		return (NULL);
-	}
-	current->next = new_token;
-	current = new_token;
-	return (new_token);
 }

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 10:46:39 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/12 20:45:09 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/13 16:36:56 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ char	*env_key(t_env *env_lst, const char *target);
 char	*env_value(t_env *env_lst, const char *target);
 int		ft_strcmp(const char *s1, const char *s2);
 
-// env_var/get_envp.c
-char	**get_envp(t_env *env_lst);
+// env_var/convert_to_envp.c
+char	**convert_to_envp(t_env *env_lst);
 
 // env_var/export/export.c
 int		export(t_env *env_lst, char *new_env);

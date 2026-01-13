@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 14:23:21 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/12 18:01:16 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/13 16:11:16 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,7 @@ size_t	count_array_size(t_token *tokens, t_exec *node_exec)
 			node_exec->is_append = 0;
 		}
 		else if (tokens->tk_type == DBL_INRDT)
-		{
-		}
+			node_exec->num_heredoc += 1;
 		else if (tokens->tk_type == DBL_OUTRDT)
 		{
 			node_exec->num_outfile += 1;
