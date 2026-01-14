@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/14 09:18:32 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 20:40:14 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	if (argc != 1)
 	{
-		ft_putstr_fd("Usage: ./minishell", 2);
-		return (EXIT_FAILURE);
+		ft_putstr_fd("Usage: ./minishell\n", 2);
+    		return (EXIT_FAILURE);
 	}
 	if (display_minishell() == FAILURE)
 		return (EXIT_FAILURE);
