@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:58:59 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/14 16:26:09 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 17:59:00 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct s_pipex
 }	t_pipex;
 
 // main.c
-int		execute(t_exec *exec_node, t_env *env_lst);
+int		execute(t_command *command, t_env *env_lst);
 
 // pipex.c
 int		pipex(t_command *command, char **ev);

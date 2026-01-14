@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 11:06:32 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/14 09:49:58 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 18:02:56 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	execute_command(t_exec *exec_node, t_env *env_lst)
 	if (exec_node == NULL)
 		return (0);
 	if (exec_node->tk_type == END || exec_node->tk_type == WORD)
-		return (execute(exec_node, env_lst));
+		return (execute(exec_node->command, env_lst));
 	else
 		return (handle_ctrl_op(exec_node, env_lst));
 }

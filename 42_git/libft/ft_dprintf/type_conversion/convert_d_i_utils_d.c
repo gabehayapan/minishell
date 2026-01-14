@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 20:38:33 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/13 12:14:21 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 17:48:52 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	_check_width_d_i_leftindent(int num, int num_digits,
 	else
 	{
 		if (((flag_lst.is_space || flag_lst.is_plus) && num >= 0) || num < 0)
-			_ft_putspaces(flag_lst.width - num_digits - 1, counter, flag_lst.fd);
+			_ft_putspaces(flag_lst.width - num_digits - 1,
+				counter, flag_lst.fd);
 		else
 			_ft_putspaces(flag_lst.width - num_digits, counter, flag_lst.fd);
 		_handle_num_sign(num, counter, flag_lst);

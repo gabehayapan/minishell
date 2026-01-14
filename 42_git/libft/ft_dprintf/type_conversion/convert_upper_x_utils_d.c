@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 20:30:25 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/13 12:20:29 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 17:49:38 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	_check_width_upper_x_leftindent(unsigned int u_num, int num_digits,
 		if (flag_lst.is_zero && flag_lst.prec == -1)
 			_ft_putzeros(flag_lst.width - num_digits - 2, counter, flag_lst.fd);
 		else
-			_ft_putspaces(flag_lst.width - num_digits - 2, counter, flag_lst.fd);
+			_ft_putspaces(flag_lst.width - num_digits - 2,
+				counter, flag_lst.fd);
 		_ft_puthexa_upper(u_num, flag_lst.fd);
 	}
 	else

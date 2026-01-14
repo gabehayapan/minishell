@@ -6,13 +6,14 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 09:30:15 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/13 12:30:53 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 17:48:03 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_dprintf.h"
 
-void	_check_width_d_i(int num, int num_digits, int *counter, t_dflag flag_lst)
+void	_check_width_d_i(int num, int num_digits, int *counter,
+			t_dflag flag_lst)
 {
 	if (flag_lst.width <= num_digits)
 	{

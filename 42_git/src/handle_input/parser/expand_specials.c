@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/12 17:59:14 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 17:32:30 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,19 @@ int	expand_tilde(t_token *current, t_env *env_lst)
 	return (SUCCESS);
 }
 
+void	remove_tk_quote(t_token **tokens, t_token *current)
+{
+	t_tk_type	quote;
+	t_token		*next;
+
+	quote = current->tk_type;
+	next = current->next;
+	clear_token(tokens, current, free);
+	while (next != NULL && next->tk_type != quote)
+		next = next->next;
+	clear_token(tokens, next, free);
+}
+
 int	expand_specials(t_token **tokens, t_env *env_lst)
 {
 	t_token	*current;
@@ -60,6 +73,8 @@ int	expand_specials(t_token **tokens, t_env *env_lst)
 			is_success = expand_tilde(current, env_lst);
 		if (is_success == FAILURE)
 			return (FAILURE);
+		if (current->tk_type == SGL_QTE || current->tk_type == DBL_QTE)
+			remove_tk_quote(tokens, current);
 		current = current->next;
 	}
 	return (SUCCESS);

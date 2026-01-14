@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:05:15 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/14 14:21:27 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 17:40:47 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,33 +33,20 @@ size_t	get_len_command(t_token *tokens)
 	return (len_command);
 }
 
-size_t	count_array_size(t_token *tokens, t_exec *node_exec)
+t_size_exec	count_size_exec(t_token *tokens)
 {
-	size_t	counter;
+	t_size_exec	size;
 
-	counter = 3;
+	size.inrdt = 0;
+	size.outrdt = 0;
 	while (tokens != NULL && tokens->tk_type != AND && tokens->tk_type != OR
-		&& tokens->tk_type != SEMI)
+		&& tokens->tk_type != SEMI && tokens->tk_type != PIPE)
 	{
-		if (tokens->tk_type == SGL_INRDT)
-			node_exec->num_infile += 1;
-		else if (tokens->tk_type == SGL_OUTRDT)
-		{
-			node_exec->num_outfile += 1;
-			node_exec->is_append = 0;
-		}
-		else if (tokens->tk_type == DBL_INRDT)
-			node_exec->num_heredoc += 1;
-		else if (tokens->tk_type == DBL_OUTRDT)
-		{
-			node_exec->num_outfile += 1;
-			node_exec->is_append = 1;
-		}
-		else if (tokens->tk_type == PIPE)
-			counter = counter + 1;
+		if (tokens->tk_type == SGL_INRDT || tokens->tk_type == DBL_INRDT)
+			size.inrdt = size.inrdt + 1;
+		else if (tokens->tk_type == SGL_OUTRDT || tokens->tk_type == DBL_OUTRDT)
+			size.outrdt = size.outrdt + 1;
 		tokens = tokens->next;
 	}
-	node_exec->num_command = counter
-		- node_exec->num_infile - node_exec->num_outfile;
-	return (counter);
+	return (size);
 }

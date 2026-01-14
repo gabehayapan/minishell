@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/14 16:36:58 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 18:06:29 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_command
 	t_rdt				*inrdt;
 	t_rdt				*outrdt;
 	t_size_exec			size;
+	int					is_subshell;
 	struct s_command	*next;
 }	t_command;
 
@@ -54,17 +55,10 @@ typedef struct s_exec
 	t_tk_type		tk_type;
 	struct s_exec	*left;
 	struct s_exec	*right;
-
 	t_command		*command;
 
-	char			**exec;
-	size_t			size_exec;
-	size_t			num_heredoc;
-	size_t			num_infile;
-	size_t			num_command;
-	size_t			num_outfile;
-	size_t			is_append;
-	int				is_subshell;
+	char	**exec;
+	size_t	size_exec;
 }	t_exec;
 
 // handle_input/handle_input.c
@@ -83,14 +77,11 @@ void		clear_token(t_token **tokens, t_token *target, void (*del)(void *));
 
 // handle_input/parser/counter.c
 size_t		get_len_command(t_token *tokens);
-size_t		count_array_size(t_token *tokens, t_exec *node_exec);
+t_size_exec	count_size_exec(t_token *tokens);
 
 // handle_input/parser/get_redirect_file.c
-int			get_redirect_file(t_token **tokens, char **exec, size_t size);
-int			get_infile(t_token *tokens, char **exec);
-t_token		*get_token_infile(t_token *tokens);
-int			get_outfile(t_token *tokens, char **exec);
-t_token		*get_token_outfile(t_token *tokens);
+int			get_in_out_rdt(t_token **tokens, t_command *command);
+void		free_rdt(t_rdt *rdt);
 
 // handle_input/parser/get_command.c
 void		get_command(char *exec, t_token *tokens);
