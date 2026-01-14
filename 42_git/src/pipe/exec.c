@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 23:11:26 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/14 09:47:49 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 16:27:04 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,12 @@ char	*free_arrs_ret_s(char **arrs, char *s)
 //	return (free_arrs_ret_s(to_free, name));
 //}
 
-int	exec_command(char *cmd, char **ev)
+int	exec_command(char **cmd, char **ev)
 {
 	char	**cmdset;
 //	char	*pathname;
 
-	cmdset = ft_split(cmd, ' ');
-	if (cmdset == NULL)
-		return (EXIT_FAILURE);
+	cmdset = cmd;
 	if (**cmdset == '\0')
 		return (handle_noexist_cmd(cmdset));
 //	pathname = get_pathname(cmdset[0], ev);

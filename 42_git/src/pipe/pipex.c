@@ -6,18 +6,18 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 12:07:47 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/14 09:49:09 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 16:40:20 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static void	init_pipex(t_pipex *p, char **av)
+static void	init_pipex(t_pipex *p, t_command *command)
 {
-	p->infile = av[0];
-	p->cmd1 = av[1];
-	p->cmd2 = av[2];
-	p->outfile = av[3];
+	p->infile = (command->inrdt)->rdt;
+	p->cmd1 = command->command;
+	p->cmd2 = (command->next)->command;
+	p->outfile = ((command->next)->outrdt)->rdt;
 	p->i_fd = -1;
 	p->o_fd = -1;
 	p->p_fd[0] = -1;
@@ -26,11 +26,11 @@ static void	init_pipex(t_pipex *p, char **av)
 	p->pid2 = -1;
 }
 
-int	pipex(char **av, char **ev)
+int	pipex(t_command *command, char **ev)
 {
 	t_pipex	p;
 
-	init_pipex(&p, av);
+	init_pipex(&p, command);
 	if (pipe(p.p_fd) == error)
 	{
 		perror("pipe");

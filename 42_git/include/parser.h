@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/14 14:24:59 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 16:36:58 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "tokenizer.h"
 # include "env_var.h"
 # include "../libft/header/libft.h"
+# include "../libft/header/ftprintf.h"
 
 typedef enum s_rdt_type
 {

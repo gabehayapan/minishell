@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:56:57 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/13 16:37:46 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 16:22:10 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 
 int	execute(t_exec *exec_node, t_env *env_lst)
 {
-	char	**argv;
+//	char	**argv;
 	char	**envp;
 	size_t	size_env_lst;
 	int		ret;
 
-	argv = exec_node->exec;
+//	argv = exec_node->exec;
 	envp = convert_to_envp(env_lst);
-	ret = pipex(&argv[0], envp);
+	ret = pipex(exec_node->command, envp);
 	size_env_lst = count_size_env_lst(env_lst);
 	free_strs(envp, size_env_lst);
 	return (ret);

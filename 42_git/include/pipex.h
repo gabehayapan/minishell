@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:58:59 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/09 17:15:01 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 16:26:09 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ typedef enum s_bool
 typedef struct s_pipex
 {
 	char	*infile;
-	char	*cmd1;
-	char	*cmd2;
+	char	**cmd1;
+	char	**cmd2;
 	char	*outfile;
 	int		i_fd;
 	int		o_fd;
@@ -53,13 +53,13 @@ typedef struct s_pipex
 int		execute(t_exec *exec_node, t_env *env_lst);
 
 // pipex.c
-int		pipex(char **av, char **ev);
+int		pipex(t_command *command, char **ev);
 
 // process.c
 int		fork_process(t_pipex *p, char **ev, int p_nbr);
 
 // exec.c
-int		exec_command(char *cmd, char **ev);
+int		exec_command(char **cmd, char **ev);
 char	*free_arrs_ret_s(char **arrs, char *s);
 
 //wait.c
