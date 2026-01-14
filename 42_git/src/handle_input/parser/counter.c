@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:05:15 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/14 17:40:47 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:21:15 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,19 @@ t_size_exec	count_size_exec(t_token *tokens)
 		tokens = tokens->next;
 	}
 	return (size);
+}
+
+size_t	get_size_command(t_token *tokens)
+{
+	size_t	counter;
+
+	counter = 0;
+	while (tokens != NULL && tokens->tk_type != AND && tokens->tk_type != OR
+		&& tokens->tk_type != SEMI && tokens->tk_type != PIPE)
+	{
+		if (tokens->tk_type != HYPHEN)
+			counter = counter + 1;
+		tokens = tokens->next;
+	}
+	return (counter);
 }
