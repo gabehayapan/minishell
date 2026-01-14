@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 18:27:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/08 19:29:20 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 14:07:54 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,21 +67,4 @@ t_exec	*set_exec_elem(t_token **tokens, t_exec *top, t_exec *node_exec)
 		return (set_last_node(top, node_exec));
 	else
 		return (set_new_node(node_exec, ctrl_op_node));
-}
-
-int	new_exec_tree(t_token **tokens, t_exec **top)
-{
-	t_exec	*node_exec;
-
-	node_exec = (t_exec *)malloc(sizeof(t_exec));
-	if (node_exec == NULL)
-		return (FAILURE);
-	init_node_exec(node_exec);
-	node_exec->exec = new_exec(tokens, node_exec);
-	if (node_exec->exec == NULL)
-		return (FAILURE);
-	*top = set_exec_elem(tokens, *top, node_exec);
-	if (*top == NULL)
-		return (FAILURE);
-	return (SUCCESS);
 }

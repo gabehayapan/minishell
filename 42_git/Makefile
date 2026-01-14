@@ -22,11 +22,13 @@ SRCS =\
 	./src/handle_input/tokenizer/ft_isspace.c\
 	./src/handle_input/parser/parser.c\
 	./src/handle_input/parser/parser_utils.c\
+	./src/handle_input/parser/counter.c\
 	./src/handle_input/parser/get_redirect_file.c\
 	./src/handle_input/parser/print_redirection_error.c\
 	./src/handle_input/parser/expand_specials.c\
 	./src/handle_input/parser/get_command.c\
 	./src/handle_input/parser/exec_tree.c\
+	./src/handle_input/parser/add_path.c\
 	./src/pipe/main_pipe.c\
 	./src/pipe/pipex.c\
 	./src/pipe/exec.c\
@@ -54,11 +56,13 @@ OBJS =\
 	./obj/ft_isspace.o\
 	./obj/parser.o\
 	./obj/parser_utils.o\
+	./obj/counter.o\
 	./obj/get_redirect_file.o\
 	./obj/print_redirection_error.o\
 	./obj/expand_specials.o\
 	./obj/get_command.o\
 	./obj/exec_tree.o\
+	./obj/add_path.o\
 	./obj/main_pipe.o\
 	./obj/pipex.o\
 	./obj/exec.o\

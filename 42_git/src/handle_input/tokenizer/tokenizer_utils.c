@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:57:43 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/13 15:56:37 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 13:47:27 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ t_tk_type	get_token_type_util(char *str)
 		return (TILDE);
 	if (*str == ';')
 		return (SEMI);
-	if (*str == '`')
-		return (BACK_QTE);
 	if (ft_isspace(*str))
 		return (SPACES);
 	return (WORD);
@@ -76,7 +74,5 @@ t_tk_type	get_token_type(char *str)
 		return (OR);
 	if (*str == '|')
 		return (PIPE);
-	if (*str == '\\')
-		return (BACKSLASH);
 	return (get_token_type_util(str));
 }
