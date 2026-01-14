@@ -22,8 +22,11 @@ SRCS =\
 	./src/handle_input/tokenizer/ft_isspace.c\
 	./src/handle_input/parser/parser.c\
 	./src/handle_input/parser/parser_utils.c\
+	./src/handle_input/parser/init.c\
+	./src/handle_input/parser/free.c\
 	./src/handle_input/parser/counter.c\
 	./src/handle_input/parser/get_redirect_file.c\
+	./src/handle_input/parser/get_redirect_file_utils.c\
 	./src/handle_input/parser/print_redirection_error.c\
 	./src/handle_input/parser/expand_specials.c\
 	./src/handle_input/parser/get_command.c\
@@ -56,8 +59,11 @@ OBJS =\
 	./obj/ft_isspace.o\
 	./obj/parser.o\
 	./obj/parser_utils.o\
+	./obj/init.o\
+	./obj/free.o\
 	./obj/counter.o\
 	./obj/get_redirect_file.o\
+	./obj/get_redirect_file_utils.o\
 	./obj/print_redirection_error.o\
 	./obj/expand_specials.o\
 	./obj/get_command.o\
@@ -69,6 +75,14 @@ OBJS =\
 	./obj/process.o\
 	./obj/wait.o\
 	./obj/helper.o\
+
+HEADERS =\
+	./include/minishell.h\
+	./include/tokenizer.h\
+	./include/parser.h\
+	./include/env_var.h\
+	./include/execution.h\
+	./include/pipex.h\
 
 LIBFT_DIR = libft/
 LIBFT = libft.a
@@ -83,7 +97,7 @@ $(NAME): $(OBJS) $(LIBFT_DIR)$(LIBFT)
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
-obj/%.o: %.c | $(OBJ_DIR)
+obj/%.o: %.c $(HEADERS) | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -o $@ -c $< -I./include/ -I./libft/header/
 
 $(LIBFT_DIR)$(LIBFT):

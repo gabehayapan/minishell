@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 18:27:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/14 14:07:54 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 18:25:02 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ t_exec	*new_ctrl_op_node(t_token *token, t_exec *top)
 	ctrl_op_node->tk_type = token->tk_type;
 	ctrl_op_node->left = NULL;
 	ctrl_op_node->right = NULL;
-	ctrl_op_node->exec = NULL;
 	if (top != NULL)
 		top->right = ctrl_op_node;
 	return (ctrl_op_node);

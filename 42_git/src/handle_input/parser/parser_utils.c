@@ -5,69 +5,29 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/29 14:23:21 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/14 18:05:59 by hanakamu         ###   ########.fr       */
+/*   Created: 2026/01/14 19:22:07 by hanakamu          #+#    #+#             */
+/*   Updated: 2026/01/14 19:55:52 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-void	init_node_exec(t_exec *node_exec)
+void	get_remaining_tokens(t_token **tokens)
 {
-	node_exec->left = NULL;
-	node_exec->right = NULL;
-	node_exec->command = NULL;
+	while (*tokens != NULL
+		&& (*tokens)->tk_type != AND && (*tokens)->tk_type != OR
+		&& (*tokens)->tk_type != SEMI && (*tokens)->tk_type != PIPE)
+		clear_token(tokens, *tokens, free);
+	if (*tokens != NULL && (*tokens)->tk_type == PIPE)
+		clear_token(tokens, *tokens, free);
 }
 
-void	free_strs(char **strs, size_t size)
+void	add_new_command(t_command **head, t_command *new_command,
+			t_command **last)
 {
-	size_t	i;
-
-	i = 0;
-	while (i < size)
-	{
-		free(strs[i]);
-		i++;
-	}
-	free(strs);
-}
-
-void	free_null_term_strs(char **strs)
-{
-	char	**ptr_strs;
-
-	ptr_strs = strs;
-	while (*strs != NULL)
-	{
-		free(*strs);
-		strs++;
-	}
-	free(ptr_strs);
-}
-
-void	free_node_exec(t_exec *node_exec)
-{
-	if (node_exec == NULL)
-		return ;
-	free_node_exec(node_exec->left);
-	free_node_exec(node_exec->right);
-	free_strs(node_exec->exec, node_exec->size_exec);
-	free(node_exec);
-}
-
-void	clear_token(t_token **tokens, t_token *target, void (*del)(void *))
-{
-	t_token	*tmp;
-
-	if (tokens == NULL || *tokens == NULL || target == NULL)
-		return ;
-	tmp = *tokens;
-	while (tmp->next != target && tmp != target && tmp != NULL)
-		tmp = tmp->next;
-	tmp->next = target->next;
-	if (*tokens == target)
-		*tokens = target->next;
-	if (del != NULL)
-		(*del)(target->word);
-	free(target);
+	if (*head == NULL)
+		*head = new_command;
+	else
+		(*last)->next = new_command;
+	*last = new_command;
 }

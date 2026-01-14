@@ -6,50 +6,11 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/14 18:00:34 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:56:01 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-void	free_command(t_command *command)
-{
-	t_command	*next;
-
-	while (command != NULL)
-	{
-		next = command->next;
-		free_rdt(command->inrdt);
-		free_rdt(command->outrdt);
-		free_null_term_strs(command->command);
-		free(command);
-		command = next;
-	}
-}
-
-void	get_remaining_tokens(t_token **tokens)
-{
-	while (*tokens != NULL
-		&& (*tokens)->tk_type != AND && (*tokens)->tk_type != OR
-		&& (*tokens)->tk_type != SEMI && (*tokens)->tk_type != PIPE)
-		clear_token(tokens, *tokens, free);
-	if (*tokens != NULL && (*tokens)->tk_type == PIPE)
-		clear_token(tokens, *tokens, free);
-}
-
-size_t	get_size_command(t_token *tokens)
-{
-	size_t	counter;
-
-	counter = 0;
-	while (tokens != NULL && tokens->tk_type != AND && tokens->tk_type != OR
-		&& tokens->tk_type != SEMI && tokens->tk_type != PIPE)
-	{
-		counter = counter + 1;
-		tokens = tokens->next;
-	}
-	return (counter);
-}
 
 char	**get_execution(t_token **tokens)
 {
@@ -74,6 +35,7 @@ char	**get_execution(t_token **tokens)
 		command++;
 		current = next;
 	}
+	*command = NULL;
 	return (ret);
 }
 
@@ -92,15 +54,6 @@ int	new_command(t_token **tokens, t_command *command, t_env *env_lst)
 	if (command->command == NULL)
 		return (FAILURE);
 	return (SUCCESS);
-}
-
-void	init_command(t_command *command)
-{
-	command->inrdt = NULL;
-	command->outrdt = NULL;
-	command->command = NULL;
-	command->is_subshell = 0;
-	command->next = NULL;
 }
 
 t_command	*get_piped_command(t_token **tokens, t_env *env_lst)
@@ -124,11 +77,7 @@ t_command	*get_piped_command(t_token **tokens, t_env *env_lst)
 			free_command(head.next);
 			return (NULL);
 		}
-		if (head.next == NULL)
-			head.next = current;
-		else
-			last->next = current;
-		last = current;
+		add_new_command(&head.next, current, &last);
 		if (*tokens != NULL && (*tokens)->tk_type == PIPE)
 			clear_token(tokens, *tokens, free);
 	}

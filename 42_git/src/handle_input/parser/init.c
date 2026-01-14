@@ -1,35 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/09 18:59:55 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/14 19:41:16 by hanakamu         ###   ########.fr       */
+/*   Created: 2025/12/29 14:23:21 by hanakamu          #+#    #+#             */
+/*   Updated: 2026/01/14 19:09:47 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <signal.h>
+#include "parser.h"
 
-volatile sig_atomic_t	g_signal;
-
-static void	*signal_handler(int signum)
+void	init_node_exec(t_exec *node_exec)
 {
-	g_signal = signum;
+	node_exec->left = NULL;
+	node_exec->right = NULL;
+	node_exec->command = NULL;
 }
 
-int	handle_signal(void)
+void	init_command(t_command *command)
 {
-	struct sigaction	sa;
-
-	sa.sa_handler = signal_handler;
-	if (sigemptyset(&sa.sa_mask) == -1)
-		return (FAILURE);
-	sa.sa_flags = 0;
-	if (sigaction(SIGINT, &sa, NULL) == -1)
-		return (FAILURE);
-	if (sigaction(SIGQUIT, &sa, NULL) == -1)
-		return (FAILURE);
-	return (SUCCESS);
+	command->inrdt = NULL;
+	command->outrdt = NULL;
+	command->command = NULL;
+	command->is_subshell = 0;
+	command->next = NULL;
 }

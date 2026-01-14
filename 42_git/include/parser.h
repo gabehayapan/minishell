@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/14 18:06:29 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:40:36 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,6 @@ typedef struct s_exec
 	struct s_exec	*left;
 	struct s_exec	*right;
 	t_command		*command;
-
-	char	**exec;
-	size_t	size_exec;
 }	t_exec;
 
 // handle_input/handle_input.c
@@ -67,21 +64,37 @@ t_exec		*handle_input(char *input, t_env *env_lst);
 // handle_input/parser/parser.c
 t_exec		*parser(t_token **tokens, t_env *env_lst);
 char		**new_exec(t_token **tokens, t_exec *node_exec, t_env *env_lst);
+void		free_command(t_command *command);
 
 // handle_input/parser/parser_utils.c
+void		get_remaining_tokens(t_token **tokens);
+void		add_new_command(t_command **head, t_command *new_command,
+				t_command **last);
+
+// handle_input/parser/init.c
 void		init_node_exec(t_exec *node_exec);
+void		init_command(t_command *command);
+
+// handle_input/parser/free.c
 void		free_strs(char **strs, size_t size);
 void		free_null_term_strs(char **strs);
+void		free_command(t_command *command);
 void		free_node_exec(t_exec *node_exec);
 void		clear_token(t_token **tokens, t_token *target, void (*del)(void *));
 
 // handle_input/parser/counter.c
 size_t		get_len_command(t_token *tokens);
 t_size_exec	count_size_exec(t_token *tokens);
+size_t		get_size_command(t_token *tokens);
 
 // handle_input/parser/get_redirect_file.c
 int			get_in_out_rdt(t_token **tokens, t_command *command);
+
+// handle_input/parser/get_redirect_file_utils.c
 void		free_rdt(t_rdt *rdt);
+t_rdt_type	get_rdt_type(t_token *token);
+void		add_last(t_rdt **head, t_rdt *new_rdt);
+void		no_rdt_file(t_token *token);
 
 // handle_input/parser/get_command.c
 void		get_command(char *exec, t_token *tokens);
