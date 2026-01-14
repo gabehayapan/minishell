@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:58:59 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/14 17:59:00 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:22:34 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ char	*free_arrs_ret_s(char **arrs, char *s);
 
 //wait.c
 int		wait_for_children(t_pipex *p);
+int		status_code(int status);
 
 //helper.c
 bool	include_quote(char *str);

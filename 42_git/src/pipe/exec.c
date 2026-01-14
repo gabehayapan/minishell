@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 23:11:26 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/14 16:27:04 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:26:34 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,8 @@ int	exec_command(char **cmd, char **ev)
 //	char	*pathname;
 
 	cmdset = cmd;
-	if (**cmdset == '\0')
-		return (handle_noexist_cmd(cmdset));
+	if (**cmd == '\0')
+		return (handle_noexist_cmd(cmd));
 //	pathname = get_pathname(cmdset[0], ev);
 //	if (pathname == NULL)
 //	{

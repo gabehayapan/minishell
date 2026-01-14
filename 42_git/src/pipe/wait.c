@@ -6,13 +6,13 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 20:34:18 by keitotak          #+#    #+#             */
-/*   Updated: 2025/12/06 16:00:32 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/14 19:22:15 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static int	status_code(int status)
+int	status_code(int status)
 {
 	int	code;
 
