@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 11:06:32 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/15 10:49:02 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/15 18:31:36 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,22 @@ int	handle_ctrl_op(t_exec *exec_node, t_env *env_lst)
 
 	if (exec_node->tk_type == AND)
 	{
-		ret = execute_command(exec_node, env_lst);
+		ret = execute_command(exec_node->left, env_lst);
 		if (ret == 0)
-			return (execute_command(exec_node, env_lst));
+			return (execute_command(exec_node->right, env_lst));
 		return (ret);
 	}
 	else if (exec_node->tk_type == OR)
 	{
-		ret = execute_command(exec_node, env_lst);
+		ret = execute_command(exec_node->left, env_lst);
 		if (ret != 0)
-			return (execute_command(exec_node, env_lst));
+			return (execute_command(exec_node->right, env_lst));
 		return (ret);
 	}
 	else if (exec_node->tk_type == SEMI)
 	{
-		execute_command(exec_node, env_lst);
-		execute_command(exec_node, env_lst);
-		return (0);
+		execute_command(exec_node->left, env_lst);
+		return (execute_command(exec_node->right, env_lst));
 	}
 	return (1);
 }
