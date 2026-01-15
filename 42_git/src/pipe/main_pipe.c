@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:56:57 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/15 11:17:20 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/15 16:27:17 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	execute(t_command *command, t_env *env_lst)
 	if (pipe_count == 0)
 		ret = nopipe_execute(command->command, envp);
 	else
-		ret = pipex(command, envp);
+		ret = pipex(command, envp, pipe_count);
 	free_null_term_strs(envp);
 	return (ret);
 }
