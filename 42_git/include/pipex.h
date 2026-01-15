@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:58:59 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/15 12:13:36 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/15 19:34:15 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ typedef struct s_pipex
 }	t_pipex;
 
 // main.c
-int		execute(t_command *command, t_env *env_lst);
+int		execute(t_command *command, t_env *env_lst, t_exec *top);
 
 // pipex.c
-int		pipex(t_command *command, char **ev);
+int		pipex(t_command *command, char **ev, int count);
 
 // process.c
 int		fork_process(t_pipex *p, char **ev, int p_nbr);

@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:56:57 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/15 18:37:46 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/15 19:36:34 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	nopipe_execute(char **command, char **envp)
 	return (status_code(status));
 }
 
-int	execute(t_command *command, t_env *env_lst)
+int	execute(t_command *command, t_env *env_lst, t_exec *top)
 {
 	char	**envp;
 	int		pipe_count;
@@ -63,5 +63,10 @@ int	execute(t_command *command, t_env *env_lst)
 	else
 		ret = pipex(command, envp, pipe_count);
 	free_null_term_strs(envp);
+
+	(void)top;
+//	free_env_lst(env_lst);
+//	free_node_exec(top);
+
 	return (ret);
 }

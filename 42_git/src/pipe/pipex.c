@@ -6,13 +6,12 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 12:07:47 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/15 16:40:22 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/15 19:34:50 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-/*
 static void	init_pipex(t_pipex *p, t_command *command)
 {
 	p->infile = (command->inrdt)->rdt;
@@ -27,10 +26,11 @@ static void	init_pipex(t_pipex *p, t_command *command)
 	p->pid2 = -1;
 }
 
-int	pipex(t_command *command, char **ev)
+int	pipex(t_command *command, char **ev, int count)
 {
 	t_pipex	p;
 
+	(void) count;
 	init_pipex(&p, command);
 	if (pipe(p.p_fd) == error)
 	{
@@ -43,8 +43,8 @@ int	pipex(t_command *command, char **ev)
 	close(p.p_fd[1]);
 	return (wait_for_children(&p));
 }
-*/
 
+/*
 int	pipex(t_command *command, char **ev, int count)
 {
 	int	pfd[count - 1][2];
@@ -64,3 +64,4 @@ int	pipex(t_command *command, char **ev, int count)
 
 	}
 }
+*/
