@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 08:44:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/14 19:20:32 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/15 11:34:52 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,14 @@ int	is_builtin(char *cmd)
 		return (1);
 }
 
-int	get_pathset(t_token *tokens, t_env *env_lst, char ***pathset)
+int	get_pathset(t_env *env_lst, char ***pathset)
 {
 	char	*val_path;
 
 	val_path = env_value(env_lst, "PATH");
 	if (val_path == NULL)
 	{
-		ft_dprintf(2, "minishell: %s: No such file or directory\n",
-			tokens->word);
+		*pathset = NULL;
 		return (SUCCESS);
 	}
 	*pathset = ft_split(val_path, ':');
@@ -82,10 +81,10 @@ int	add_path_to_command(t_token *tokens, t_env *env_lst)
 		|| access(tokens->word, X_OK) == SUCCESS)
 		return (SUCCESS);
 	pathset = NULL;
-	if (get_pathset(tokens, env_lst, &pathset) == FAILURE)
+	if (get_pathset(env_lst, &pathset) == FAILURE)
 		return (FAILURE);
 	ptr_pathset = pathset;
-	while (*pathset != NULL)
+	while (pathset != NULL && *pathset != NULL)
 	{
 		status = search_path_command(tokens, *pathset);
 		if (status == FAILURE || status == SUCCESS)
@@ -96,6 +95,5 @@ int	add_path_to_command(t_token *tokens, t_env *env_lst)
 		pathset++;
 	}
 	free_null_term_strs(ptr_pathset);
-	ft_dprintf(2, "%s: command not found\n", tokens->word);
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:56:57 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/14 20:43:03 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/15 11:17:20 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	nopipe_execute(char **command, char **envp)
 int	execute(t_command *command, t_env *env_lst)
 {
 	char	**envp;
-	size_t	size_env_lst;
 	int		pipe_count;
 	int		ret;
 
@@ -56,7 +55,6 @@ int	execute(t_command *command, t_env *env_lst)
 		ret = nopipe_execute(command->command, envp);
 	else
 		ret = pipex(command, envp);
-	size_env_lst = count_size_env_lst(env_lst);
-	free_strs(envp, size_env_lst);
+	free_null_term_strs(envp);
 	return (ret);
 }
