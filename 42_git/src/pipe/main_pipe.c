@@ -6,12 +6,14 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:56:57 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/15 11:17:20 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/15 17:57:17 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-#include "parser.h"
+
+int	handle_signal(void);
+int	detect_signal(pid_t pid, int signum);
 
 int	count_pipes(t_command *command)
 {
@@ -39,7 +41,12 @@ int	nopipe_execute(char **command, char **envp)
 	}
 	if (pid == 0)
 		exec_command(command, envp);
-	wait(&status);
+	g_sig = 0;
+	if (waitpid(pid, &status, 0) == error)
+	{
+		if (g_sig == SIGINT || g_sig == SIGQUIT)
+			return (detect_signal(pid, g_sig));
+	}
 	return (status_code(status));
 }
 

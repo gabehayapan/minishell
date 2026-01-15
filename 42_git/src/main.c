@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/15 10:45:01 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/15 17:43:13 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,12 @@ int	read_and_execute(t_env *env_lst)
 	char	*input;
 	int		is_success;
 
+	input = NULL;
 	while (1)
 	{
 		input = readline("minishell> ");
 		if (input == NULL)
-			exit(EXIT_FAILURE);
+			break ;
 		if (*input != '\0')
 		{
 			is_success = execute_input_command(input, env_lst);
@@ -88,8 +89,10 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1)
 	{
 		ft_putstr_fd("Usage: ./minishell\n", 2);
-    		return (EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	}
+	if (handle_signal() == FAILURE)
+		return (EXIT_FAILURE);
 	if (display_minishell() == FAILURE)
 		return (EXIT_FAILURE);
 	env_lst = init_env_list(envp);
@@ -99,5 +102,6 @@ int	main(int argc, char **argv, char **envp)
 	free_env_lst(env_lst);
 	if (is_success == FAILURE)
 		return (EXIT_FAILURE);
+	ft_dprintf(2, "exit\n");
 	return (EXIT_SUCCESS);
 }

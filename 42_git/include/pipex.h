@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:58:59 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/14 19:22:34 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/15 12:13:36 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,12 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <errno.h>
+# include <signal.h>
 
 # define STDIN 0
 # define STDOUT 1
+
+extern volatile sig_atomic_t	g_sig;
 
 typedef enum s_bool
 {

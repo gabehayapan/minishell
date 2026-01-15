@@ -38,6 +38,7 @@ SRCS =\
 	./src/pipe/process.c\
 	./src/pipe/wait.c\
 	./src/pipe/helper.c\
+	./src/signal/signal.c\
 
 OBJ_DIR = obj/
 OBJS =\
@@ -75,6 +76,7 @@ OBJS =\
 	./obj/process.o\
 	./obj/wait.o\
 	./obj/helper.o\
+	./obj/signal.o\
 
 HEADERS =\
 	./include/minishell.h\
@@ -87,7 +89,7 @@ HEADERS =\
 LIBFT_DIR = libft/
 LIBFT = libft.a
 
-vpath %.c ./src/ ./src/env_var/ ./src/env_var/export/ ./src/env_var/unset/ ./src/env_var/env_module/ ./src/execution ./src/handle_input/ ./src/handle_input/tokenizer/ ./src/handle_input/parser/ ./src/pipe/
+vpath %.c ./src/ ./src/env_var/ ./src/env_var/export/ ./src/env_var/unset/ ./src/env_var/env_module/ ./src/execution ./src/handle_input/ ./src/handle_input/tokenizer/ ./src/handle_input/parser/ ./src/pipe/ ./src/signal/
 
 all: $(NAME)
 
