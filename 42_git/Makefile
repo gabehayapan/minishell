@@ -10,8 +10,9 @@ SRCS =\
 	./src/env_var/env_module/env_lookup.c\
 	./src/env_var/init_env_list.c\
 	./src/env_var/convert_to_envp.c\
-	./src/env_var/export/export.c\
-	./src/env_var/unset/unset.c\
+	./src/env_var/builtin/env.c\
+	./src/env_var/builtin/export.c\
+	./src/env_var/builtin/unset.c\
 	./src/execution/execution.c\
 	./src/handle_input/handle_input.c\
 	./src/handle_input/tokenizer/tokenizer.c\
@@ -48,6 +49,7 @@ OBJS =\
 	./obj/env_lookup.o\
 	./obj/init_env_list.o\
 	./obj/convert_to_envp.o\
+	./obj/env.o\
 	./obj/export.o\
 	./obj/unset.o\
 	./obj/execution.o\
