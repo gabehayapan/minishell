@@ -119,7 +119,7 @@ clean:
 	make clean -C $(LIBFT_DIR)
 
 fclean: clean
-	rm -f $(NAME) $(LIBFT_DIR)$(LIBFT)
+	rm -f $(NAME) $(ECHO) $(LIBFT_DIR)$(LIBFT)
 
 re: fclean all
 

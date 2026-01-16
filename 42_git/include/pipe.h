@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   pipe.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/01 14:58:59 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/16 17:16:09 by keitotak         ###   ########.fr       */
+/*   Created: 2026/01/16 17:16:22 by keitotak          #+#    #+#             */
+/*   Updated: 2026/01/16 17:17:11 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef PIPE_H
+# define PIPE_H
 
 # include "libft.h"
 # include "ftprintf.h"
@@ -39,19 +39,6 @@ typedef enum s_bool
 	failure
 }	t_bool;
 
-typedef struct s_pipex
-{
-	char	*infile;
-	char	**cmd1;
-	char	**cmd2;
-	char	*outfile;
-	int		i_fd;
-	int		o_fd;
-	int		p_fd[2];
-	pid_t	pid1;
-	pid_t	pid2;
-}	t_pipex;
-
 typedef struct s_pipe
 {
 	int	*procid;
@@ -65,15 +52,14 @@ int		execute(t_command *command, t_env *env_lst, t_exec *top);
 int		pipex(t_command *command, char **ev, int count);
 
 // process.c
-int		fork_process(t_pipex *p, char **ev, int p_nbr);
-//int		fork_process(t_pipe *p, t_command *command, char **ev, int p_nbr);
+int		fork_process(t_pipe *p, t_command *command, char **ev, int p_nbr);
 
 // exec.c
 int		exec_command(char **cmd, char **ev);
 char	*free_arrs_ret_s(char **arrs, char *s);
 
 //wait.c
-int		wait_for_children(t_pipex *p);
+int		wait_for_children(t_pipe *p);
 int		status_code(int status);
 
 //helper.c
