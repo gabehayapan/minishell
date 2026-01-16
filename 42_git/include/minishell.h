@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:47:12 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/15 16:19:40 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/16 12:12:39 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include "execution.h"
 
 extern volatile sig_atomic_t	g_sig;
+int	signal_in_loop(void);
 int	handle_signal(void);
 
 #endif

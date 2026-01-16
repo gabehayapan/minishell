@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:59:55 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/15 17:49:15 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/16 12:18:45 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,47 @@ void	signal_handler(int signum)
 	g_sig = signum;
 }
 
+void	redisplay_prompt(int signum)
+{
+	if (signum == SIGINT)
+	{
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+}
+
+int	signal_in_loop(void)
+{
+	struct sigaction	sa_int;
+	struct sigaction	sa_quit;
+
+	sa_int.sa_handler = redisplay_prompt;
+	sa_quit.sa_handler = SIG_IGN;
+	if (sigemptyset(&sa_int.sa_mask) == -1)
+		return (EXIT_FAILURE);
+	if (sigemptyset(&sa_quit.sa_mask) == -1)
+		return (EXIT_FAILURE);
+	sa_int.sa_flags = 0;
+	sa_quit.sa_flags = 0;
+	if (sigaction(SIGINT, &sa_int, NULL) == -1)
+		return (EXIT_FAILURE);
+	if (sigaction(SIGQUIT, &sa_quit, NULL) == -1)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
+
 int	detect_signal(pid_t pid, int signum)
 {
 	kill(pid, signum);
 	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
 	return (signum + 128);
 }
 
 int	handle_signal(void)
 {
-	static struct sigaction	sa;
+	struct sigaction	sa;
 
 	sa.sa_handler = signal_handler;
 	if (sigemptyset(&sa.sa_mask) == -1)
