@@ -1,5 +1,7 @@
 NAME = minishell
 
+ECHO = echo
+
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
@@ -10,7 +12,6 @@ SRCS =\
 	./src/env_var/env_module/env_lookup.c\
 	./src/env_var/init_env_list.c\
 	./src/env_var/convert_to_envp.c\
-	./src/builtin/echo.c\
 	./src/builtin/cd.c\
 	./src/builtin/env.c\
 	./src/builtin/export.c\
@@ -51,7 +52,6 @@ OBJS =\
 	./obj/env_lookup.o\
 	./obj/init_env_list.o\
 	./obj/convert_to_envp.o\
-	./obj/echo.o\
 	./obj/cd.o\
 	./obj/env.o\
 	./obj/export.o\
@@ -97,7 +97,10 @@ LIBFT = libft.a
 
 vpath %.c ./src/ ./src/env_var/ ./src/env_var/export/ ./src/env_var/unset/ ./src/env_var/env_module/ ./src/execution ./src/handle_input/ ./src/handle_input/tokenizer/ ./src/handle_input/parser/ ./src/pipe/ ./src/signal/ ./src/builtin/
 
-all: $(NAME)
+all: $(NAME) $(ECHO)
+
+$(ECHO): ./src/builtin/echo.c $(LIBFT_DIR)$(LIBFT)
+	$(CC) $(CFLAGS) -o $(ECHO) ./src/builtin/echo.c -I./include/ -I./libft/header/ $(LIBFT_DIR)$(LIBFT)
 
 $(NAME): $(OBJS) $(LIBFT_DIR)$(LIBFT)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT_DIR)$(LIBFT) -lcurses -lreadline
