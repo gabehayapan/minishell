@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 10:46:39 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/13 16:36:56 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/16 12:37:55 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,6 @@ char	**convert_to_envp(t_env *env_lst);
 int		export(t_env *env_lst, char *new_env);
 
 // env_var/unset/unset.c
-void	unset(t_env **env_lst, char *rm_env_key);
+void	unset(t_env **env_lst, char **strs);
 
 #endif

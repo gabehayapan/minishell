@@ -6,22 +6,11 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 21:56:26 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/08 19:01:21 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/16 12:37:30 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_var.h"
-
-t_env	*get_env_var_ptr(t_env *env_lst, char *rm_env_key)
-{
-	while (env_lst != NULL)
-	{
-		if (ft_strcmp(env_lst->key, rm_env_key) == 0)
-			return (env_lst);
-		env_lst = env_lst->next;
-	}
-	return (NULL);
-}
 
 void	remove_env_var(t_env **env_lst, t_env *rm_env)
 {
@@ -41,12 +30,17 @@ void	remove_env_var(t_env **env_lst, t_env *rm_env)
 	free(rm_env);
 }
 
-void	unset(t_env **env_lst, char *rm_env_key)
+void	unset(t_env **env_lst, char **strs)
 {
+	char	**rm_env_key;
 	t_env	*rm_env;
 
-	rm_env = get_env_var_ptr(*env_lst, rm_env_key);
-	if (rm_env == NULL)
-		return ;
-	remove_env_var(env_lst, rm_env);
+	rm_env_key = strs + 1;
+	while (*rm_env_key != NULL)
+	{
+		rm_env = env_find(*env_lst, *rm_env_key);
+		if (rm_env != NULL)
+			remove_env_var(env_lst, rm_env);
+		rm_env_key++;
+	}
 }
