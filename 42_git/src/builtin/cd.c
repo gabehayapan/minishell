@@ -1,23 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/15 20:19:24 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/16 10:42:38 by hanakamu         ###   ########.fr       */
+/*   Created: 2026/01/16 10:27:23 by hanakamu          #+#    #+#             */
+/*   Updated: 2026/01/16 10:45:04 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env_var.h"
-#include "ftprintf.h"
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include "ft_dprintf.h"
 
-void	env(t_env *env_lst)
+int	cd(char **strs)
 {
-	while (env_lst != NULL)
+	int	ret;
+
+	ret = chdir(*(strs + 1));
+	if (ret == -1)
 	{
-		ft_printf("%s=%s\n", env_lst->key, env_lst->value);
-		env_lst = env_lst->next;
+		ft_dprintf(2, "minishell: cd: ");
+		perror(*(strs + 1));
+		return (EXIT_FAILURE);
 	}
+	return (EXIT_SUCCESS);
 }

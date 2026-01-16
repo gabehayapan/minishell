@@ -10,9 +10,10 @@ SRCS =\
 	./src/env_var/env_module/env_lookup.c\
 	./src/env_var/init_env_list.c\
 	./src/env_var/convert_to_envp.c\
-	./src/env_var/builtin/env.c\
-	./src/env_var/builtin/export.c\
-	./src/env_var/builtin/unset.c\
+	./src/builtin/cd.c\
+	./src/builtin/env.c\
+	./src/builtin/export.c\
+	./src/builtin/unset.c\
 	./src/execution/execution.c\
 	./src/handle_input/handle_input.c\
 	./src/handle_input/tokenizer/tokenizer.c\
@@ -49,6 +50,7 @@ OBJS =\
 	./obj/env_lookup.o\
 	./obj/init_env_list.o\
 	./obj/convert_to_envp.o\
+	./obj/cd.o\
 	./obj/env.o\
 	./obj/export.o\
 	./obj/unset.o\
@@ -91,7 +93,7 @@ HEADERS =\
 LIBFT_DIR = libft/
 LIBFT = libft.a
 
-vpath %.c ./src/ ./src/env_var/ ./src/env_var/export/ ./src/env_var/unset/ ./src/env_var/env_module/ ./src/execution ./src/handle_input/ ./src/handle_input/tokenizer/ ./src/handle_input/parser/ ./src/pipe/ ./src/signal/
+vpath %.c ./src/ ./src/env_var/ ./src/env_var/export/ ./src/env_var/unset/ ./src/env_var/env_module/ ./src/execution ./src/handle_input/ ./src/handle_input/tokenizer/ ./src/handle_input/parser/ ./src/pipe/ ./src/signal/ ./src/builtin/
 
 all: $(NAME)
 

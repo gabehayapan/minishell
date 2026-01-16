@@ -6,23 +6,33 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 08:44:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/15 11:34:52 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/16 10:43:30 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "builtin.h"
 
 #define NOT_FOUND -1
 
-int	is_builtin(char *cmd)
+t_builtin	is_builtin(char *cmd)
 {
-	if (ft_strncmp("echo", cmd, 4) == 0 || ft_strncmp("cd", cmd, 2) == 0
-		|| ft_strncmp("pwd", cmd, 3) == 0 || ft_strncmp("export", cmd, 6) == 0
-		|| ft_strncmp("unset", cmd, 5) == 0 || ft_strncmp("env", cmd, 3) == 0
-		|| ft_strncmp("exit", cmd, 4) == 0)
-		return (0);
+	if (ft_strncmp("echo", cmd, 4) == 0)
+		return (ECHO);
+	if (ft_strncmp("cd", cmd, 2) == 0)
+		return (CD);
+	if (ft_strncmp("pwd", cmd, 3) == 0)
+		return (PWD);
+	if (ft_strncmp("export", cmd, 6) == 0)
+		return (EXPORT);
+	if (ft_strncmp("unset", cmd, 5) == 0)
+		return (UNSET);
+	if (ft_strncmp("env", cmd, 3) == 0)
+		return (ENV);
+	if (ft_strncmp("exit", cmd, 4) == 0)
+		return (EXIT);
 	else
-		return (1);
+		return (ELSE);
 }
 
 int	get_pathset(t_env *env_lst, char ***pathset)
@@ -77,7 +87,7 @@ int	add_path_to_command(t_token *tokens, t_env *env_lst)
 	char	**ptr_pathset;
 	int		status;
 
-	if (tokens == NULL || is_builtin(tokens->word) == SUCCESS
+	if (tokens == NULL || is_builtin(tokens->word) != ELSE
 		|| access(tokens->word, X_OK) == SUCCESS)
 		return (SUCCESS);
 	pathset = NULL;

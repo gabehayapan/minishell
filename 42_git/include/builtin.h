@@ -1,23 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/15 20:19:24 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/16 10:42:38 by hanakamu         ###   ########.fr       */
+/*   Created: 2026/01/16 10:37:14 by hanakamu          #+#    #+#             */
+/*   Updated: 2026/01/16 10:44:01 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env_var.h"
-#include "ftprintf.h"
+#ifndef BUILTIN_H
+# define BUILTIN_H
 
-void	env(t_env *env_lst)
+typedef enum s_buitin
 {
-	while (env_lst != NULL)
-	{
-		ft_printf("%s=%s\n", env_lst->key, env_lst->value);
-		env_lst = env_lst->next;
-	}
-}
+	ELSE = -1,
+	ECHO,
+	CD,
+	PWD,
+	EXPORT,
+	UNSET,
+	ENV,
+	EXIT,
+}	t_builtin;
+
+t_builtin	is_builtin(char *cmd);
+
+#endif
