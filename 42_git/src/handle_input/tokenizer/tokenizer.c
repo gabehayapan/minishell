@@ -6,11 +6,12 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 11:54:45 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/13 15:40:23 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/16 15:44:43 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
+#include <stdbool.h>
 
 int	get_word(char **str, t_token *new_token, t_tk_type tk_type)
 {
@@ -21,10 +22,10 @@ int	get_word(char **str, t_token *new_token, t_tk_type tk_type)
 	if (tk_type == DBL_INRDT || tk_type == DBL_OUTRDT || tk_type == DBL_HIS
 		|| tk_type == AND || tk_type == OR)
 		len = 2;
-	else if (tk_type == WORD)
+	else if (tk_type == WORD || tk_type == SPACES)
 	{
 		len = 0;
-		while (get_token_type(tmp) == WORD)
+		while (get_token_type(tmp) == tk_type)
 			tmp++;
 		len = tmp - *str;
 	}
@@ -50,6 +51,7 @@ t_token	*create_new_token(char **str, t_token *current, t_tk_type tk_type)
 		return (NULL);
 	}
 	new_token->tk_type = tk_type;
+	new_token->is_join = false;
 	new_token->next = NULL;
 	current->next = new_token;
 	return (new_token);
@@ -65,8 +67,6 @@ t_token	*tokenizer(char *str)
 	current = &head;
 	while (*str != '\0')
 	{
-		while (ft_isspace(*str))
-			str++;
 		tk_type = get_token_type(str);
 		current = create_new_token(&str, current, tk_type);
 		if (current == NULL)

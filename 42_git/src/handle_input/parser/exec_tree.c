@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 18:27:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/15 10:31:01 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/16 14:00:47 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_exec	*set_new_node(t_exec *top, t_exec *node_exec, t_exec *ctrl_op_node)
 	return (ctrl_op_node);
 }
 
-t_exec	*new_ctrl_op_node(t_token *token, t_exec *top)
+t_exec	*new_ctrl_op_node(t_token *token)
 {
 	t_exec	*ctrl_op_node;
 
@@ -48,8 +48,6 @@ t_exec	*new_ctrl_op_node(t_token *token, t_exec *top)
 	ctrl_op_node->left = NULL;
 	ctrl_op_node->right = NULL;
 	ctrl_op_node->command = NULL;
-	if (top != NULL)
-		top->right = ctrl_op_node;
 	return (ctrl_op_node);
 }
 
@@ -60,7 +58,7 @@ t_exec	*set_exec_elem(t_token **tokens, t_exec *top, t_exec *node_exec)
 	ctrl_op_node = NULL;
 	if (*tokens != NULL)
 	{
-		ctrl_op_node = new_ctrl_op_node(*tokens, top);
+		ctrl_op_node = new_ctrl_op_node(*tokens);
 		if (ctrl_op_node == NULL)
 			return (NULL);
 		clear_token(tokens, *tokens, free);

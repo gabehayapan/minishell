@@ -6,11 +6,12 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/15 10:35:03 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/17 12:00:04 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include <stdbool.h>
 
 char	**get_execution(t_token **tokens)
 {
@@ -19,6 +20,7 @@ char	**get_execution(t_token **tokens)
 	char	**ret;
 	t_token	*current;
 	t_token	*next;
+	t_token	*tmp;
 
 	size_cmd = get_size_command(*tokens);
 	command = (char **)malloc(sizeof(char *) * (size_cmd + 1));
@@ -32,6 +34,19 @@ char	**get_execution(t_token **tokens)
 		next = current->next;
 		*command = current->word;
 		clear_token(tokens, current, NULL);
+		while (next != NULL && next->is_join == true)
+		{
+			tmp = next;
+			next = next->next;
+			*command = join_word_no_space(*command, tmp->word);
+			if (*command == NULL)
+			{
+				free_null_term_strs(ret);
+				return (NULL);
+			}
+			clear_token(tokens, tmp, free);
+			current = next;
+		}
 		command++;
 		current = next;
 	}
@@ -43,7 +58,7 @@ int	new_command(t_token **tokens, t_command *command, t_env *env_lst)
 {
 	int			is_success;
 
-	command->size = count_size_exec(*tokens);
+	command->size = count_size_exec(tokens);
 	is_success = get_in_out_rdt(tokens, command);
 	if (is_success == FAILURE)
 		return (FAILURE);
@@ -101,13 +116,29 @@ int	new_exec_tree(t_token **tokens, t_exec **top, t_env *env_lst)
 	return (SUCCESS);
 }
 
+void	remove_tk_spaces(t_token **tokens)
+{
+	t_token	*current;
+
+	current = *tokens;
+	while (current != NULL)
+	{
+		if (current->tk_type == SPACES)
+			clear_token(tokens, current, free);
+		current = current->next;
+	}
+}
+
 t_exec	*parser(t_token **tokens, t_env *env_lst)
 {
 	t_exec	*top;
 	int		is_success;
 
 	top = NULL;
+	if (*tokens != NULL && (*tokens)->tk_type == SPACES)
+		clear_token(tokens, *tokens, free);
 	expand_specials(tokens, env_lst);
+	remove_tk_spaces(tokens);
 	while (*tokens != NULL)
 	{
 		is_success = new_exec_tree(tokens, &top, env_lst);

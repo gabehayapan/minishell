@@ -6,11 +6,12 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:05:15 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/14 19:57:24 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/16 16:46:25 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include <stdbool.h>
 
 size_t	get_len_command(t_token *tokens)
 {
@@ -33,20 +34,23 @@ size_t	get_len_command(t_token *tokens)
 	return (len_command);
 }
 
-t_size_exec	count_size_exec(t_token *tokens)
+t_size_exec	count_size_exec(t_token **tokens)
 {
 	t_size_exec	size;
+	t_token		*current;
 
 	size.inrdt = 0;
 	size.outrdt = 0;
-	while (tokens != NULL && tokens->tk_type != AND && tokens->tk_type != OR
-		&& tokens->tk_type != SEMI && tokens->tk_type != PIPE)
+	current = *tokens;
+	while (current != NULL && current->tk_type != AND && current->tk_type != OR
+		&& current->tk_type != SEMI && current->tk_type != PIPE)
 	{
-		if (tokens->tk_type == SGL_INRDT || tokens->tk_type == DBL_INRDT)
+		if (current->tk_type == SGL_INRDT || current->tk_type == DBL_INRDT)
 			size.inrdt = size.inrdt + 1;
-		else if (tokens->tk_type == SGL_OUTRDT || tokens->tk_type == DBL_OUTRDT)
+		else if (current->tk_type == SGL_OUTRDT
+			|| current->tk_type == DBL_OUTRDT)
 			size.outrdt = size.outrdt + 1;
-		tokens = tokens->next;
+		current = current->next;
 	}
 	return (size);
 }
@@ -59,7 +63,8 @@ size_t	get_size_command(t_token *tokens)
 	while (tokens != NULL && tokens->tk_type != AND && tokens->tk_type != OR
 		&& tokens->tk_type != SEMI && tokens->tk_type != PIPE)
 	{
-		counter = counter + 1;
+		if (tokens->is_join == false)
+			counter = counter + 1;
 		tokens = tokens->next;
 	}
 	return (counter);

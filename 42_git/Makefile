@@ -33,6 +33,8 @@ SRCS =\
 	./src/handle_input/parser/get_redirect_file_utils.c\
 	./src/handle_input/parser/print_redirection_error.c\
 	./src/handle_input/parser/expand_specials.c\
+	./src/handle_input/parser/expand_specials_utils.c\
+	./src/handle_input/parser/join_word.c\
 	./src/handle_input/parser/get_command.c\
 	./src/handle_input/parser/exec_tree.c\
 	./src/handle_input/parser/add_path.c\
@@ -73,6 +75,8 @@ OBJS =\
 	./obj/get_redirect_file_utils.o\
 	./obj/print_redirection_error.o\
 	./obj/expand_specials.o\
+	./obj/expand_specials_utils.o\
+	./obj/join_word.o\
 	./obj/get_command.o\
 	./obj/exec_tree.o\
 	./obj/add_path.o\

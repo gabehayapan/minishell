@@ -6,11 +6,12 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/16 12:56:56 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/17 11:59:49 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include <stdbool.h>
 
 int	expand_dollar(t_token **tokens, t_token *current, t_env *env_lst)
 {
@@ -21,12 +22,13 @@ int	expand_dollar(t_token **tokens, t_token *current, t_env *env_lst)
 	env_var = env_value(env_lst, next->word);
 	free(current->word);
 	if (env_var != NULL)
-		current->word = ft_strdup(env_var);
+		current->word = rm_extra_space(env_var);
 	else
 		current->word = ft_strdup("");
 	clear_token(tokens, next, free);
 	if (current->word == NULL)
 		return (FAILURE);
+	current->is_join = true;
 	return (SUCCESS);
 }
 
@@ -45,17 +47,53 @@ int	expand_tilde(t_token *current, t_env *env_lst)
 	return (SUCCESS);
 }
 
-void	remove_tk_quote(t_token **tokens, t_token *current)
+int	expand_quoted_dollar(t_token **tokens, t_token *current, t_env *env_lst)
 {
-	t_tk_type	quote;
+	t_token	*next;
+	char	*env_var;
+
+	next = current->next;
+	env_var = env_value(env_lst, next->word);
+	free(current->word);
+	if (env_var != NULL)
+		current->word = ft_strdup(env_var);
+	else
+		current->word = ft_strdup("");
+	clear_token(tokens, next, free);
+	if (current->word == NULL)
+		return (FAILURE);
+	current->is_join = true;
+	return (SUCCESS);
+}
+
+int	expand_quote(t_token **tokens, t_token **current, t_env *env_lst)
+{
+	t_tk_type	tk_qte;
 	t_token		*next;
 
-	quote = current->tk_type;
-	next = current->next;
-	clear_token(tokens, current, free);
-	while (next != NULL && next->tk_type != quote)
+	tk_qte = (*current)->tk_type;
+	next = (*current)->next;
+	clear_token(tokens, *current, free);
+	while (next != NULL && next->tk_type != tk_qte)
+	{
+		if (tk_qte == DBL_QTE && next->tk_type == DOLLAR)
+		{
+			if (expand_quoted_dollar(tokens, next, env_lst) == FAILURE)
+				return (FAILURE);
+		}
+		if (next->next != NULL)
+			(next->next)->is_join = true;
 		next = next->next;
+	}
+	if (next != NULL)
+	{
+		*current = next->next;
+		check_next_quote(*current);
+	}
+	else
+		*current = NULL;
 	clear_token(tokens, next, free);
+	return (SUCCESS);
 }
 
 int	expand_specials(t_token **tokens, t_env *env_lst)
@@ -67,14 +105,19 @@ int	expand_specials(t_token **tokens, t_env *env_lst)
 	is_success = SUCCESS;
 	while (current != NULL)
 	{
+		if (current->tk_type == SGL_QTE || current->tk_type == DBL_QTE)
+		{
+			is_success = expand_quote(tokens, &current, env_lst);
+			if (is_success == FAILURE)
+				return (FAILURE);
+			continue ;
+		}
 		if (current->tk_type == DOLLAR)
 			is_success = expand_dollar(tokens, current, env_lst);
 		else if (current->tk_type == TILDE)
 			is_success = expand_tilde(current, env_lst);
 		if (is_success == FAILURE)
 			return (FAILURE);
-		if (current->tk_type == SGL_QTE || current->tk_type == DBL_QTE)
-			remove_tk_quote(tokens, current);
 		current = current->next;
 	}
 	return (SUCCESS);
