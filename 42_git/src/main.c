@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/16 12:13:10 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/17 12:38:00 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,15 @@ int	read_and_execute(t_env *env_lst)
 	input = NULL;
 	while (1)
 	{
-		signal_in_loop();
+		if (signal_in_loop() == FAILURE)
+			return (FAILURE);
 		input = readline("minishell> ");
 		if (input == NULL)
 			break ;
 		if (*input != '\0')
 		{
 			if (handle_signal() == FAILURE)
-				return (EXIT_FAILURE);
+				return (FAILURE);
 			is_success = execute_input_command(input, env_lst);
 			if (is_success == FAILURE)
 			{
