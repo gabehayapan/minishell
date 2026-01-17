@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/17 11:59:49 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/17 15:39:06 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,8 @@ int	expand_quote(t_token **tokens, t_token **current, t_env *env_lst)
 	clear_token(tokens, *current, free);
 	while (next != NULL && next->tk_type != tk_qte)
 	{
-		if (tk_qte == DBL_QTE && next->tk_type == DOLLAR)
-		{
-			if (expand_quoted_dollar(tokens, next, env_lst) == FAILURE)
-				return (FAILURE);
-		}
+		if (handle_dbl_quoted_dollar(tokens, next, env_lst, tk_qte) == FAILURE)
+			return (FAILURE);
 		if (next->next != NULL)
 			(next->next)->is_join = true;
 		next = next->next;

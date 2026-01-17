@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/17 11:59:22 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/17 15:44:50 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,13 @@ void		get_command(char *exec, t_token *tokens);
 
 // handle_input/parser/expand_specials.c
 int			expand_specials(t_token **tokens, t_env *env_lst);
+int			expand_quoted_dollar(t_token **tokens, t_token *current, t_env *env_lst);
 
-// handle_input/parser/expand_specials.c
+// handle_input/parser/expand_specials_utils.c
 char		*rm_extra_space(char *str);
 void		check_next_quote(t_token *token);
+int			handle_dbl_quoted_dollar(t_token **tokens, t_token *current,
+				t_env *env_lst, t_tk_type tk_qte);
 
 // handle_input/parser/join_word.c
 char		*join_word_with_space(char *str, char *word, size_t *len_str);

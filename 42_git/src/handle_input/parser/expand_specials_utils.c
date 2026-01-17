@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 11:57:32 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/17 12:29:28 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/17 15:43:43 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,15 @@ void	check_next_quote(t_token *token)
 	}
 	else if (token->tk_type != SPACES)
 		token->is_join = true;
+}
+
+int	handle_dbl_quoted_dollar(t_token **tokens, t_token *current, t_env *env_lst,
+			t_tk_type tk_qte)
+{
+	if (tk_qte == DBL_QTE && current->tk_type == DOLLAR)
+	{
+		if(expand_quoted_dollar(tokens, current, env_lst) == FAILURE)
+			return (FAILURE);
+	}
+	return (SUCCESS);
 }
