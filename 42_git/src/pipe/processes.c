@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 16:20:31 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/19 15:53:58 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/19 17:50:13 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,7 @@ int	fork_process(t_pipe *p, t_command *command, char **ev, int p_nbr)
 	}
 	if (pid == 0)
 	{
-		if (proctype(command) == IORDT)
-			iordt_child();
-		else if (proctype(command) == INRDT)
-			inrdt_child();
-		else if (proctype(command) == OUTRDT)
-			outrdt_child();
-		else
-			nordt_child(p, command, ev, p_nbr);
+		redirect_fd(command);
 	}
-	close(p->pipefd[p_nbr][0]);
-	close(p->pipefd[p_nbr][1]);
 	return (pid);
 }
