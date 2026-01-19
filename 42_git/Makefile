@@ -42,8 +42,10 @@ SRCS =\
 	./src/handle_input/parser/add_path.c\
 	./src/pipe/main_pipe.c\
 	./src/pipe/pipex.c\
+	./src/pipe/pipe.c\
 	./src/pipe/exec.c\
 	./src/pipe/process.c\
+	./src/pipe/fork.c\
 	./src/pipe/wait.c\
 	./src/pipe/helper.c\
 	./src/signal/signal.c\
@@ -86,8 +88,10 @@ OBJS =\
 	./obj/add_path.o\
 	./obj/main_pipe.o\
 	./obj/pipex.o\
+	./obj/pipe.o\
 	./obj/exec.o\
 	./obj/process.o\
+	./obj/fork.o\
 	./obj/wait.o\
 	./obj/helper.o\
 	./obj/signal.o\
@@ -99,6 +103,7 @@ HEADERS =\
 	./include/env_var.h\
 	./include/execution.h\
 	./include/pipex.h\
+	./include/pipe.h\
 
 LIBFT_DIR = libft/
 LIBFT = libft.a

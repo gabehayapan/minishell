@@ -6,10 +6,11 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   initd: 2025/12/02 12:07:47 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/16 17:14:53 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/19 18:57:26 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/*
 #include "pipex.h"
 
 static void	init_pipex(t_pipex *p, t_command *command)
@@ -43,3 +44,4 @@ int	pipex(t_command *command, char **ev, int count)
 	close(p.p_fd[1]);
 	return (wait_for_children(&p));
 }
+*/

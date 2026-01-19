@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:56:57 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/19 17:55:55 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/19 19:44:05 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 int	handle_signal(void);
 int	detect_signal(pid_t pid, int signum);
 
-int	count_pipes(t_command *command)
+int	count_proc(t_command *command)
 {
 	int	count;
 
-	count = -1;
+	count = 0;
 	while (command)
 	{
 		count++;
@@ -99,15 +99,15 @@ int	nopipe_execute(t_command *command, char **envp)
 int	execute(t_command *command, t_env *env_lst, t_exec *top)
 {
 	char	**envp;
-	int		x;
+	int		proc_count;
 	int		ret;
 
 	envp = convert_to_envp(env_lst);
-	x = count_pipes(command);
-	if (x == 0)
-		ret = nopipe_execute(command, envp);
-	else
-		ret = pipex(command, envp, x);
+	proc_count = count_proc(command);
+//	if (proc_count == 1)
+//		ret = nopipe_execute(command, envp);
+//	else
+	ret = pipex(command, envp, proc_count);
 	free_null_term_strs(envp);
 
 	(void)top;

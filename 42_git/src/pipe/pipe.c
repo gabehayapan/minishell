@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:14:01 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/19 17:48:36 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/19 19:40:30 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,35 +69,39 @@ int	init_pipe(t_pipe *p, int count)
 	return (SUCCESS);
 }
 
-void	close_pipes(int	**pipefd)
+void	close_pipes(int	**pipefd, int count)
 {
 	int	i;
 
 	i = 0;
-	while (pipefd[i])
-		close(pipefd[i++]);
+	while (i < count)
+	{
+		close(pipefd[i][0]);
+		close(pipefd[i][1]);
+		i++;
+	}
 }
 
-int	pipex(t_command *command, char **ev, int count)
+int	pipex(t_command *command, char **ev, int proc_count)
 {
 	t_pipe	p;
 	int	i;
 
-	if (init_pipe(&p, count) == FAILURE)
+	if (init_pipe(&p, proc_count) == FAILURE)
 		return (FAILURE);
 	i = 0;
-	while (i + 1 < count)
+	while (i + 1 < proc_count)
 	{
 		if (pipe(p.pipefd[i]) == error)
 		{
 			perror("pipe");
 			return (EXIT_FAILURE);
 		}
-		p.procid[i] = fork_process(p, command, ev, i);
+		p.procid[i] = fork_process(&p, command, ev, i);
 		command = command->next;
 		i++;
 	}
-	p.procid[i] = fork_process(p, command, ev, i);
-	close_pipes(p.pipefd);
-	return (SUCCESS);
+	p.procid[i] = fork_process(&p, command, ev, i);
+	close_pipes(p.pipefd, proc_count - 1);
+	return (wait_for_children(&p, proc_count));
 }

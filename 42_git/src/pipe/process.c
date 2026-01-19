@@ -6,12 +6,13 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 22:26:17 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/19 16:04:38 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/19 18:55:20 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+/*
 static void	exit_close_fds(pid_t pid1, pid_t pid2, int exit_code)
 {
 	close(pid1);
@@ -86,3 +87,4 @@ int	fork_process(t_pipex *p, char **ev, int p_nbr)
 	}
 	return (pid);
 }
+*/
