@@ -6,15 +6,15 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 11:06:32 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/15 19:21:26 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/19 11:58:45 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-int	execute_command(t_exec *exec_node, t_env *env_lst, t_exec *top);
+long	execute_command(t_exec *exec_node, t_env *env_lst, t_exec *top);
 
-int	handle_ctrl_op(t_exec *exec_node, t_env *env_lst, t_exec *top)
+long	handle_ctrl_op(t_exec *exec_node, t_env *env_lst, t_exec *top)
 {
 	int	ret;
 
@@ -40,7 +40,7 @@ int	handle_ctrl_op(t_exec *exec_node, t_env *env_lst, t_exec *top)
 	return (1);
 }
 
-int	execute_command(t_exec *exec_node, t_env *env_lst, t_exec *top)
+long	execute_command(t_exec *exec_node, t_env *env_lst, t_exec *top)
 {
 	if (exec_node == NULL)
 		return (0);
@@ -50,8 +50,7 @@ int	execute_command(t_exec *exec_node, t_env *env_lst, t_exec *top)
 		return (handle_ctrl_op(exec_node, env_lst, top));
 }
 
-int	check_execution_success(t_exec *exec_tree, t_env *env_lst)
+long	check_execution_success(t_exec *exec_tree, t_env *env_lst)
 {
-	execute_command(exec_tree, env_lst, exec_tree);
-	return (SUCCESS);
+	return (execute_command(exec_tree, env_lst, exec_tree));
 }

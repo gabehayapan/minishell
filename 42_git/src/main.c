@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 10:19:35 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 11:58:16 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,17 @@ int	display_minishell(void)
 
 int	execute_input_command(char *input, t_env *env_lst)
 {
-	t_exec	*exec_tree;
-	int		ret;
+	t_exec		*exec_tree;
+	int			ret;
+	static long	exit_status;
 
-	ret = handle_input(input, env_lst, &exec_tree);
+	ret = handle_input(input, env_lst, &exec_tree, exit_status);
 	if (ret == FAILURE)
 		return (FAILURE);
 	if (ret == SUCCESS)
 	{
-		ret = check_execution_success(exec_tree, env_lst);
+		exit_status = check_execution_success(exec_tree, env_lst);
 		free_node_exec(exec_tree);
-		if (ret == FAILURE)
-			return (FAILURE);
 		add_history(input);
 	}
 	return (SUCCESS);

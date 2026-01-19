@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 18:37:43 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/09 17:51:04 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 12:07:25 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,6 @@
 # include "pipex.h"
 
 // execution/execution.c
-int	check_execution_success(t_exec *exec_tree, t_env *env_lst);
+long	check_execution_success(t_exec *exec_tree, t_env *env_lst);
 
 #endif

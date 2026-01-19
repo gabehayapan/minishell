@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 08:44:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/16 10:43:30 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 11:52:28 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@
 
 t_builtin	is_builtin(char *cmd)
 {
-	if (ft_strncmp("echo", cmd, 4) == 0)
+	if (ft_strcmp("echo", cmd) == 0)
 		return (ECHO);
-	if (ft_strncmp("cd", cmd, 2) == 0)
+	if (ft_strcmp("cd", cmd) == 0)
 		return (CD);
-	if (ft_strncmp("pwd", cmd, 3) == 0)
+	if (ft_strcmp("pwd", cmd) == 0)
 		return (PWD);
-	if (ft_strncmp("export", cmd, 6) == 0)
+	if (ft_strcmp("export", cmd) == 0)
 		return (EXPORT);
-	if (ft_strncmp("unset", cmd, 5) == 0)
+	if (ft_strcmp("unset", cmd) == 0)
 		return (UNSET);
-	if (ft_strncmp("env", cmd, 3) == 0)
+	if (ft_strcmp("env", cmd) == 0)
 		return (ENV);
-	if (ft_strncmp("exit", cmd, 4) == 0)
+	if (ft_strcmp("exit", cmd) == 0)
 		return (EXIT);
 	else
 		return (ELSE);
