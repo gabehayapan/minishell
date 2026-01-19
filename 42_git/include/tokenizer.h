@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:01:56 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/16 15:43:45 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 10:16:25 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # define SUCCESS 0
 # define FAILURE 1
+# define NO_COMMAND 2
 
 # include <stdlib.h>
 # include <readline/readline.h>
@@ -67,7 +68,7 @@ typedef struct s_syntax_err
 }	t_syntax_err;
 
 // handle_input/tokenizer/tokenizer.c
-t_token		*tokenizer(char *str);
+int			tokenizer(char *str, t_token **tokens);
 t_token		*create_new_token(char **str, t_token *current, t_tk_type tk_type);
 
 // handle_input/tokenizer/tokenizer_utils.c

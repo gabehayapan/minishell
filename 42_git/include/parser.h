@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 09:55:39 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 10:16:45 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct s_exec
 }	t_exec;
 
 // handle_input/handle_input.c
-t_exec		*handle_input(char *input, t_env *env_lst);
+int			handle_input(char *input, t_env *env_lst, t_exec **exec_tree);
 
 // handle_input/parser/parser.c
 t_exec		*parser(t_token **tokens, t_env *env_lst);

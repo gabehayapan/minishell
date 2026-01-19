@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 11:54:45 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/16 15:44:43 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 10:15:13 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,16 @@ t_token	*create_new_token(char **str, t_token *current, t_tk_type tk_type)
 	return (new_token);
 }
 
-t_token	*tokenizer(char *str)
+int	tokenizer(char *str, t_token **tokens)
 {
 	t_token		head;
 	t_token		*current;
 	t_tk_type	tk_type;
 
+	while (ft_isspace(*str) == 1)
+		str++;
+	if (*str == '\0')
+		return (NO_COMMAND);
 	head.next = NULL;
 	current = &head;
 	while (*str != '\0')
@@ -70,13 +74,14 @@ t_token	*tokenizer(char *str)
 		tk_type = get_token_type(str);
 		current = create_new_token(&str, current, tk_type);
 		if (current == NULL)
-			return (free_token(head.next));
+			return (free_token(head.next), FAILURE);
 		if (tk_type == SGL_QTE || tk_type == DBL_QTE)
 		{
 			current = tokenize_quote(&str, current, tk_type);
 			if (current == NULL)
-				return (free_token(head.next));
+				return (free_token(head.next), FAILURE);
 		}
 	}
-	return (head.next);
+	*tokens = head.next;
+	return (SUCCESS);
 }

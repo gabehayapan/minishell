@@ -6,23 +6,23 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 18:40:19 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/15 10:35:51 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 10:18:11 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-t_exec	*handle_input(char *input, t_env *env_lst)
+int	handle_input(char *input, t_env *env_lst, t_exec **exec_tree)
 {
 	t_token	*tokens;
-	t_exec	*exec_tree;
+	int		ret;
 
-	tokens = tokenizer(input);
-	if (tokens == NULL)
-		return (NULL);
-	exec_tree = parser(&tokens, env_lst);
+	ret = tokenizer(input, &tokens);
+	if (ret == FAILURE || ret == NO_COMMAND)
+		return (ret);
+	*exec_tree = parser(&tokens, env_lst);
 	free_token(tokens);
-	if (exec_tree == NULL)
-		return (NULL);
-	return (exec_tree);
+	if (*exec_tree == NULL)
+		return (FAILURE);
+	return (SUCCESS);
 }
