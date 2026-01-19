@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/17 12:00:04 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 09:54:22 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ char	**get_execution(t_token **tokens)
 	char	**ret;
 	t_token	*current;
 	t_token	*next;
-	t_token	*tmp;
 
 	size_cmd = get_size_command(*tokens);
 	command = (char **)malloc(sizeof(char *) * (size_cmd + 1));
@@ -31,21 +30,10 @@ char	**get_execution(t_token **tokens)
 	while (current != NULL && current->tk_type != AND && current->tk_type != OR
 		&& current->tk_type != SEMI && current->tk_type != PIPE)
 	{
-		next = current->next;
-		*command = current->word;
-		clear_token(tokens, current, NULL);
-		while (next != NULL && next->is_join == true)
+		if (join_command(tokens, current, command, &next) == FAILURE)
 		{
-			tmp = next;
-			next = next->next;
-			*command = join_word_no_space(*command, tmp->word);
-			if (*command == NULL)
-			{
-				free_null_term_strs(ret);
-				return (NULL);
-			}
-			clear_token(tokens, tmp, free);
-			current = next;
+			free_strs(ret, command - ret);
+			return (NULL);
 		}
 		command++;
 		current = next;
@@ -114,19 +102,6 @@ int	new_exec_tree(t_token **tokens, t_exec **top, t_env *env_lst)
 	if (*top == NULL)
 		return (FAILURE);
 	return (SUCCESS);
-}
-
-void	remove_tk_spaces(t_token **tokens)
-{
-	t_token	*current;
-
-	current = *tokens;
-	while (current != NULL)
-	{
-		if (current->tk_type == SPACES)
-			clear_token(tokens, current, free);
-		current = current->next;
-	}
 }
 
 t_exec	*parser(t_token **tokens, t_env *env_lst)
