@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 19:22:07 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 15:12:44 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 16:19:11 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,21 @@ void	remove_tk_spaces(t_token **tokens)
 {
 	t_token	*current;
 	t_token	*next;
+	int		is_wildcard;
 
+	is_wildcard = 0;
 	current = *tokens;
 	while (current != NULL)
 	{
 		next = current->next;
 		if (current->tk_type == SPACES)
+		{
 			clear_token(tokens, current, free);
-		else if (current->next != NULL)
+			is_wildcard = 0;
+		}
+		else if (current->tk_type == WILDCARD)
+			is_wildcard = 1;
+		else if (current->next != NULL && is_wildcard == 0)
 			(current->next)->is_join = true;
 		current = next;
 	}
