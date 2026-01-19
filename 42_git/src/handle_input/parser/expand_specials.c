@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 16:00:17 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 17:42:26 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,20 @@ int	expand_quote(t_token **tokens, t_token **current, t_env *env_lst,
 	return (SUCCESS);
 }
 
-int	expand_wildcard(t_token *current)
+int	expand_wildcard(t_token **tokens, t_token *current)
 {
-	char			*cwd;
+	char	*cwd;
+	t_token	*token_echo;
 
+	if (current->prev == NULL)
+	{
+		token_echo = new_token_str("echo", NULL, WORD);
+		if (token_echo == NULL)
+			return (FAILURE);
+		token_echo->next = *tokens;
+		(*tokens)->prev = token_echo;
+		*tokens = token_echo;
+	}
 	cwd = get_target_dir();
 	if (cwd == NULL)
 		return (SUCCESS);
@@ -120,7 +130,7 @@ int	expand_specials(t_token **tokens, t_env *env_lst, long exit_status)
 		else if (current->tk_type == TILDE)
 			is_success = expand_tilde(current, env_lst);
 		else if (current->tk_type == WILDCARD)
-			is_success = expand_wildcard(current);
+			is_success = expand_wildcard(tokens, current);
 		if (is_success == FAILURE)
 			return (FAILURE);
 		current = current->next;

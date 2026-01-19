@@ -6,11 +6,12 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:57:43 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 12:55:21 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 17:39:11 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
+#include <stdbool.h>
 
 void	*free_token(t_token *token)
 {
@@ -75,4 +76,23 @@ t_tk_type	get_token_type(char *str)
 	if (*str == '|')
 		return (PIPE);
 	return (get_token_type_util(str));
+}
+
+t_token	*new_token_str(const char *str, t_token *current, t_tk_type tk_type)
+{
+	t_token	*new_token;
+
+	new_token = (t_token *)malloc(sizeof(t_token));
+	if (new_token == NULL)
+		return (NULL);
+	new_token->word = ft_strdup(str);
+	if (new_token->word == NULL)
+		return (NULL);
+	new_token->tk_type = tk_type;
+	new_token->is_join = false;
+	new_token->prev = current;
+	new_token->next = NULL;
+	if (current != NULL)
+		current->next = new_token;
+	return (new_token);
 }

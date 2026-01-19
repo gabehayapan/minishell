@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 14:57:46 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 16:45:47 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 17:36:06 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ int	get_dir_ent(t_token *current, char *cwd)
 {
 	DIR				*dir;
 	struct dirent	*ent;
-	char			*ptr;
-	char			*cp_ptr;
 	t_token			*next;
 
 	dir = opendir(cwd);
@@ -64,19 +62,11 @@ int	get_dir_ent(t_token *current, char *cwd)
 		if (*(ent->d_name) == '.')
 		{
 			ent = readdir(dir);
-			if (ent == NULL)
+			if (ent == NULL && errno != 0)
 				return (SUCCESS);
 			continue ;
 		}
-		ptr = ft_strdup(ent->d_name);
-		if (ptr == NULL)
-		{
-			closedir(dir);
-			return (FAILURE);
-		}
-		cp_ptr = ptr;
-		current = create_new_token(&ptr, current, WORD);
-		free(cp_ptr);
+		current = new_token_str(ent->d_name, current, WORD);
 		if (current == NULL)
 		{
 			free_token(next);

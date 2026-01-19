@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 19:22:07 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 16:19:11 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 17:45:37 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	remove_tk_spaces(t_token **tokens)
 		}
 		else if (current->tk_type == WILDCARD)
 			is_wildcard = 1;
-		else if (current->next != NULL && is_wildcard == 0)
+		else if (current->next != NULL
+			&& (current->next)->tk_type != WILDCARD && is_wildcard == 0)
 			(current->next)->is_join = true;
 		current = next;
 	}
