@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 14:57:46 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 17:57:48 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 19:21:26 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,50 @@ char	*get_target_dir(void)
 	return (cwd);
 }
 
+int	get_first_file(t_token *current, DIR *dir)
+{
+	struct dirent	*ent;
+
+	ent = readdir(dir);
+	if (ent == NULL && errno != 0)
+		return (FAILURE);
+	while (ent != NULL && *(ent->d_name) == '.')
+	{
+		ent = readdir(dir);
+		if (ent == NULL && errno != 0)
+			return (FAILURE);
+	}
+	free(current->word);
+	current->word = ft_strdup(ent->d_name);
+	if (current->word == NULL)
+		return (FAILURE);
+	return (SUCCESS);
+}
+
+int	get_new_files(t_token **current, t_token *next,
+			DIR *dir, struct dirent *ent)
+{
+	while (ent != NULL && errno == 0)
+	{
+		if (*(ent->d_name) != '.')
+		{
+			*current = new_token_str(ent->d_name, *current, WORD);
+			if (*current == NULL)
+				return (FAILURE);
+		}
+		ent = readdir(dir);
+	}
+	if (errno != 0)
+	{
+		perror("readdir");
+		return (FAILURE);
+	}
+	(*current)->next = next;
+	if (next != NULL)
+		next->prev = *current;
+	return (SUCCESS);
+}
+
 int	get_dir_ent(t_token *current, char *cwd)
 {
 	DIR				*dir;
@@ -53,43 +97,17 @@ int	get_dir_ent(t_token *current, char *cwd)
 		return (SUCCESS);
 	}
 	errno = 0;
-	ent = readdir(dir);
-	if (ent == NULL)
-		return (SUCCESS);
-	while (ent != NULL && *(ent->d_name) == '.')
-	{
-		ent = readdir(dir);
-		if (ent == NULL)
-			return (SUCCESS);
-	}
-	free(current->word);
-	current->word = ft_strdup(ent->d_name);
-	if (current->word == NULL)
+	next = current->next;
+	if (get_first_file(current, dir) == FAILURE)
 		return (FAILURE);
 	ent = readdir(dir);
 	if (ent == NULL)
 		return (SUCCESS);
-	next = current->next;
-	while (ent != NULL && errno == 0)
+	if (get_new_files(&current, next, dir, ent) == FAILURE)
 	{
-		if (*(ent->d_name) == '.')
-		{
-			ent = readdir(dir);
-			if (ent == NULL && errno != 0)
-				return (SUCCESS);
-			continue ;
-		}
-		current = new_token_str(ent->d_name, current, WORD);
-		if (current == NULL)
-		{
-			free_token(next);
-			closedir(dir);
-			return (FAILURE);
-		}
-		current->next = next;
-		if (next != NULL)
-			next->prev = current;
-		ent = readdir(dir);
+		free_token(next);
+		closedir(dir);
+		return (FAILURE);
 	}
 	closedir(dir);
 	return (SUCCESS);
