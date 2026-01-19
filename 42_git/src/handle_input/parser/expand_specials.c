@@ -6,12 +6,14 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 14:33:13 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 15:00:36 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include <stdbool.h>
+#include <dirent.h>
+#include <errno.h>
 
 int	expand_dollar(t_token **tokens, t_token *current, t_env *env_lst,
 			long exit_status)
@@ -52,27 +54,6 @@ int	expand_tilde(t_token *current, t_env *env_lst)
 	return (SUCCESS);
 }
 
-int	expand_quoted_dollar(t_token **tokens, t_token *current, t_env *env_lst,
-			long exit_status)
-{
-	t_token	*next;
-	char	*env_var;
-
-	next = current->next;
-	env_var = env_value(env_lst, next->word);
-	free(current->word);
-	if (env_var != NULL)
-		current->word = ft_strdup(env_var);
-	else if (next->word != NULL && ft_strncmp(next->word, "?", 1) == 0)
-		current->word = handle_exit_status(&next, exit_status);
-	else
-		current->word = ft_strdup("");
-	clear_token(tokens, next, free);
-	if (current->word == NULL)
-		return (FAILURE);
-	return (SUCCESS);
-}
-
 int	expand_quote(t_token **tokens, t_token **current, t_env *env_lst,
 			long exit_status)
 {
@@ -97,6 +78,43 @@ int	expand_quote(t_token **tokens, t_token **current, t_env *env_lst,
 	return (SUCCESS);
 }
 
+int	expand_wildcard(t_token **tokens, t_token *current)
+{
+	char			*cwd;
+	DIR				*dir;
+	struct dirent	*ent;
+
+	(void)tokens;
+	(void)current;
+	cwd = getcwd(NULL, 0);
+	if (cwd == NULL)
+	{
+		perror("getcwd");
+		return (SUCCESS);
+	}
+	dir = opendir(cwd);
+	if (dir == NULL)
+	{
+		perror("opendir");
+		free(cwd);
+		return (SUCCESS);
+	}
+	errno = 0;
+	ent = readdir(dir);
+	while (ent != NULL && errno == 0)
+	{
+		ent = readdir(dir);
+	}
+	if (errno != 0)
+	{
+		perror("readdir");
+		return (SUCCESS);
+	}
+	free(cwd);
+	closedir(dir);
+	return (SUCCESS);
+}
+
 int	expand_specials(t_token **tokens, t_env *env_lst, long exit_status)
 {
 	t_token	*current;
@@ -117,6 +135,8 @@ int	expand_specials(t_token **tokens, t_env *env_lst, long exit_status)
 			is_success = expand_dollar(tokens, current, env_lst, exit_status);
 		else if (current->tk_type == TILDE)
 			is_success = expand_tilde(current, env_lst);
+		else if (current->tk_type == WILDCARD)
+			is_success = expand_wildcard(tokens, current);
 		if (is_success == FAILURE)
 			return (FAILURE);
 		current = current->next;

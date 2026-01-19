@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 19:22:07 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 13:56:05 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 15:12:44 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,17 @@ void	add_new_command(t_command **head, t_command *new_command,
 void	remove_tk_spaces(t_token **tokens)
 {
 	t_token	*current;
+	t_token	*next;
 
 	current = *tokens;
 	while (current != NULL)
 	{
+		next = current->next;
 		if (current->tk_type == SPACES)
 			clear_token(tokens, current, free);
 		else if (current->next != NULL)
 			(current->next)->is_join = true;
-		current = current->next;
+		current = next;
 	}
 }
 

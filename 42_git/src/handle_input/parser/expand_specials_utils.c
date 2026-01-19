@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 11:57:32 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 13:59:51 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 14:48:05 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,27 @@ char	*rm_extra_space(char *str)
 		strs++;
 	}
 	return (ret);
+}
+
+int	expand_quoted_dollar(t_token **tokens, t_token *current, t_env *env_lst,
+			long exit_status)
+{
+	t_token	*next;
+	char	*env_var;
+
+	next = current->next;
+	env_var = env_value(env_lst, next->word);
+	free(current->word);
+	if (env_var != NULL)
+		current->word = ft_strdup(env_var);
+	else if (next->word != NULL && ft_strncmp(next->word, "?", 1) == 0)
+		current->word = handle_exit_status(&next, exit_status);
+	else
+		current->word = ft_strdup("");
+	clear_token(tokens, next, free);
+	if (current->word == NULL)
+		return (FAILURE);
+	return (SUCCESS);
 }
 
 int	handle_dbl_quoted_dollar(t_token **tokens, t_token *current, t_env *env_lst,
