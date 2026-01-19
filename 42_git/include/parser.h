@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 16:00:40 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 16:52:18 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ typedef struct s_command
 	char				**command;
 	t_rdt				*inrdt;
 	t_rdt				*outrdt;
+	int					infd;
+	int					outfd;
 	t_size_exec			size;
 	int					is_subshell;
 	struct s_command	*next;
