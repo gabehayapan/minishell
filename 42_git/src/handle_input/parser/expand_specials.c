@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 15:00:36 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 16:00:17 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,32 +78,17 @@ int	expand_quote(t_token **tokens, t_token **current, t_env *env_lst,
 	return (SUCCESS);
 }
 
-int	expand_wildcard(t_token **tokens, t_token *current)
+int	expand_wildcard(t_token *current)
 {
 	char			*cwd;
-	DIR				*dir;
-	struct dirent	*ent;
 
-	(void)tokens;
-	(void)current;
-	cwd = getcwd(NULL, 0);
+	cwd = get_target_dir();
 	if (cwd == NULL)
-	{
-		perror("getcwd");
 		return (SUCCESS);
-	}
-	dir = opendir(cwd);
-	if (dir == NULL)
+	if (get_dir_ent(current, cwd) == FAILURE)
 	{
-		perror("opendir");
 		free(cwd);
-		return (SUCCESS);
-	}
-	errno = 0;
-	ent = readdir(dir);
-	while (ent != NULL && errno == 0)
-	{
-		ent = readdir(dir);
+		return (FAILURE);
 	}
 	if (errno != 0)
 	{
@@ -111,7 +96,6 @@ int	expand_wildcard(t_token **tokens, t_token *current)
 		return (SUCCESS);
 	}
 	free(cwd);
-	closedir(dir);
 	return (SUCCESS);
 }
 
@@ -136,7 +120,7 @@ int	expand_specials(t_token **tokens, t_env *env_lst, long exit_status)
 		else if (current->tk_type == TILDE)
 			is_success = expand_tilde(current, env_lst);
 		else if (current->tk_type == WILDCARD)
-			is_success = expand_wildcard(tokens, current);
+			is_success = expand_wildcard(current);
 		if (is_success == FAILURE)
 			return (FAILURE);
 		current = current->next;

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 20:21:48 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/16 11:20:42 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 16:42:59 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,23 +49,15 @@ int	check_option(char ***strs)
 int	echo(char **strs, int fd)
 {
 	int	is_option;
-	int	is_space;
 
 	is_option = check_option(&strs);
-	is_space = false;
 	while (*strs != NULL && *(strs + 1) != NULL)
 	{
-		ft_dprintf(fd, "%s", *strs);
-		if (is_space == false)
-			is_space = true;
+		ft_dprintf(fd, "%s ", *strs);
 		strs++;
 	}
 	if (*strs != NULL)
-	{
-		if (is_space == true)
-			ft_dprintf(fd, " ");
 		ft_dprintf(fd, "%s", *strs);
-	}
 	if (is_option == false)
 		ft_dprintf(fd, "\n");
 	return (SUCCESS);
