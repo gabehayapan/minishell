@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 13:59:21 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 14:04:09 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,17 @@ int	expand_tilde(t_token *current, t_env *env_lst)
 {
 	char	*path_home;
 
-	path_home = env_value(env_lst, "HOME");
-	free(current->word);
-	if (path_home == NULL)
-		current->word = ft_strdup("");
-	else
-		current->word = ft_strdup(path_home);
-	if (current->word == NULL)
-		return (FAILURE);
+	if (current->prev == NULL || (current->prev)->tk_type == SPACES)
+	{
+		path_home = env_value(env_lst, "HOME");
+		free(current->word);
+		if (path_home == NULL)
+			current->word = ft_strdup("");
+		else
+			current->word = ft_strdup(path_home);
+		if (current->word == NULL)
+			return (FAILURE);
+	}
 	return (SUCCESS);
 }
 
