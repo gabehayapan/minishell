@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   convert_int.c                                      :+:      :+:    :+:   */
+/*   handle_exit_status.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 11:57:05 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 13:00:39 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 14:36:56 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,31 @@ char	*convert_int_to_str(long exit_status)
 	}
 	str[i] = status % 10 + '0';
 	return (str);
+}
+
+char	*handle_exit_status(t_token **next, long exit_status)
+{
+	char	*ret;
+	char	*tmp;
+	char	*ptr;
+	t_token	*new_token;
+
+	ret = convert_int_to_str(exit_status);
+	if (ret == NULL)
+		return (NULL);
+	if (*((*next)->word) == '?' && *((*next)->word) == '\0')
+		return (ret);
+	tmp = (*next)->word;
+	(*next)->word = ft_strdup((*next)->word + 1);
+	if ((*next)->word == NULL)
+		return (NULL);
+	free(tmp);
+	ptr = "?";
+	new_token = create_new_token(&ptr, (*next)->prev, WORD);
+	if (new_token == NULL)
+		return (NULL);
+	new_token->next = *next;
+	(*next)->prev = new_token;
+	*next = new_token;
+	return (ret);
 }
