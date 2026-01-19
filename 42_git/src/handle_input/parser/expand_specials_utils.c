@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 11:57:32 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 14:48:05 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 18:45:37 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,16 @@ char	*rm_extra_space(char *str)
 	if (ret == NULL)
 		return (NULL);
 	len_ret = ft_strlen(ret);
-	cp_strs = strs;
-	while (*strs != NULL)
+	cp_strs = strs + 1;
+	while (*cp_strs != NULL)
 	{
-		ret = join_word_with_space(ret, *strs, &len_ret);
+		ret = join_word_with_space(ret, *cp_strs, &len_ret);
 		if (ret == NULL)
 		{
-			free_null_term_strs(cp_strs);
+			free_null_term_strs(strs);
 			return (NULL);
 		}
-		strs++;
+		cp_strs++;
 	}
 	return (ret);
 }
