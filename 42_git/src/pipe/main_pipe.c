@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:56:57 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/19 16:49:09 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/19 17:55:55 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,26 @@ int	count_pipes(t_command *command)
 int	setfd_infile(t_command *command)
 {
 	while (command->inrdt->next != NULL)
+	{
+		if (command->inrdt->type == INFILE)
+			command->infd = open(command->inrdt->rdt, O_RDONLY);
+		if (command->inrdt->type == HEREDOC)
+			command->infd = STDIN_FILENO;
 		command->inrdt = command->inrdt->next;
-	if (command->inrdt->type == INFILE)
-		command->infd = open(command->inrdt->rdt, O_RDONLY);
-	if (command->inrdt->type == HEREDOC)
-		command->infd = STDIN_FILENO;
+	}
 	return (SUCCESS);
 }
 
 int	setfd_outfile(t_command *command)
 {
-	while (command->outrdt->next != NULL)
+	while (command->outrdt != NULL)
+	{
+		if (command->outrdt->type == OUTFILE)
+			command->outfd = open(command->outrdt->rdt, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (command->outrdt->type == APPEND)
+			command->outfd = open(command->outrdt->rdt, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		command->outrdt = command->outrdt->next;
-	if (command->outrdt->type == OUTFILE)
-		command->outfd = open(command->outrdt->rdt, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (command->outrdt->type == APPEND)
-		command->outfd = open(command->outrdt->rdt, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	}
 	return (SUCCESS);
 }
 

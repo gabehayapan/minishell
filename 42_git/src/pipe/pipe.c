@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:14:01 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/16 17:14:10 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/19 17:48:36 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,15 @@ int	init_pipe(t_pipe *p, int count)
 	return (SUCCESS);
 }
 
+void	close_pipes(int	**pipefd)
+{
+	int	i;
+
+	i = 0;
+	while (pipefd[i])
+		close(pipefd[i++]);
+}
+
 int	pipex(t_command *command, char **ev, int count)
 {
 	t_pipe	p;
@@ -77,19 +86,18 @@ int	pipex(t_command *command, char **ev, int count)
 	if (init_pipe(&p, count) == FAILURE)
 		return (FAILURE);
 	i = 0;
-	while (i < count)
+	while (i + 1 < count)
 	{
-		if (i + 1 < count)
+		if (pipe(p.pipefd[i]) == error)
 		{
-			if (pipe(p.pipefd[i]) == error)
-			{
-				perror("pipe");
-				return (EXIT_FAILURE);
-			}
+			perror("pipe");
+			return (EXIT_FAILURE);
 		}
 		p.procid[i] = fork_process(p, command, ev, i);
 		command = command->next;
 		i++;
 	}
+	p.procid[i] = fork_process(p, command, ev, i);
+	close_pipes(p.pipefd);
 	return (SUCCESS);
 }
