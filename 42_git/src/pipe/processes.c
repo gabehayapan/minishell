@@ -6,15 +6,35 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 16:20:31 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/16 16:20:33 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/19 15:53:58 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-#define NORMAL 0
+#define IORDT 0
 #define INRDT 1
 #define OUTRDT 2
+#define NORMAL 3
+
+int	proctype(t_command *command)
+{
+	if (command->inrdt && command->outrdt)
+		return (IORDT);
+	else if (command->inrdt)
+		return (INRDT);
+	else if (command->outrdt)
+		return (OUTRDT);
+	else
+		return (NORMAL);
+}
+
+int	nordt_child(t_pipe *p, t_command *command, char **ev, int p_nbr)
+{
+	if (p_nbr == 0)
+		close(p->pipefd[p_nbr][])
+
+}
 
 int	fork_process(t_pipe *p, t_command *command, char **ev, int p_nbr)
 {
@@ -30,14 +50,16 @@ int	fork_process(t_pipe *p, t_command *command, char **ev, int p_nbr)
 	}
 	if (pid == 0)
 	{
-		if (proctype(command) == NORMAL)
-			nordt_child(p, command, ev, p_nbr);
+		if (proctype(command) == IORDT)
+			iordt_child();
 		else if (proctype(command) == INRDT)
 			inrdt_child();
 		else if (proctype(command) == OUTRDT)
 			outrdt_child();
 		else
-			iordt_child();
+			nordt_child(p, command, ev, p_nbr);
 	}
+	close(p->pipefd[p_nbr][0]);
+	close(p->pipefd[p_nbr][1]);
 	return (pid);
 }
