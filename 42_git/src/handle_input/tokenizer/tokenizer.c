@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 11:54:45 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 10:15:13 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 13:29:12 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ t_token	*create_new_token(char **str, t_token *current, t_tk_type tk_type)
 	}
 	new_token->tk_type = tk_type;
 	new_token->is_join = false;
+	new_token->prev = current;
 	new_token->next = NULL;
 	current->next = new_token;
 	return (new_token);
@@ -63,10 +64,6 @@ int	tokenizer(char *str, t_token **tokens)
 	t_token		*current;
 	t_tk_type	tk_type;
 
-	while (ft_isspace(*str) == 1)
-		str++;
-	if (*str == '\0')
-		return (NO_COMMAND);
 	head.next = NULL;
 	current = &head;
 	while (*str != '\0')
@@ -83,5 +80,7 @@ int	tokenizer(char *str, t_token **tokens)
 		}
 	}
 	*tokens = head.next;
+	if (*tokens != NULL)
+		(*tokens)->prev = NULL;
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:45:43 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/16 15:53:28 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 13:30:13 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_token	*new_token_quoted_str(char *start, char *end, t_token *current)
 		return (NULL);
 	new_token->tk_type = WORD;
 	new_token->is_join = false;
+	new_token->prev = current;
 	new_token->next = NULL;
 	new_token->word = ft_substr(start, 0, end - start);
 	if (new_token->word == NULL)

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 19:08:02 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/16 16:09:52 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 13:39:08 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,21 @@ void	clear_token(t_token **tokens, t_token *target, void (*del)(void *))
 
 	if (tokens == NULL || *tokens == NULL || target == NULL)
 		return ;
-	tmp = *tokens;
-	while (tmp != NULL && tmp->next != target && tmp != target)
-		tmp = tmp->next;
-	tmp->next = target->next;
 	if (*tokens == target)
+	{
 		*tokens = target->next;
+		if (*tokens != NULL)
+			(*tokens)->prev = NULL;
+	}
+	else
+	{
+		tmp = *tokens;
+		while (tmp != NULL && tmp->next != target && tmp != target)
+			tmp = tmp->next;
+		tmp->next = target->next;
+		if (target->next != NULL)
+			(target->next)->prev = tmp;
+	}
 	if (del != NULL)
 		(*del)(target->word);
 	free(target);

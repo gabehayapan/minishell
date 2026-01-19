@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 19:22:07 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 09:56:16 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 13:56:05 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	remove_tk_spaces(t_token **tokens)
 	{
 		if (current->tk_type == SPACES)
 			clear_token(tokens, current, free);
+		else if (current->next != NULL)
+			(current->next)->is_join = true;
 		current = current->next;
 	}
 }

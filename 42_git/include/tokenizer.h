@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:01:56 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 10:16:25 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/19 13:41:48 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_token
 	t_tk_type		tk_type;
 	char			*word;
 	int				is_join;
+	struct s_token	*prev;
 	struct s_token	*next;
 }	t_token;
 
