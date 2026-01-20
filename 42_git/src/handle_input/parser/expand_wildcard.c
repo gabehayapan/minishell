@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 14:57:46 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/20 11:20:39 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/21 06:11:35 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,6 @@ int	get_new_files(t_token **current, t_token *next, DIR *dir)
 int	get_dir_ent(t_token *current, char *cwd)
 {
 	DIR				*dir;
-	struct dirent	*ent;
 	t_token			*next;
 
 	dir = opendir(cwd);
