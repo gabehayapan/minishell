@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:14:01 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/20 23:40:52 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/21 06:12:19 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int	pipex(t_command *command, char **ev, int proc_count)
 	int	pipefd[2 * (proc_count - 1)];
 	int	i;
 
+	(void)pipefd;
 	if (init_pipe(&p, proc_count) == FAILURE)
 		return (FAILURE);
 	i = 0;
