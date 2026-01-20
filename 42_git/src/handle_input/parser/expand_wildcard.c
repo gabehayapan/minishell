@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 14:57:46 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 19:21:26 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/20 11:15:51 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,37 @@ char	*get_target_dir(void)
 	return (cwd);
 }
 
-int	get_first_file(t_token *current, DIR *dir)
+int	skip_parent_current_dir(DIR *dir)
 {
 	struct dirent	*ent;
 
 	ent = readdir(dir);
 	if (ent == NULL && errno != 0)
+	{
+		perror("readdir");
 		return (FAILURE);
+	}
+	ent = readdir(dir);
+	if (ent == NULL && errno != 0)
+	{
+		perror("readdir");
+		return (FAILURE);
+	}
+	return (SUCCESS);
+}
+
+int	get_first_file(t_token *current, DIR *dir)
+{
+	struct dirent	*ent;
+
+	if (skip_parent_current_dir(dir) == FAILURE)
+		return (FAILURE);
+	ent = readdir(dir);
+	if (ent == NULL && errno != 0)
+	{
+		perror("readdir");
+		return (FAILURE);
+	}
 	while (ent != NULL && *(ent->d_name) == '.')
 	{
 		ent = readdir(dir);
@@ -99,7 +123,10 @@ int	get_dir_ent(t_token *current, char *cwd)
 	errno = 0;
 	next = current->next;
 	if (get_first_file(current, dir) == FAILURE)
+	{
+		closedir(dir);
 		return (FAILURE);
+	}
 	ent = readdir(dir);
 	if (ent == NULL)
 		return (SUCCESS);
