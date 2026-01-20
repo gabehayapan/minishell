@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:56:57 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/19 19:44:05 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/20 17:30:49 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	count_proc(t_command *command)
 
 int	setfd_infile(t_command *command)
 {
-	while (command->inrdt->next != NULL)
+	while (command->inrdt != NULL)
 	{
 		if (command->inrdt->type == INFILE)
 			command->infd = open(command->inrdt->rdt, O_RDONLY);
