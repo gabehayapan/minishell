@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 17:57:41 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/21 06:09:51 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,6 @@ int			handle_dbl_quoted_dollar(t_token **tokens, t_token *current,
 				t_env *env_lst, long exit_status);
 
 // handle_input/parser/expand_wildcard.c
-int			new_echo_token(t_token **tokens);
 char		*get_target_dir(void);
 int			get_dir_ent(t_token *current, char *cwd);
 

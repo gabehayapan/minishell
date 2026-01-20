@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/20 10:53:40 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/21 06:09:08 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,6 @@ int	expand_wildcard(t_token **tokens, t_token *current)
 {
 	char	*cwd;
 
-	if (current->prev == NULL
-		&& (current->next == NULL || (current->next)->tk_type == SPACES))
-	{
-		if (new_echo_token(tokens) == FAILURE)
-			return (FAILURE);
-	}
 	cwd = get_target_dir();
 	if (cwd == NULL)
 		return (SUCCESS);
