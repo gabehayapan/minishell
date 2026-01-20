@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 14:57:46 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/20 11:15:51 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/20 11:20:39 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,11 @@ int	get_first_file(t_token *current, DIR *dir)
 	return (SUCCESS);
 }
 
-int	get_new_files(t_token **current, t_token *next,
-			DIR *dir, struct dirent *ent)
+int	get_new_files(t_token **current, t_token *next, DIR *dir)
 {
+	struct dirent	*ent;
+
+	ent = readdir(dir);
 	while (ent != NULL && errno == 0)
 	{
 		if (*(ent->d_name) != '.')
@@ -127,10 +129,7 @@ int	get_dir_ent(t_token *current, char *cwd)
 		closedir(dir);
 		return (FAILURE);
 	}
-	ent = readdir(dir);
-	if (ent == NULL)
-		return (SUCCESS);
-	if (get_new_files(&current, next, dir, ent) == FAILURE)
+	if (get_new_files(&current, next, dir) == FAILURE)
 	{
 		free_token(next);
 		closedir(dir);
