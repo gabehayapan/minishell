@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:56:57 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/20 17:30:49 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/20 23:39:54 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,10 @@ int	execute(t_command *command, t_env *env_lst, t_exec *top)
 
 	envp = convert_to_envp(env_lst);
 	proc_count = count_proc(command);
-//	if (proc_count == 1)
-//		ret = nopipe_execute(command, envp);
-//	else
-	ret = pipex(command, envp, proc_count);
+	if (proc_count == 1)
+		ret = nopipe_execute(command, envp);
+	else
+		ret = pipex(command, envp, proc_count);
 	free_null_term_strs(envp);
 
 	(void)top;

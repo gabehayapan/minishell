@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:14:01 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/20 17:49:51 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/20 23:40:52 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void	close_pipes(int	**pipefd, int count)
 int	pipex(t_command *command, char **ev, int proc_count)
 {
 	t_pipe	p;
+	int	pipefd[2 * (proc_count - 1)];
 	int	i;
 
 	if (init_pipe(&p, proc_count) == FAILURE)
@@ -101,7 +102,6 @@ int	pipex(t_command *command, char **ev, int proc_count)
 		command = command->next;
 		i++;
 	}
-	p.procid[i] = fork_process(&p, command, ev, i);
 	close_pipes(p.pipefd, proc_count - 1);
 	return (wait_for_children(&p, proc_count));
 }
