@@ -6,17 +6,23 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/21 10:27:42 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/21 13:39:37 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
+# include <dirent.h>
+# include <stdbool.h>
+# include <errno.h>
 # include "tokenizer.h"
 # include "env_var.h"
 # include "../libft/header/libft.h"
 # include "../libft/header/ftprintf.h"
+
+# define NOT_FOUND 4
+# define END 5
 
 typedef enum s_rdt_type
 {
@@ -119,15 +125,18 @@ int			handle_dbl_quoted_dollar(t_token **tokens, t_token *current,
 				t_env *env_lst, long exit_status);
 
 // handle_input/parser/init_wildcard.c
-char		*get_target_dir(t_token **current);
+char		*get_target_dir(t_token **current, char **disname);
 
 // handle_input/parser/wildcard_retrieve.c
-int			get_matching_files(t_token **tokens, t_token *head, char *cwd);
+int			get_matching_files(t_token **tokens, t_token *head,
+				char *dirname, char *disname);
 
 // handle_input/parser/wildcard_retrieve_utils.c
 void		set_type_word(t_token *current);
 void		clear_filter_token(t_token **tokens, t_token *head);
-t_token		*get_token_dir(t_token *head);
+int			handle_return_value(t_token *head, DIR *dir, int ret);
+int			check_file_name(t_token *head, struct dirent *ent);
+t_token		*new_file_token(t_token *head, char *name);
 
 // handle_input/parser/handle_exit_status.c
 char		*handle_exit_status(t_token **next, long exit_status);

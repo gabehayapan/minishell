@@ -6,14 +6,12 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 08:44:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 11:52:28 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/21 13:26:40 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "builtin.h"
-
-#define NOT_FOUND -1
 
 t_builtin	is_builtin(char *cmd)
 {

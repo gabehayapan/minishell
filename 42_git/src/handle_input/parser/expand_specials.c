@@ -6,14 +6,11 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/21 09:41:41 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/21 13:39:52 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-#include <stdbool.h>
-#include <dirent.h>
-#include <errno.h>
 
 int	expand_dollar(t_token **tokens, t_token *current, t_env *env_lst,
 			long exit_status)
@@ -81,20 +78,23 @@ int	expand_quote(t_token **tokens, t_token **current, t_env *env_lst,
 int	expand_wildcard(t_token **tokens, t_token *current)
 {
 	char	*dirname;
+	char	*disname;
 	int		is_success;
 
-	dirname = get_target_dir(&current);
+	dirname = get_target_dir(&current, &disname);
 	if (dirname == NULL)
 		return (FAILURE);
-	is_success = get_matching_files(tokens, current, dirname);
+	is_success = get_matching_files(tokens, current, dirname, disname);
 	if (is_success == FAILURE || errno != 0)
 	{
 		free(dirname);
+		free(disname);
 		if (errno != 0)
 			perror("readdir");
 		return (FAILURE);
 	}
 	free(dirname);
+	free(disname);
 	return (SUCCESS);
 }
 
