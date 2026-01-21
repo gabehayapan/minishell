@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 11:01:34 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/21 09:40:09 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/21 09:51:51 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,11 +115,11 @@ int	get_first_file(t_token **tokens, t_token *token_dir, t_token *head,
 			if (new_token == NULL)
 				return (FAILURE);
 			if (*tokens == head)
-				*tokens = head;
-			if (token_dir != NULL && token_dir->tk_type != WORD)
-				new_token->tk_type = WILDCARD;
-			else
+				*tokens = new_token;
+			if (token_dir != NULL && token_dir->tk_type == WORD)
 				token_dir->tk_type = WILDCARD;
+			else
+				new_token->tk_type = WILDCARD;
 			return (SUCCESS);
 		}
 		else if (ret == FAILURE)
