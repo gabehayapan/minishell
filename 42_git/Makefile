@@ -36,6 +36,7 @@ SRCS =\
 	./src/handle_input/parser/expand_specials_utils.c\
 	./src/handle_input/parser/init_wildcard.c\
 	./src/handle_input/parser/wildcard_retrieve.c\
+	./src/handle_input/parser/wildcard_retrieve_utils.c\
 	./src/handle_input/parser/handle_exit_status.c\
 	./src/handle_input/parser/join_word.c\
 	./src/handle_input/parser/get_command.c\
@@ -83,6 +84,7 @@ OBJS =\
 	./obj/expand_specials_utils.o\
 	./obj/init_wildcard.o\
 	./obj/wildcard_retrieve.o\
+	./obj/wildcard_retrieve_utils.o\
 	./obj/handle_exit_status.o\
 	./obj/join_word.o\
 	./obj/get_command.o\

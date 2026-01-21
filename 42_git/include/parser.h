@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/21 09:43:31 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/21 10:27:42 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,11 @@ char		*get_target_dir(t_token **current);
 
 // handle_input/parser/wildcard_retrieve.c
 int			get_matching_files(t_token **tokens, t_token *head, char *cwd);
+
+// handle_input/parser/wildcard_retrieve_utils.c
+void		set_type_word(t_token *current);
+void		clear_filter_token(t_token **tokens, t_token *head);
+t_token		*get_token_dir(t_token *head);
 
 // handle_input/parser/handle_exit_status.c
 char		*handle_exit_status(t_token **next, long exit_status);

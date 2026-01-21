@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 11:53:10 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/17 11:53:53 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/21 10:47:21 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ char	*join_word_no_space(char *str, char *word)
 {
 	char	*ret;
 
+	if (str == NULL)
+		return (word);
 	ret = ft_strjoin(str, word);
 	if (ret == NULL)
 		return (NULL);

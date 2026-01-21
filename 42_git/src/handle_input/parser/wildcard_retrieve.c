@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 11:01:34 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/21 09:51:51 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/21 11:01:59 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,6 @@
 
 #define NOT_FOUND 4
 #define END 5
-
-void	set_type_word(t_token *current)
-{
-	while (current != NULL && current->tk_type != SPACES)
-	{
-		if (current->tk_type == WILDCARD)
-			current->tk_type = WORD;
-		current = current->next;
-	}
-}
-
-void	clear_filter_token(t_token **tokens, t_token *head)
-{
-	t_token	*next;
-
-	while (head != NULL && head->tk_type != SPACES)
-	{
-		next = head->next;
-		clear_token(tokens, head, free);
-		head = next;
-	}
-}
 
 int	filter_file(t_token *head, DIR *dir, char **name)
 {
@@ -56,7 +34,7 @@ int	filter_file(t_token *head, DIR *dir, char **name)
 	else if (ent == NULL)
 		return (END);
 	if (head->tk_type == WILDCARD && *(ent->d_name) == '.')
-			return (NOT_FOUND);
+		return (NOT_FOUND);
 	d_name = ent->d_name;
 	len_d_name = ft_strlen(ent->d_name);
 	while (head != NULL && head->tk_type != SPACES)
@@ -116,10 +94,12 @@ int	get_first_file(t_token **tokens, t_token *token_dir, t_token *head,
 				return (FAILURE);
 			if (*tokens == head)
 				*tokens = new_token;
-			if (token_dir != NULL && token_dir->tk_type == WORD)
+			if (token_dir != NULL)
 				token_dir->tk_type = WILDCARD;
 			else
 				new_token->tk_type = WILDCARD;
+			if (token_dir != NULL)
+				new_token->is_join = true;
 			return (SUCCESS);
 		}
 		else if (ret == FAILURE)
@@ -132,6 +112,7 @@ int	get_first_file(t_token **tokens, t_token *token_dir, t_token *head,
 int	get_remaining_files(t_token *token_dir, t_token *head, DIR *dir)
 {
 	char	*name;
+	char	*dirname;
 	t_token	*new_token;
 	int		ret;
 
@@ -140,13 +121,18 @@ int	get_remaining_files(t_token *token_dir, t_token *head, DIR *dir)
 	{
 		if (ret == SUCCESS)
 		{
-			if (token_dir != NULL && token_dir->tk_type == WORD)
-				new_token = new_file_token(head, token_dir->word);
-			if (new_token != NULL)
+			dirname = NULL;
+			if (token_dir != NULL)
 			{
-				new_token = new_file_token(head, name);
-				free(name);
+				dirname = ft_strdup(token_dir->word);
+				if (dirname == NULL)
+					return (FAILURE);
 			}
+			dirname = join_word_no_space(dirname, name);
+			if (dirname == NULL)
+				return (FAILURE);
+			new_token = new_file_token(head, dirname);
+			free(name);
 			if (new_token == NULL)
 				return (FAILURE);
 		}
@@ -169,7 +155,7 @@ int	get_matching_files(t_token **tokens, t_token *head, char *cwd)
 		set_type_word(head);
 		return (SUCCESS);
 	}
-	token_dir = head->prev;
+	token_dir = get_token_dir(head);
 	ret = get_first_file(tokens, token_dir, head, dir);
 	if (ret == FAILURE)
 	{
@@ -179,6 +165,8 @@ int	get_matching_files(t_token **tokens, t_token *head, char *cwd)
 	else if (ret == NOT_FOUND)
 	{
 		set_type_word(head);
+		if (token_dir != NULL)
+			clear_token(tokens, token_dir, free);
 		return (SUCCESS);
 	}
 	if (get_remaining_files(token_dir, head, dir) == FAILURE)
