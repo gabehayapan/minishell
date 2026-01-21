@@ -34,8 +34,8 @@ SRCS =\
 	./src/handle_input/parser/print_redirection_error.c\
 	./src/handle_input/parser/expand_specials.c\
 	./src/handle_input/parser/expand_specials_utils.c\
-	./src/handle_input/parser/expand_wildcard.c\
 	./src/handle_input/parser/init_wildcard.c\
+	./src/handle_input/parser/wildcard_retrieve.c\
 	./src/handle_input/parser/handle_exit_status.c\
 	./src/handle_input/parser/join_word.c\
 	./src/handle_input/parser/get_command.c\
@@ -81,8 +81,8 @@ OBJS =\
 	./obj/print_redirection_error.o\
 	./obj/expand_specials.o\
 	./obj/expand_specials_utils.o\
-	./obj/expand_wildcard.o\
 	./obj/init_wildcard.o\
+	./obj/wildcard_retrieve.o\
 	./obj/handle_exit_status.o\
 	./obj/join_word.o\
 	./obj/get_command.o\

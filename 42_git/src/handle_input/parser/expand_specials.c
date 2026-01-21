@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/21 06:10:46 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/21 09:41:41 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,23 +80,21 @@ int	expand_quote(t_token **tokens, t_token **current, t_env *env_lst,
 
 int	expand_wildcard(t_token **tokens, t_token *current)
 {
-	char	*cwd;
+	char	*dirname;
+	int		is_success;
 
-	(void)tokens;
-	cwd = get_target_dir();
-	if (cwd == NULL)
-		return (SUCCESS);
-	if (get_dir_ent(current, cwd) == FAILURE)
+	dirname = get_target_dir(&current);
+	if (dirname == NULL)
+		return (FAILURE);
+	is_success = get_matching_files(tokens, current, dirname);
+	if (is_success == FAILURE || errno != 0)
 	{
-		free(cwd);
+		free(dirname);
+		if (errno != 0)
+			perror("readdir");
 		return (FAILURE);
 	}
-	if (errno != 0)
-	{
-		perror("readdir");
-		return (SUCCESS);
-	}
-	free(cwd);
+	free(dirname);
 	return (SUCCESS);
 }
 
