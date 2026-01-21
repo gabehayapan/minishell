@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/21 13:59:18 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/21 15:40:28 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,50 @@ int	new_command(t_token **tokens, t_command *command, t_env *env_lst)
 	return (SUCCESS);
 }
 
+void	check_opening_parenthesis(t_token **tokens, int *subshell)
+{
+	t_token	*current;
+
+	current = *tokens;
+	while (current != NULL && current->tk_type != AND && current->tk_type != OR
+		&& current->tk_type != SEMI && current->tk_type != PIPE)
+	{
+		if (current->tk_type == O_PAREN)
+		{
+			*subshell = *subshell + 1;
+			clear_token(tokens, current, free);
+		}
+		current = current->next;
+	}
+}
+
+void	check_closing_parenthesis(t_token **tokens, int *subshell)
+{
+	t_token	*current;
+
+	current = *tokens;
+	while (current != NULL && current->tk_type != AND && current->tk_type != OR
+		&& current->tk_type != SEMI && current->tk_type != PIPE)
+	{
+		if (current->tk_type == C_PAREN)
+		{
+			*subshell = *subshell - 1;
+			clear_token(tokens, current, free);
+		}
+		current = current->next;
+	}
+}
+
 t_command	*get_piped_command(t_token **tokens, t_env *env_lst)
 {
 	t_command	head;
 	t_command	*current;
 	t_command	*last;
+	int			subshell;
 
 	head.next = NULL;
 	last = NULL;
+	subshell = 0;
 	while (*tokens != NULL
 		&& (*tokens)->tk_type != AND && (*tokens)->tk_type != OR
 		&& (*tokens)->tk_type != SEMI)
@@ -73,7 +109,9 @@ t_command	*get_piped_command(t_token **tokens, t_env *env_lst)
 		current = (t_command *)malloc(sizeof(t_command));
 		if (current == NULL)
 			return (NULL);
-		init_command(current);
+		check_opening_parenthesis(tokens, &subshell);
+		init_command(current, subshell);
+		check_closing_parenthesis(tokens, &subshell);
 		if (new_command(tokens, current, env_lst) == FAILURE)
 		{
 			free_command(head.next);
