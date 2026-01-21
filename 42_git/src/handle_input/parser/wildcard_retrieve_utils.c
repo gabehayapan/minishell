@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:20:30 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/21 13:37:55 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/21 14:58:42 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ t_token	*new_file_token(t_token *head, char *name)
 	if (new_token == NULL)
 		return (NULL);
 	new_token->tk_type = WORD;
-	new_token->word = ft_strdup(name);
+	new_token->word = name;
 	if (new_token->word == NULL)
 	{
 		free(new_token);

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:05:15 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/16 16:46:25 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/21 13:59:06 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,27 +32,6 @@ size_t	get_len_command(t_token *tokens)
 		tokens = tokens->next;
 	}
 	return (len_command);
-}
-
-t_size_exec	count_size_exec(t_token **tokens)
-{
-	t_size_exec	size;
-	t_token		*current;
-
-	size.inrdt = 0;
-	size.outrdt = 0;
-	current = *tokens;
-	while (current != NULL && current->tk_type != AND && current->tk_type != OR
-		&& current->tk_type != SEMI && current->tk_type != PIPE)
-	{
-		if (current->tk_type == SGL_INRDT || current->tk_type == DBL_INRDT)
-			size.inrdt = size.inrdt + 1;
-		else if (current->tk_type == SGL_OUTRDT
-			|| current->tk_type == DBL_OUTRDT)
-			size.outrdt = size.outrdt + 1;
-		current = current->next;
-	}
-	return (size);
 }
 
 size_t	get_size_command(t_token *tokens)

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/21 13:39:52 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/21 15:17:55 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,14 +114,11 @@ int	expand_specials(t_token **tokens, t_env *env_lst, long exit_status)
 				return (FAILURE);
 			continue ;
 		}
-		if (current->tk_type == DOLLAR)
-			is_success = expand_dollar(tokens, current, env_lst, exit_status);
-		else if (current->tk_type == TILDE)
-			is_success = expand_tilde(current, env_lst);
-		else if (current->tk_type == WILDCARD)
-			is_success = expand_wildcard(tokens, current);
+		is_success = handle_others(tokens, &current, env_lst, exit_status);
 		if (is_success == FAILURE)
 			return (FAILURE);
+		if (current == NULL)
+			break ;
 		current = current->next;
 	}
 	return (SUCCESS);

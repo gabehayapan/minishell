@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/21 09:58:32 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/21 13:59:18 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	new_command(t_token **tokens, t_command *command, t_env *env_lst)
 {
 	int			is_success;
 
-	command->size = count_size_exec(tokens);
 	is_success = get_in_out_rdt(tokens, command);
 	if (is_success == FAILURE)
 		return (FAILURE);

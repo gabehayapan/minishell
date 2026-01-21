@@ -141,6 +141,6 @@ fclean: clean
 re: fclean all
 
 debug:
-	$(CC) $(CFLAGS) -pg $(OBJS) $(LIBFT_DIR)$(LIBFT) -lcurses -lreadline
+	gcc -g -no-pie $(OBJS) $(LIBFT_DIR)$(LIBFT) -lcurses -lreadline
 
 .PHONY: all clean fclean re
