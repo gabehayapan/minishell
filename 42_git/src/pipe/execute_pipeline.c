@@ -6,11 +6,11 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:56:57 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/20 23:39:54 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/22 20:34:02 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipe.h"
 
 int	handle_signal(void);
 int	detect_signal(pid_t pid, int signum);
@@ -107,7 +107,7 @@ int	execute(t_command *command, t_env *env_lst, t_exec *top)
 	if (proc_count == 1)
 		ret = nopipe_execute(command, envp);
 	else
-		ret = pipex(command, envp, proc_count);
+		ret = pipeline(command, envp, proc_count);
 	free_null_term_strs(envp);
 
 	(void)top;

@@ -44,11 +44,9 @@ SRCS =\
 	./src/handle_input/parser/get_command.c\
 	./src/handle_input/parser/exec_tree.c\
 	./src/handle_input/parser/add_path.c\
-	./src/pipe/main_pipe.c\
-	./src/pipe/pipex.c\
+	./src/pipe/execute_pipeline.c\
 	./src/pipe/pipe.c\
 	./src/pipe/exec.c\
-	./src/pipe/process.c\
 	./src/pipe/fork.c\
 	./src/pipe/wait.c\
 	./src/pipe/helper.c\
@@ -94,11 +92,9 @@ OBJS =\
 	./obj/get_command.o\
 	./obj/exec_tree.o\
 	./obj/add_path.o\
-	./obj/main_pipe.o\
-	./obj/pipex.o\
+	./obj/execute_pipeline.o\
 	./obj/pipe.o\
 	./obj/exec.o\
-	./obj/process.o\
 	./obj/fork.o\
 	./obj/wait.o\
 	./obj/helper.o\

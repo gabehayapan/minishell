@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:14:01 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/22 20:17:01 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/22 20:32:24 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	close_pipes(int	*pipefd, int count)
 		close(pipefd[i++]);
 }
 
-int	pipex(t_command *command, char **ev, int proc_count)
+int	pipeline(t_command *command, char **ev, int proc_count)
 {
 	t_pipe	p;
 	int	i;

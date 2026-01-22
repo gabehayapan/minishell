@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 20:21:48 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 16:42:59 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/22 20:55:22 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,11 @@ int	echo(char **strs, int fd)
 	return (SUCCESS);
 }
 
+/*
 int	main(int argc, char **argv)
 {
 	(void)argc;
 	echo(argv, 1);
 	return (0);
 }
+*/

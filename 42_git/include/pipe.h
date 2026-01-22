@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:16:22 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/22 19:50:28 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/22 20:33:29 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int		execute(t_command *command, t_env *env_lst, t_exec *top);
 int		redirect_fd(t_command *command);
 
 // pipe.c
-int		pipex(t_command *command, char **ev, int count);
+int		pipeline(t_command *command, char **ev, int count);
 void	close_pipes(int	*pipefd, int count);
 
 // process.c
