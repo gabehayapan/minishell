@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 10:46:39 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/16 12:37:55 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/22 10:17:19 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define ENV_VAR_H
 
 # include <stdlib.h>
+# include <stdbool.h>
 # include "../libft/header/libft.h"
 
 # define SUCCESS 0
@@ -23,6 +24,7 @@ typedef struct s_env
 {
 	char			*key;
 	char			*value;
+	bool			is_env;
 	struct s_env	*next;
 }	t_env;
 
