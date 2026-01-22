@@ -23,7 +23,9 @@ SRCS =\
 	./src/handle_input/tokenizer/tokenize_keywords.c\
 	./src/handle_input/tokenizer/tokenize_quote.c\
 	./src/handle_input/tokenizer/syntax_error.c\
+	./src/handle_input/tokenizer/syntax_error_utils.c\
 	./src/handle_input/tokenizer/ft_isspace.c\
+	./src/handle_input/tokenizer/ft_realloc.c\
 	./src/handle_input/parser/parser.c\
 	./src/handle_input/parser/parser_utils.c\
 	./src/handle_input/parser/init.c\
@@ -71,7 +73,9 @@ OBJS =\
 	./obj/tokenize_keywords.o\
 	./obj/tokenize_quote.o\
 	./obj/syntax_error.o\
+	./obj/syntax_error_utils.o\
 	./obj/ft_isspace.o\
+	./obj/ft_realloc.o\
 	./obj/parser.o\
 	./obj/parser_utils.o\
 	./obj/init.o\

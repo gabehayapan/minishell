@@ -6,13 +6,13 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:53:06 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/12 12:57:27 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/22 18:44:11 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
 
-t_token	*tokenize_parenthesis(char **str, t_token *current)
+t_token	*tokenize_parenthesis(char **input, char **str, t_token *current)
 {
 	char	*tmp;
 
@@ -26,7 +26,7 @@ t_token	*tokenize_parenthesis(char **str, t_token *current)
 			&& get_token_type(*str) != END)
 			(*str)++;
 		if (get_token_type(*str) == END)
-			*str = syntax_error(tmp, C_PAREN);
+			*str = syntax_error(input, tmp, C_PAREN);
 		else
 		{
 			current = new_token_quoted_str(tmp, *str, current);
@@ -54,7 +54,8 @@ t_token	*tokenize_env_var(char **str, t_token *current)
 	return (current);
 }
 
-t_token	*tokenize_dollar(char *start, char **str, t_token *current)
+t_token	*tokenize_dollar(char **input, char *start, char **str,
+			t_token *current)
 {
 	if (start != *str)
 	{
@@ -67,7 +68,7 @@ t_token	*tokenize_dollar(char *start, char **str, t_token *current)
 		return (NULL);
 	if (**str == '(')
 	{
-		current = tokenize_parenthesis(str, current);
+		current = tokenize_parenthesis(input, str, current);
 		if (current == NULL)
 			return (NULL);
 	}

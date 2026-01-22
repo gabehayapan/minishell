@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 11:54:45 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 13:29:12 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/22 19:11:42 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,15 @@ t_token	*create_new_token(char **str, t_token *current, t_tk_type tk_type)
 	return (new_token);
 }
 
-int	tokenizer(char *str, t_token **tokens)
+int	tokenizer(char **input, t_token **tokens)
 {
 	t_token		head;
 	t_token		*current;
 	t_tk_type	tk_type;
+	char		*str;
 
-	head.next = NULL;
-	current = &head;
+	if (init_token_vars(&head, &current, input, &str) == FAILURE)
+		return (FAILURE);
 	while (*str != '\0')
 	{
 		tk_type = get_token_type(str);
@@ -74,7 +75,7 @@ int	tokenizer(char *str, t_token **tokens)
 			return (free_token(head.next), FAILURE);
 		if (tk_type == SGL_QTE || tk_type == DBL_QTE)
 		{
-			current = tokenize_quote(&str, current, tk_type);
+			current = tokenize_quote(input, &str, current, tk_type);
 			if (current == NULL)
 				return (free_token(head.next), FAILURE);
 		}

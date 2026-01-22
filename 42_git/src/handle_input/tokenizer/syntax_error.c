@@ -6,36 +6,12 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:49:58 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/13 12:23:32 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/22 19:23:38 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
-
-void	*ft_realloc(void *ptr, size_t size)
-{
-	void			*new_ptr;
-	unsigned char	*cp_ptr;
-	unsigned char	*cp_str;
-
-	new_ptr = malloc(sizeof(unsigned char) * size);
-	if (new_ptr == NULL)
-	{
-		free(ptr);
-		return (NULL);
-	}
-	cp_ptr = (unsigned char *)new_ptr;
-	cp_str = (unsigned char *)ptr;
-	while (*cp_str != '\0')
-	{
-		*cp_ptr = *cp_str;
-		cp_ptr++;
-		cp_str++;
-	}
-	*cp_ptr = '\0';
-	free(ptr);
-	return (new_ptr);
-}
+#include "parser.h"
 
 char	get_missing_char(t_tk_type tk_type)
 {
@@ -57,28 +33,47 @@ void	*error_unexpected_eof(void)
 
 char	*get_new_input(char *input, char **new_input)
 {
+	size_t	total_len;
+
 	*new_input = readline("> ");
 	if (*new_input == NULL)
 		return (error_unexpected_eof());
 	if (input == NULL)
-		input = (char *)ft_calloc(ft_strlen(*new_input) + 1, sizeof(char));
+	{
+		input = (char *)ft_calloc(ft_strlen(*new_input) + 3, sizeof(char));
+		*input = '\n';
+	}
 	else
-		input = ft_realloc(input, ft_strlen(input) + ft_strlen(*new_input) + 1);
+		input = ft_realloc(input, ft_strlen(input) + ft_strlen(*new_input) + 2);
 	if (input == NULL)
 	{
 		free(*new_input);
 		return (NULL);
 	}
-	ft_strlcat(input, *new_input, ft_strlen(input) + ft_strlen(*new_input) + 1);
+	total_len = ft_strlen(input) + ft_strlen(*new_input);
+	ft_strlcat(input, *new_input, total_len + 1);
+	ft_strlcat(input + total_len, "\n", 2);
 	return (input);
 }
 
-char	*syntax_error(char *start, t_tk_type tk_type)
+int	join_new_input(char **input, char *start, t_syntax_err *syn_err)
+{
+	*input = join_word_no_space(*input, (*syn_err).input);
+	if (*input == NULL)
+		return (FAILURE);
+	(*syn_err).new_str = ft_strjoin(start, (*syn_err).input);
+	if ((*syn_err).new_str == NULL)
+		return (FAILURE);
+	return (SUCCESS);
+}
+
+char	*syntax_error(char **input, char *start, t_tk_type tk_type)
 {
 	t_syntax_err	syn_err;
+	int				is_success;
 
 	syn_err.c = get_missing_char(tk_type);
-	ft_dprintf(2, "%c is missing\n", syn_err.c);
+	ft_dprintf(2, "minishell: %c is missing\n", syn_err.c);
 	syn_err.input = NULL;
 	syn_err.new_input = NULL;
 	syn_err.input = get_new_input(syn_err.input, &syn_err.new_input);
@@ -91,10 +86,11 @@ char	*syntax_error(char *start, t_tk_type tk_type)
 		if (syn_err.input == NULL)
 			return (NULL);
 	}
-	syn_err.new_str = ft_strjoin(start, syn_err.input);
+	remove_last_new_line(syn_err.input);
+	is_success = join_new_input(input, start, &syn_err);
 	free(syn_err.input);
 	free(syn_err.new_input);
-	if (syn_err.new_str == NULL)
+	if (is_success == FAILURE)
 		return (NULL);
 	return (syn_err.new_str);
 }

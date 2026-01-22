@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:45:43 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 13:30:13 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/22 19:03:25 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_token	*new_token_quoted_str(char *start, char *end, t_token *current)
 	return (new_token);
 }
 
-t_token	*tokenize_single_quote(char **str, t_token *current)
+t_token	*tokenize_single_quote(char **input, char **str, t_token *current)
 {
 	char	*start;
 
@@ -46,7 +46,7 @@ t_token	*tokenize_single_quote(char **str, t_token *current)
 			&& get_token_type(*str) != END)
 			(*str)++;
 		if (get_token_type(*str) == END)
-			*str = syntax_error(start, SGL_QTE);
+			*str = syntax_error(input, start, SGL_QTE);
 		else
 		{
 			current = new_token_quoted_str(start, *str, current);
@@ -57,7 +57,7 @@ t_token	*tokenize_single_quote(char **str, t_token *current)
 	return (create_new_token(str, current, SGL_QTE));
 }
 
-t_token	*tokenize_double_quote(char **str, t_token *current)
+t_token	*tokenize_double_quote(char **input, char **str, t_token *current)
 {
 	char	*tmp;
 
@@ -68,7 +68,7 @@ t_token	*tokenize_double_quote(char **str, t_token *current)
 			&& get_token_type(*str) != DBL_QTE)
 			(*str)++;
 		if (get_token_type(*str) == END)
-			*str = syntax_error(tmp, DBL_QTE);
+			*str = syntax_error(input, tmp, DBL_QTE);
 		else if (get_token_type(*str) == DBL_QTE)
 		{
 			current = new_token_quoted_str(tmp, *str, current);
@@ -78,7 +78,7 @@ t_token	*tokenize_double_quote(char **str, t_token *current)
 		}
 		else
 		{
-			current = tokenize_dollar(tmp, str, current);
+			current = tokenize_dollar(input, tmp, str, current);
 			if (current == NULL)
 				return (NULL);
 		}
@@ -86,10 +86,11 @@ t_token	*tokenize_double_quote(char **str, t_token *current)
 	return (create_new_token(str, current, DBL_QTE));
 }
 
-t_token	*tokenize_quote(char **str, t_token *current, t_tk_type tk_type)
+t_token	*tokenize_quote(char **input, char **str,
+			t_token *current, t_tk_type tk_type)
 {
 	if (tk_type == SGL_QTE)
-		return (tokenize_single_quote(str, current));
+		return (tokenize_single_quote(input, str, current));
 	else
-		return (tokenize_double_quote(str, current));
+		return (tokenize_double_quote(input, str, current));
 }
