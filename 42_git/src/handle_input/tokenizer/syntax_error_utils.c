@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_input.c                                     :+:      :+:    :+:   */
+/*   syntax_error_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/08 18:40:19 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/22 18:41:10 by hanakamu         ###   ########.fr       */
+/*   Created: 2026/01/22 19:16:24 by hanakamu          #+#    #+#             */
+/*   Updated: 2026/01/22 19:19:42 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "tokenizer.h"
 
-int	handle_input(char **input, t_env *env_lst, t_exec **exec_tree,
-			long exit_status)
+void	remove_last_new_line(char *input)
 {
-	t_token	*tokens;
-	int		ret;
-
-	ret = tokenizer(input, &tokens);
-	if (ret == FAILURE)
-		return (FAILURE);
-	ret = parser(&tokens, env_lst, exec_tree, exit_status);
-	free_token(tokens);
-	if (ret == FAILURE || ret == NO_COMMAND)
-		return (ret);
-	return (SUCCESS);
+	if (input == NULL || *input == '\0')
+		return ;
+	while (*(input + 1) != '\0')
+		input++;
+	if (*input == '\n')
+		*input = '\0';
 }

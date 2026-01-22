@@ -6,11 +6,57 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/21 15:17:55 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/22 16:46:12 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+//#include <sys/wait.h>
+//int	replace_with_cmd_output(t_token **tokens, t_token *current,
+//			t_env *env_lst)
+//{
+//	int		pipefd[2];
+//	pid_t	pid;
+//	char	**argv;
+//	char	**envp;
+//	char	buf[4096];
+//	int		status;
+//	t_token	*next;
+//
+//	pipe(pipefd);
+//	pid = fork();
+//	if (pid < -1)
+//		exit(1);
+//	else if (pid == 0)
+//	{
+//		close(1);
+//		dup2(pipefd[1], 1);
+//		close(pipefd[1]);
+//		argv = (char **)malloc(sizeof(char *) * 2);
+//		*argv = ((current->next)->next)->word;
+//		*(argv + 1) = NULL;
+//		envp = convert_to_envp(env_lst);
+//		execve("/bin/ls", argv, envp);
+//		exit(1);
+//	}
+//	waitpid(pid, &status, 0);
+//	read(pipefd[0], buf, 4096);
+//	close(pipefd[0]);
+//	ft_printf("%s\n", buf);
+//	next = current->next;
+//	clear_token(tokens, current, free);
+//	current = next;
+//	next = next->next;
+//	clear_token(tokens, current, free);
+//	current = next;
+//	next = next->next;
+//	clear_token(tokens, current, free);
+//	current = next;
+//	next = next->next;
+//	clear_token(tokens, current, free);
+//	return (SUCCESS);
+//}
 
 int	expand_dollar(t_token **tokens, t_token *current, t_env *env_lst,
 			long exit_status)
@@ -19,6 +65,8 @@ int	expand_dollar(t_token **tokens, t_token *current, t_env *env_lst,
 	char	*env_var;
 
 	next = current->next;
+//	if (next->tk_type == O_PAREN)
+//		return (replace_with_cmd_output(tokens, current, env_lst));
 	env_var = env_value(env_lst, next->word);
 	free(current->word);
 	if (env_var != NULL)

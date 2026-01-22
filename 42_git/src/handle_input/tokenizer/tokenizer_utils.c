@@ -6,12 +6,22 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:57:43 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/19 17:39:11 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/22 19:24:47 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
 #include <stdbool.h>
+
+int	init_token_vars(t_token *head, t_token **current, char **input, char **str)
+{
+	head->next = NULL;
+	*current = head;
+	*str = ft_strdup(*input);
+	if (*str == NULL)
+		return (FAILURE);
+	return (SUCCESS);
+}
 
 void	*free_token(t_token *token)
 {
@@ -33,7 +43,8 @@ t_tk_type	get_token_type_util(char *str)
 		return (SGL_QTE);
 	if (*str == '"')
 		return (DBL_QTE);
-	if (*str == '$' && (ft_isalnum(*(str + 1)) == 1 || *(str + 1) == '?'))
+	if (*str == '$' && (ft_isalnum(*(str + 1)) == 1 || *(str + 1) == '?'
+			|| *(str + 1) == '('))
 		return (DOLLAR);
 	if (*str == '-' && (ft_isspace(*(str + 1)) == 1 || *(str + 1) == '\0'))
 		return (HYPHEN);
