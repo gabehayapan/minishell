@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:16:22 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/19 19:39:42 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/22 19:50:28 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef enum s_bool
 typedef struct s_pipe
 {
 	int	*procid;
-	int	**pipefd;
+	int	*pipefd;
 }	t_pipe;
 
 // main.c
@@ -51,7 +51,7 @@ int		redirect_fd(t_command *command);
 
 // pipe.c
 int		pipex(t_command *command, char **ev, int count);
-void	close_pipes(int	**pipefd, int count);
+void	close_pipes(int	*pipefd, int count);
 
 // process.c
 int		fork_process(t_pipe *p, t_command *command, char **ev, int p_nbr);

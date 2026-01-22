@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:14:01 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/21 06:12:19 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/22 20:17:01 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,25 +36,24 @@ void	free_pipefd(int **pipefd)
 	free(tmp);
 }
 
-int	**init_pipefd(int count)
+int	*init_pipefd(int count)
 {
-	int	**pipefd;
+	int	*pipefd;
 	int	i;
 
-	pipefd = (int **)malloc((count + 1) * sizeof(int *));
+	pipefd = (int *)malloc(count * 2 * sizeof(int));
 	if (pipefd == NULL)
 		return (NULL);
 	i = 0;
 	while (i < count)
 	{
-		pipefd[i] = (int *)malloc(2 * sizeof(int));
-		if (pipefd[i] == NULL)
-			return (free_pipefd(pipefd), NULL);
-		pipefd[i][0] = -1;
-		pipefd[i][1] = -1;
+		if (pipe(&pipefd[i * 2]) < 0)
+		{
+			perror("pipe");
+			exit(EXIT_FAILURE);
+		}
 		i++;
 	}
-	pipefd[i] = NULL;
 	return (pipefd);
 }
 
@@ -69,37 +68,28 @@ int	init_pipe(t_pipe *p, int count)
 	return (SUCCESS);
 }
 
-void	close_pipes(int	**pipefd, int count)
+void	close_pipes(int	*pipefd, int count)
 {
 	int	i;
 
 	i = 0;
-	while (i < count)
-	{
-		close(pipefd[i][0]);
-		close(pipefd[i][1]);
-		i++;
-	}
+	while (i < 2 * count)
+		close(pipefd[i++]);
 }
 
 int	pipex(t_command *command, char **ev, int proc_count)
 {
 	t_pipe	p;
-	int	pipefd[2 * (proc_count - 1)];
 	int	i;
 
-	(void)pipefd;
 	if (init_pipe(&p, proc_count) == FAILURE)
 		return (FAILURE);
 	i = 0;
-	while (i + 1 < proc_count)
+	while (i < proc_count)
 	{
-		if (pipe(p.pipefd[i]) == error)
-		{
-			perror("pipe");
-			return (EXIT_FAILURE);
-		}
 		p.procid[i] = fork_process(&p, command, ev, i);
+		if (p.procid[i] == EXIT_FAILURE)
+			return (EXIT_FAILURE);
 		command = command->next;
 		i++;
 	}
