@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/22 16:46:12 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/23 16:05:54 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 //		*(argv + 1) = NULL;
 //		envp = convert_to_envp(env_lst);
 //		execve("/bin/ls", argv, envp);
+////	execute_input_command(&((current->next)->next)->word, env_lst);
 //		exit(1);
 //	}
 //	waitpid(pid, &status, 0);
@@ -132,6 +133,7 @@ int	expand_wildcard(t_token **tokens, t_token *current)
 	dirname = get_target_dir(&current, &disname);
 	if (dirname == NULL)
 		return (FAILURE);
+	errno = 0;
 	is_success = get_matching_files(tokens, current, dirname, disname);
 	if (is_success == FAILURE || errno != 0)
 	{
