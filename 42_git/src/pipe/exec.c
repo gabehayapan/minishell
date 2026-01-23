@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 23:11:26 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/23 17:18:58 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/23 18:48:26 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	pass_to_builtin(t_command *command, t_env *env_lst, t_exec *top)
 	if (ft_strncmp(cmdset[0], "env", ft_strlen("env") + 1) == 0)
 		res = env(env_lst);
 	if (ft_strncmp(cmdset[0], "export", ft_strlen("export") + 1) == 0)
-		res = export(env_lst, cmdset[1]);
+		res = export(cmdset, env_lst);
 	if (ft_strncmp(cmdset[0], "unset", ft_strlen("unset") + 1) == 0)
 		res = unset(&env_lst, cmdset);
 	if (ft_strncmp(cmdset[0], "echo", ft_strlen("echo") + 1) == 0)

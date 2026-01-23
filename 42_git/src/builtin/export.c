@@ -6,11 +6,12 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:50:38 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/23 16:48:42 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/23 18:46:39 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_var.h"
+#include "ft_dprintf.h"
 
 void	export_no_args(t_env *env_lst)
 {

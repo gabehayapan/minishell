@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 10:37:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/23 18:43:41 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/23 18:47:42 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int			cd(char **strs);
 int			echo(char **strs, int fd);
 int			env(t_env *env_lst);
 int			ft_exit(char **cmdset, t_env *env_lst, t_exec *top);
-int			export(t_env *env_lst, char *new_env);
+int			export(char **strs, t_env *env_lst);
 int			unset(t_env **env_lst, char **strs);
 
 #endif
