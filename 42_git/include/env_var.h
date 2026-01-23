@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 10:46:39 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/22 10:17:19 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/23 16:44:11 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include "../libft/header/libft.h"
+# include "ftprintf.h"
 
 # define SUCCESS 0
 # define FAILURE 1
@@ -48,6 +49,7 @@ char	*get_env_value(char *env);
 
 // env_var/env_var_utils.c
 size_t	count_size_env_lst(t_env *env_lst);
+t_env	*get_last_env(t_env *env_lst);
 void	free_env_lst(t_env *env_lst);
 
 // env_var/init_env_list.c
@@ -63,7 +65,7 @@ int		ft_strcmp(const char *s1, const char *s2);
 char	**convert_to_envp(t_env *env_lst);
 
 // env_var/export/export.c
-int		export(t_env *env_lst, char *new_env);
+int		export(char **strs, t_env *env_lst);
 
 // env_var/unset/unset.c
 void	unset(t_env **env_lst, char **strs);

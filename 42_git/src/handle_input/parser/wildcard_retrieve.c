@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 11:01:34 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/21 13:39:46 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/23 16:06:24 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	filter_file(t_token *head, DIR *dir, char **name)
 	struct dirent	*ent;
 	int				ret;
 
-	errno = 0;
 	ent = readdir(dir);
 	if (ent == NULL && errno != 0)
 	{
@@ -113,6 +112,11 @@ int	get_matching_files(t_token **tokens, t_token *head,
 	dir = opendir(dirname);
 	if (dir == NULL)
 	{
+		if (errno != 0)
+		{
+			perror("opendir");
+			return (FAILURE);
+		}
 		set_type_word(head);
 		return (SUCCESS);
 	}

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:50:38 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/23 15:42:13 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/23 16:48:42 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,6 @@ void	export_no_args(t_env *env_lst)
 		ft_printf("declare -x %s=%s\n", env_lst->key, env_lst->value);
 		env_lst++;
 	}
-}
-
-t_env	*get_last_env(t_env *env_lst)
-{
-	if (env_lst == NULL)
-		return (NULL);
-	while (env_lst->next != NULL)
-		env_lst = env_lst->next;
-	return (env_lst);
 }
 
 int	update_env_value(t_env *target, char *new_env)
@@ -68,16 +59,22 @@ int	export(char **strs, t_env *env_lst)
 	t_env	*target;
 	int		is_success;
 
-	strs = argv + 1;
+	strs = strs + 1;
 	if (*strs == NULL)
 		export_no_args(env_lst);
 	while (*strs != NULL)
 	{
-		target = env_find(env_lst, *new_env);
-		if (target != NULL)
-			is_success = update_env_value(target, *new_env);
+		if (ft_isalpha(**strs) == 0)
+			ft_dprintf(2,
+				"minishell: export: '%s': not a valid identifier", *strs);
 		else
-			is_success = store_new_env_var(env_lst, *new_env);
+		{
+			target = env_find(env_lst, *strs);
+			if (target != NULL)
+				is_success = update_env_value(target, *strs);
+			else
+				is_success = store_new_env_var(env_lst, *strs);
+		}
 		strs++;
 	}
 	return (is_success);

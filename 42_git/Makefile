@@ -28,6 +28,7 @@ SRCS =\
 	./src/handle_input/tokenizer/ft_realloc.c\
 	./src/handle_input/parser/parser.c\
 	./src/handle_input/parser/parser_utils.c\
+	./src/handle_input/parser/shell_var.c\
 	./src/handle_input/parser/init.c\
 	./src/handle_input/parser/free.c\
 	./src/handle_input/parser/counter.c\
@@ -76,6 +77,7 @@ OBJS =\
 	./obj/ft_realloc.o\
 	./obj/parser.o\
 	./obj/parser_utils.o\
+	./obj/shell_var.o\
 	./obj/init.o\
 	./obj/free.o\
 	./obj/counter.o\
