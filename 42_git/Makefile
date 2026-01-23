@@ -17,6 +17,7 @@ SRCS =\
 	./src/builtin/env.c\
 	./src/builtin/export.c\
 	./src/builtin/exit.c\
+	./src/builtin/pwd.c\
 	./src/builtin/unset.c\
 	./src/execution/execution.c\
 	./src/handle_input/handle_input.c\
@@ -68,6 +69,7 @@ OBJS =\
 	./obj/env.o\
 	./obj/export.o\
 	./obj/exit.o\
+	./obj/pwd.o\
 	./obj/unset.o\
 	./obj/execution.o\
 	./obj/handle_input.o\
