@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 10:37:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/23 18:47:42 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/23 19:10:52 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef enum s_buitin
 }	t_builtin;
 
 t_builtin	is_builtin(char *cmd);
-int			cd(char **strs);
+int			cd(char **strs, t_env *env_lst);
 int			echo(char **strs, int fd);
 int			env(t_env *env_lst);
 int			ft_exit(char **cmdset, t_env *env_lst, t_exec *top);
