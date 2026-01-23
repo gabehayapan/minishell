@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:50:38 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/12 20:43:33 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/23 15:28:04 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,20 @@ int	store_new_env_var(t_env *env_lst, char *new_env)
 	return (SUCCESS);
 }
 
-int	export(t_env *env_lst, char *new_env)
+int	export(char **argv, t_env *env_lst)
 {
 	t_env	*target;
 	int		is_success;
 
-	target = env_find(env_lst, new_env);
-	if (target != NULL)
-		is_success = update_env_value(target, new_env);
-	else
-		is_success = store_new_env_var(env_lst, new_env);
+	arv = argv + 1;
+	while (*argv != NULL)
+	{
+		target = env_find(env_lst, *new_env);
+		if (target != NULL)
+			is_success = update_env_value(target, *new_env);
+		else
+			is_success = store_new_env_var(env_lst, *new_env);
+		argv++;
+	}
 	return (is_success);
 }
