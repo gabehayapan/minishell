@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 21:56:26 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/16 12:37:30 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/23 14:58:38 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	remove_env_var(t_env **env_lst, t_env *rm_env)
 	free(rm_env);
 }
 
-void	unset(t_env **env_lst, char **strs)
+int	unset(t_env **env_lst, char **strs)
 {
 	char	**rm_env_key;
 	t_env	*rm_env;
@@ -43,4 +43,5 @@ void	unset(t_env **env_lst, char **strs)
 			remove_env_var(env_lst, rm_env);
 		rm_env_key++;
 	}
+	return (EXIT_SUCCESS);
 }

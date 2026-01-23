@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:14:01 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/22 20:32:24 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/23 15:49:21 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,6 @@ int	*init_procid(int count)
 	while (i < count)
 		procid[i++] = -1;
 	return (procid);
-}
-
-void	free_pipefd(int **pipefd)
-{
-	int	**tmp;
-
-	tmp = pipefd;
-	while (*pipefd)
-		free(*pipefd++);
-	free(tmp);
 }
 
 int	*init_pipefd(int count)
@@ -77,22 +67,35 @@ void	close_pipes(int	*pipefd, int count)
 		close(pipefd[i++]);
 }
 
-int	pipeline(t_command *command, char **ev, int proc_count)
+void	free_pipe(t_pipe *p)
+{
+	free(p->procid);
+	free(p->pipefd);
+}
+
+int	pipeline(t_command *command, t_env *env_lst, int proc_count, t_exec *top)
 {
 	t_pipe	p;
-	int	i;
+	int		i;
+	int		exit_code;
 
 	if (init_pipe(&p, proc_count) == FAILURE)
 		return (FAILURE);
 	i = 0;
 	while (i < proc_count)
 	{
-		p.procid[i] = fork_process(&p, command, ev, i);
+		p.procid[i] = fork_process(&p, command, env_lst, i, top);
 		if (p.procid[i] == EXIT_FAILURE)
+		{
+			close_pipes(p.pipefd, proc_count - 1);
+			free_pipe(&p);
 			return (EXIT_FAILURE);
+		}
 		command = command->next;
 		i++;
 	}
 	close_pipes(p.pipefd, proc_count - 1);
-	return (wait_for_children(&p, proc_count));
+	exit_code = wait_for_children(&p, proc_count);
+	free_pipe(&p);
+	return (exit_code);
 }

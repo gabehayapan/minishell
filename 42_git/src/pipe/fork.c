@@ -6,13 +6,13 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 16:20:31 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/22 20:22:40 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/23 16:07:37 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipe.h"
 
-int	fork_process(t_pipe *p, t_command *command, char **ev, int p_nbr)
+int	fork_process(t_pipe *p, t_command *command, t_env *env_lst, int p_nbr, t_exec *top)
 {
 	pid_t	pid;
 
@@ -43,7 +43,8 @@ int	fork_process(t_pipe *p, t_command *command, char **ev, int p_nbr)
 		}
 		redirect_fd(command);
 		close_pipes(p->pipefd, p_nbr);
-		exec_command(command->command, ev);
+		//free_pipe(p);
+		exec_command(command, env_lst, top);
 	}
 	else if (pid < 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:16:22 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/22 20:33:29 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/23 16:07:09 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,15 @@ int		execute(t_command *command, t_env *env_lst, t_exec *top);
 int		redirect_fd(t_command *command);
 
 // pipe.c
-int		pipeline(t_command *command, char **ev, int count);
+int		pipeline(t_command *command, t_env *env_lst, int count, t_exec *top);
 void	close_pipes(int	*pipefd, int count);
+void	free_pipe(t_pipe *p);
 
-// process.c
-int		fork_process(t_pipe *p, t_command *command, char **ev, int p_nbr);
+// fork.c
+int		fork_process(t_pipe *p, t_command *command, t_env *env_lst, int p_nbr, t_exec *top);
 
 // exec.c
-int		exec_command(char **cmd, char **ev);
+int		exec_command(t_command *command, t_env *env_lst, t_exec *top);
 char	*free_arrs_ret_s(char **arrs, char *s);
 
 //wait.c

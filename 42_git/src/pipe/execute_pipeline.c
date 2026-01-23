@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_pipe.c                                        :+:      :+:    :+:   */
+/*   execute_pipeline.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:56:57 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/22 20:34:02 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/23 18:31:28 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipe.h"
+#include "builtin.h"
 
 int	handle_signal(void);
 int	detect_signal(pid_t pid, int signum);
@@ -69,11 +70,16 @@ int	redirect_fd(t_command *command)
 	return (SUCCESS);
 }
 
-int	nopipe_execute(t_command *command, char **envp)
+int	nopipe_execute(t_command *command, t_env *env_lst, t_exec *top)
 {
 	pid_t	pid;
 	int		status;
 
+	if (is_builtin(command->command[0]) == EXIT)
+	{
+		redirect_fd(command);
+		ft_exit(command->command, env_lst, top);
+	}
 	pid = fork();
 	if (pid < 0)
 	{
@@ -85,7 +91,7 @@ int	nopipe_execute(t_command *command, char **envp)
 		redirect_fd(command);
 //		if (is_heredoc(command->inrdt))
 //			heredoc();
-		exec_command(command->command, envp);
+		exec_command(command, env_lst, top);
 	}
 	g_sig = 0;
 	if (waitpid(pid, &status, 0) == error)
@@ -98,21 +104,16 @@ int	nopipe_execute(t_command *command, char **envp)
 
 int	execute(t_command *command, t_env *env_lst, t_exec *top)
 {
-	char	**envp;
+//	char	**envp;
 	int		proc_count;
 	int		ret;
 
-	envp = convert_to_envp(env_lst);
+//	envp = convert_to_envp(env_lst);
 	proc_count = count_proc(command);
 	if (proc_count == 1)
-		ret = nopipe_execute(command, envp);
+		ret = nopipe_execute(command, env_lst, top);
 	else
-		ret = pipeline(command, envp, proc_count);
-	free_null_term_strs(envp);
-
-	(void)top;
-//	free_env_lst(env_lst);
-//	free_node_exec(top);
-
+		ret = pipeline(command, env_lst, proc_count, top);
+//	free_null_term_strs(envp);
 	return (ret);
 }

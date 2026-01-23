@@ -6,11 +6,11 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 17:56:59 by keitotak          #+#    #+#             */
-/*   Updated: 2025/12/06 16:46:49 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/23 15:22:34 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipe.h"
 
 bool	include_quote(char *str)
 {

@@ -6,11 +6,12 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 23:11:26 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/22 21:05:34 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/23 17:18:58 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipe.h"
+#include "builtin.h"
 
 char	*free_arrs_ret_s(char **arrs, char *s)
 {
@@ -23,6 +24,7 @@ char	*free_arrs_ret_s(char **arrs, char *s)
 	return (s);
 }
 
+/*
 bool	is_builtin(char **command)
 {
 	if (ft_strncmp(command[0], "exit", ft_strlen("exit") + 1) == 0)
@@ -39,40 +41,44 @@ bool	is_builtin(char **command)
 		return (true);
 	return (false);
 }
+*/
 
-int	pass_to_builtin(char **command, char **envp)
+int	pass_to_builtin(t_command *command, t_env *env_lst, t_exec *top)
 {
-	t_env	*env_lst;
+	char	**cmdset;
 	int		res;
 
-	env_lst = env_arr_to_lst(envp);
-	if (ft_strncmp(command[0], "exit", ft_strlen("exit") + 1) == 0)
-		res = ft_exit(command);
-	if (ft_strncmp(command[0], "cd", ft_strlen("cd") + 1) == 0)
-		res = cd(command);
-	if (ft_strncmp(command[0], "env", ft_strlen("env") + 1) == 0)
+	cmdset = command->command;
+	if (ft_strncmp(cmdset[0], "exit", ft_strlen("exit") + 1) == 0)
+		res = ft_exit(cmdset, env_lst, top);
+	if (ft_strncmp(cmdset[0], "cd", ft_strlen("cd") + 1) == 0)
+		res = cd(cmdset);
+	if (ft_strncmp(cmdset[0], "env", ft_strlen("env") + 1) == 0)
 		res = env(env_lst);
-	if (ft_strncmp(command[0], "export", ft_strlen("export") + 1) == 0)
-		res = export(env_lst, command[1]);
-	if (ft_strncmp(command[0], "unset", ft_strlen("unset") + 1) == 0)
-		res = unset(&env_lst, command);
-	if (ft_strncmp(command[0], "echo", ft_strlen("echo") + 1) == 0)
-		res = echo(command, STDOUT_FILENO);
-	return (false);
+	if (ft_strncmp(cmdset[0], "export", ft_strlen("export") + 1) == 0)
+		res = export(env_lst, cmdset[1]);
+	if (ft_strncmp(cmdset[0], "unset", ft_strlen("unset") + 1) == 0)
+		res = unset(&env_lst, cmdset);
+	if (ft_strncmp(cmdset[0], "echo", ft_strlen("echo") + 1) == 0)
+		res = echo(cmdset, 1);
+	return (res);
 }
 
-int	exec_command(char **command, char **envp)
+int	exec_command(t_command *command, t_env *env_lst, t_exec *top)
 {
-	if (**command == '\0')
-		return (handle_noexist_cmd(command));
-	if (is_builtin(command))
-		return (pass_to_builtin(command[0]));
-	else if (execve(command[0], command, envp) == -1)
+	char	**cmdset;
+
+	cmdset = command->command;
+	if (**cmdset == '\0')
+		return (handle_noexist_cmd(cmdset));
+	if (is_builtin(cmdset[0]) != ELSE)
+		exit(pass_to_builtin(command, env_lst, top));
+	else if (execve(cmdset[0], cmdset, convert_to_envp(env_lst)) == -1)
 	{
 		if (errno == ENOENT)
-			exit(handle_noexist_cmd(command));
-		perror(command[0]);
-		free_arrs_ret_s(command, NULL);
+			exit(handle_noexist_cmd(cmdset));
+		perror(cmdset[0]);
+		free_arrs_ret_s(cmdset, NULL);
 		exit(EXIT_FAILURE);
 	}
 	return (EXIT_FAILURE);

@@ -1,6 +1,6 @@
 NAME = minishell
 
-ECHO = echo
+#ECHO = echo
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
@@ -13,8 +13,10 @@ SRCS =\
 	./src/env_var/init_env_list.c\
 	./src/env_var/convert_to_envp.c\
 	./src/builtin/cd.c\
+	./src/builtin/echo.c\
 	./src/builtin/env.c\
 	./src/builtin/export.c\
+	./src/builtin/exit.c\
 	./src/builtin/unset.c\
 	./src/execution/execution.c\
 	./src/handle_input/handle_input.c\
@@ -61,8 +63,10 @@ OBJS =\
 	./obj/init_env_list.o\
 	./obj/convert_to_envp.o\
 	./obj/cd.o\
+	./obj/echo.o\
 	./obj/env.o\
 	./obj/export.o\
+	./obj/exit.o\
 	./obj/unset.o\
 	./obj/execution.o\
 	./obj/handle_input.o\
@@ -106,18 +110,19 @@ HEADERS =\
 	./include/parser.h\
 	./include/env_var.h\
 	./include/execution.h\
-	./include/pipex.h\
 	./include/pipe.h\
+	./include/builtin.h\
 
 LIBFT_DIR = libft/
 LIBFT = libft.a
 
 vpath %.c ./src/ ./src/env_var/ ./src/env_var/export/ ./src/env_var/unset/ ./src/env_var/env_module/ ./src/execution ./src/handle_input/ ./src/handle_input/tokenizer/ ./src/handle_input/parser/ ./src/pipe/ ./src/signal/ ./src/builtin/
 
-all: $(NAME) $(ECHO)
+#all: $(NAME) $(ECHO)
+all: $(NAME)
 
-$(ECHO): ./src/builtin/echo.c $(LIBFT_DIR)$(LIBFT)
-	$(CC) $(CFLAGS) -o $(ECHO) ./src/builtin/echo.c -I./include/ -I./libft/header/ $(LIBFT_DIR)$(LIBFT)
+#$(ECHO): ./src/builtin/echo.c $(LIBFT_DIR)$(LIBFT)
+#	$(CC) $(CFLAGS) -o $(ECHO) ./src/builtin/echo.c -I./include/ -I./libft/header/ $(LIBFT_DIR)$(LIBFT)
 
 $(NAME): $(OBJS) $(LIBFT_DIR)$(LIBFT)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT_DIR)$(LIBFT) -lcurses -lreadline
@@ -136,7 +141,8 @@ clean:
 	make clean -C $(LIBFT_DIR)
 
 fclean: clean
-	rm -f $(NAME) $(ECHO) $(LIBFT_DIR)$(LIBFT)
+	rm -f $(NAME) $(LIBFT_DIR)$(LIBFT)
+#	rm -f $(NAME) $(ECHO) $(LIBFT_DIR)$(LIBFT)
 
 re: fclean all
 
