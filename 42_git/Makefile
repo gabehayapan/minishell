@@ -49,6 +49,7 @@ SRCS =\
 	./src/handle_input/parser/exec_tree.c\
 	./src/handle_input/parser/add_path.c\
 	./src/pipe/execute_pipeline.c\
+	./src/pipe/redirect.c\
 	./src/pipe/pipe.c\
 	./src/pipe/exec.c\
 	./src/pipe/fork.c\
@@ -101,6 +102,7 @@ OBJS =\
 	./obj/exec_tree.o\
 	./obj/add_path.o\
 	./obj/execute_pipeline.o\
+	./obj/redirect.o\
 	./obj/pipe.o\
 	./obj/exec.o\
 	./obj/fork.o\

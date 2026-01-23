@@ -6,11 +6,14 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 20:34:18 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/22 20:34:47 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/24 01:03:20 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipe.h"
+
+int	handle_signal(void);
+int	detect_signal(pid_t pid, int signum);
 
 int	status_code(int status)
 {
@@ -23,29 +26,21 @@ int	status_code(int status)
 	return (code);
 }
 
-int	wait_for_children(t_pipe *p, int proc_count)
+int	wait_for_children(int *procid, int proc_count)
 {
 	int	wstatus;
 	int	i;
 
 	i = 0;
+	g_sig = 0;
 	while (i < proc_count)
 	{
-		if (i + 1 < proc_count)
+		if (waitpid(procid[i], &wstatus, 0) == error)
 		{
-			if (waitpid(p->procid[i], NULL, 0) == error)
-			{
-				perror("waitpid");
-				return (failure);
-			}
-		}
-		else
-		{
-			if (waitpid(p->procid[i], &wstatus, 0) == error)
-			{
-				perror("waitpid");
-				return (failure);
-			}
+			if (g_sig == SIGINT || g_sig == SIGQUIT)
+				return (detect_signal(procid[i], g_sig));
+			perror("waitpid");
+			return (failure);
 		}
 		i++;
 	}

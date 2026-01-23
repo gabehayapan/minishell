@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:14:01 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/23 15:49:21 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/24 00:53:08 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,21 +58,6 @@ int	init_pipe(t_pipe *p, int count)
 	return (SUCCESS);
 }
 
-void	close_pipes(int	*pipefd, int count)
-{
-	int	i;
-
-	i = 0;
-	while (i < 2 * count)
-		close(pipefd[i++]);
-}
-
-void	free_pipe(t_pipe *p)
-{
-	free(p->procid);
-	free(p->pipefd);
-}
-
 int	pipeline(t_command *command, t_env *env_lst, int proc_count, t_exec *top)
 {
 	t_pipe	p;
@@ -95,7 +80,7 @@ int	pipeline(t_command *command, t_env *env_lst, int proc_count, t_exec *top)
 		i++;
 	}
 	close_pipes(p.pipefd, proc_count - 1);
-	exit_code = wait_for_children(&p, proc_count);
+	exit_code = wait_for_children(p.procid, proc_count);
 	free_pipe(&p);
 	return (exit_code);
 }
