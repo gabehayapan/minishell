@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/23 16:39:52 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/23 17:51:39 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,8 +152,12 @@ int	parser(t_token **tokens, t_env *env_lst, t_exec **exec_tree,
 	if (*tokens == NULL)
 		return (NO_COMMAND);
 	top = NULL;
-	check_assignment(tokens, env_lst);
-	expand_specials(tokens, env_lst, exit_status);
+	is_success = check_assignment(tokens, env_lst);
+	if (is_success == FAILURE)
+		return (FAILURE);
+	is_success = expand_specials(tokens, env_lst, exit_status);
+	if (is_success == FAILURE)
+		return (FAILURE);
 	remove_tk_spaces(tokens);
 	while (*tokens != NULL)
 	{
