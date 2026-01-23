@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:56:57 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/23 19:06:37 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/23 19:25:10 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,10 @@ int	nopipe_execute(t_command *command, t_env *env_lst, t_exec *top)
 	pid_t	pid;
 	int		status;
 
-	if (is_builtin(command->command[0]) == EXIT || is_builtin(command->command[0]) == CD)
+	if (is_builtin(command->command[0]) != ELSE)
 	{
 		redirect_fd(command);
-		if (is_builtin(command->command[0]) == EXIT)
-			ft_exit(command->command, env_lst, top);
-		return (cd(command->command));
+		return (pass_to_builtin(command, env_lst, top));
 	}
 	pid = fork();
 	if (pid < 0)
