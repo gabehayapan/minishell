@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:50:38 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/23 15:36:28 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/23 15:42:13 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	store_new_env_var(t_env *env_lst, char *new_env)
 		free(new_env_ptr);
 		return (FAILURE);
 	}
+	new_env_ptr->is_env = true;
 	last_env = get_last_env(env_lst);
 	if (last_env == NULL)
 		env_lst = new_env_ptr;
