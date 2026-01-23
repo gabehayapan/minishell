@@ -6,11 +6,20 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:50:38 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/23 15:28:04 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/23 15:34:12 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_var.h"
+
+void	export_no_args(t_env *env_lst)
+{
+	while (env_lst != NULL)
+	{
+		ft_printf("declare -x %s=%s\n", env_lst->key, env_lst->value);
+		env_lst++;
+	}
+}
 
 t_env	*get_last_env(t_env *env_lst)
 {
@@ -58,7 +67,9 @@ int	export(char **argv, t_env *env_lst)
 	t_env	*target;
 	int		is_success;
 
-	arv = argv + 1;
+	argv = argv + 1;
+	if (*argv == NULL)
+		export_no_args(env_lst);
 	while (*argv != NULL)
 	{
 		target = env_find(env_lst, *new_env);
