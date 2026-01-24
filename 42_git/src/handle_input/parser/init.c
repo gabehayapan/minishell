@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 14:23:21 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/24 18:33:27 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/25 07:28:37 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	init_node_exec(t_exec *node_exec)
 {
+	node_exec->tk_type = WORD;
 	node_exec->left = NULL;
 	node_exec->right = NULL;
 	node_exec->command = NULL;

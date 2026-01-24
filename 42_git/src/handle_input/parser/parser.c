@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/24 18:52:12 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/25 08:17:40 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,53 @@ int	get_piped_command(t_token **tokens, t_command **command, t_env *env_lst)
 	return (SUCCESS);
 }
 
-int	new_exec_tree(t_token **tokens, t_exec **top, t_env *env_lst)
+void	add_back_node(t_exec **head, t_exec *node_exec)
+{
+	t_exec	*last;
+
+	if (*head == NULL)
+		*head = node_exec;
+	else
+	{
+		last = *head;
+		while (last != NULL && last->next != NULL)
+			last = last->next;
+		last->next = node_exec;
+	}
+}
+
+t_exec	*new_ctrl_node(t_token *token)
+{
+	t_exec	*ctrl_node;
+
+	ctrl_node = (t_exec *)malloc(sizeof(t_exec));
+	if (ctrl_node == NULL)
+		return (NULL);
+	ctrl_node->tk_type = token->tk_type;
+	ctrl_node->left = NULL;
+	ctrl_node->right = NULL;
+	ctrl_node->command = NULL;
+	ctrl_node->next = NULL;
+	return (ctrl_node);
+}
+
+int	add_exec_node(t_token **tokens, t_exec **head, t_exec *node_exec)
+{
+	t_exec	*new_ctrl;
+
+	add_back_node(head, node_exec);
+	if (*tokens != NULL)
+	{
+		new_ctrl = new_ctrl_node(*tokens);
+		if (new_ctrl == NULL)
+			return (FAILURE);
+		clear_token(tokens, *tokens, free);
+		node_exec->next = new_ctrl;
+	}
+	return (SUCCESS);
+}
+
+int	new_exec_tree(t_token **tokens, t_exec **head, t_env *env_lst)
 {
 	t_exec	*node_exec;
 	int		ret;
@@ -157,23 +203,77 @@ int	new_exec_tree(t_token **tokens, t_exec **top, t_env *env_lst)
 		free(node_exec);
 		return (ret);
 	}
-	*top = set_exec_elem(tokens, *top, node_exec);
-	if (*top == NULL)
-		return (FAILURE);
-	return (SUCCESS);
+	ret = add_exec_node(tokens, head, node_exec);
+	return (ret);
+}
+
+t_exec	*add_exec_tree_branch(t_exec **top, t_exec *current, t_exec **target,
+			int subshell)
+{
+	t_exec	*top_sub;
+
+	if (current == NULL)
+	{
+		*target = NULL;
+		return (*top);
+	}
+	else if (current->next == NULL)
+	{
+		*target = NULL;
+		return (current);
+	}
+	if (((current->next)->command)->is_subshell == subshell)
+	{
+		current->left = *top;
+		*top = current;
+		current->right = current->next;
+		add_exec_tree_branch(top, (current->next)->next, target,
+				subshell);
+		while (*target != NULL && (*target)->next != NULL)
+			add_exec_tree_branch(top, *target, target,
+				(((*target)->next)->command)->is_subshell);
+		return (*top);
+	}
+	else if (((current->next)->command)->is_subshell > subshell)
+	{
+		current->left = *top;
+		*top = current;
+		top_sub = current->next;
+		current->right = add_exec_tree_branch(&top_sub, (current->next)->next,
+				target, (((*top)->next)->command)->is_subshell);
+		return (add_exec_tree_branch(top, *target, target, subshell));
+	}
+	else
+	{
+		*target = current;
+		return (*top);
+	}
+}
+
+t_exec	*create_exec_ast(t_exec *head)
+{
+	t_exec	*top;
+	t_exec	*target;
+
+	top = head;
+	target = head;
+	if (head != NULL)
+		add_exec_tree_branch(&top, head->next, &target,
+			(head->command)->is_subshell);
+	return (top);
 }
 
 int	parser(t_token **tokens, t_env *env_lst, t_exec **exec_tree,
 			long exit_status)
 {
-	t_exec	*top;
+	t_exec	*head;
 	int		is_success;
 
 	while (*tokens != NULL && (*tokens)->tk_type == SPACES)
 		clear_token(tokens, *tokens, free);
 	if (*tokens == NULL)
 		return (NO_COMMAND);
-	top = NULL;
+	head = NULL;
 	is_success = check_assignment(tokens, env_lst);
 	if (is_success == FAILURE)
 		return (FAILURE);
@@ -183,10 +283,10 @@ int	parser(t_token **tokens, t_env *env_lst, t_exec **exec_tree,
 	remove_tk_spaces(tokens);
 	while (*tokens != NULL)
 	{
-		is_success = new_exec_tree(tokens, &top, env_lst);
+		is_success = new_exec_tree(tokens, &head, env_lst);
 		if (is_success == FAILURE || is_success == FORMAT_ERROR)
 			return (is_success);
 	}
-	*exec_tree = top;
+	*exec_tree = create_exec_ast(head);
 	return (SUCCESS);
 }

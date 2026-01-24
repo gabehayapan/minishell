@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/24 00:44:35 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/25 07:35:04 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int	execute_input_command(char **input, t_env *env_lst)
 	{
 		exit_status = execute_command(exec_tree, env_lst, exec_tree);
 		free_node_exec(exec_tree);
-		add_history(*input);
 	}
+	add_history(*input);
 	return (SUCCESS);
 }
 

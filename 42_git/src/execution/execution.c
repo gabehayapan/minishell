@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 11:06:32 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/24 00:45:05 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/25 07:27:09 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,3 @@ long	execute_command(t_exec *exec_node, t_env *env_lst, t_exec *top)
 	else
 		return (handle_ctrl_op(exec_node, env_lst, top));
 }
-
-/*
-long	check_execution_success(t_exec *exec_tree, t_env *env_lst)
-{
-	return (execute_command(exec_tree, env_lst, exec_tree));
-}
-*/

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 16:12:09 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/23 16:44:24 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/25 07:33:09 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,14 @@ int	check_assignment(t_token **tokens, t_env *env_lst)
 {
 	int	is_success;
 
+	if (*tokens != NULL
+		&& ((*tokens)->tk_type == AND || (*tokens)->tk_type == OR
+			|| (*tokens)->tk_type == PIPE || (*tokens)->tk_type == SEMI))
+	{
+		ft_dprintf(2, "minishell: syntax error near unexpected token `%s'\n",
+			(*tokens)->word);
+		return (FORMAT_ERROR);
+	}
 	if (*tokens == NULL || (*tokens)->tk_type != WORD
 		|| ft_isalpha(*((*tokens)->word)) == 0
 		|| ft_strchr((*tokens)->word, '=') == NULL)
