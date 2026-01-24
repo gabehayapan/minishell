@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/24 18:32:39 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/25 08:29:14 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ int			add_shell_var(char *new_shell, t_env *env_lst);
 
 // handle_input/parser/init.c
 void		init_node_exec(t_exec *node_exec);
-void		init_command(t_command *command, int subshell);
+int			initialize_command(t_token **tokens, t_command *current,
+				int *subshell);
 
 // handle_input/parser/free.c
 void		free_strs(char **strs, size_t size);
@@ -148,12 +149,11 @@ char		*handle_exit_status(t_token **next, long exit_status);
 char		*join_word_with_space(char *str, char *word, size_t *len_str);
 char		*join_word_no_space(char *str, char *word);
 
-// handle_input/parser/exec_tree.c
-t_exec		*set_exec_elem(t_token **tokens, t_exec *top, t_exec *node_exec);
-int			new_exec_tree(t_token **tokens, t_exec **top, t_env *env_lst);
-t_exec		*set_last_node(t_exec *top, t_exec *node_exec);
-t_exec		*set_new_node(t_exec *top, t_exec *node_exec, t_exec *ctrl_op_node);
-t_exec		*new_ctrl_op_node(t_token *token);
+// handle_input/parser/exec_nodes.c
+int			add_exec_node(t_token **tokens, t_exec **head, t_exec *node_exec);
+
+// handle_input/parser/exec_ast.c
+t_exec		*create_exec_ast(t_exec *head);
 
 // handle_input/parser/print_redirection_error.c
 void		syntax_error_redirection(void);

@@ -47,7 +47,8 @@ SRCS =\
 	./src/handle_input/parser/handle_exit_status.c\
 	./src/handle_input/parser/join_word.c\
 	./src/handle_input/parser/get_command.c\
-	./src/handle_input/parser/exec_tree.c\
+	./src/handle_input/parser/exec_nodes.c\
+	./src/handle_input/parser/exec_ast.c\
 	./src/handle_input/parser/add_path.c\
 	./src/pipe/execute_pipeline.c\
 	./src/pipe/redirect.c\
@@ -101,7 +102,8 @@ OBJS =\
 	./obj/handle_exit_status.o\
 	./obj/join_word.o\
 	./obj/get_command.o\
-	./obj/exec_tree.o\
+	./obj/exec_nodes.o\
+	./obj/exec_ast.o\
 	./obj/add_path.o\
 	./obj/execute_pipeline.o\
 	./obj/redirect.o\
