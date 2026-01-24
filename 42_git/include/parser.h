@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/24 09:55:20 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/24 18:32:39 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
 # include "../libft/header/ftprintf.h"
 
 # define NOT_FOUND 4
-# define END 5
+# define FORMAT_ERROR 5
+# define END 6
 
 typedef enum s_rdt_type
 {
@@ -56,6 +57,7 @@ typedef struct s_exec
 	struct s_exec	*left;
 	struct s_exec	*right;
 	t_command		*command;
+	struct s_exec	*next;
 }	t_exec;
 
 // handle_input/handle_input.c

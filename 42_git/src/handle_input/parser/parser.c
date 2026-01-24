@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/23 17:51:39 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/24 18:36:45 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,14 +92,12 @@ void	check_closing_parenthesis(t_token **tokens, int *subshell)
 	}
 }
 
-t_command	*get_piped_command(t_token **tokens, t_env *env_lst)
+int	get_piped_command(t_token **tokens, t_command **command, t_env *env_lst)
 {
-	t_command	head;
 	t_command	*current;
 	t_command	*last;
 	int			subshell;
 
-	head.next = NULL;
 	last = NULL;
 	subshell = 0;
 	while (*tokens != NULL
@@ -108,33 +106,37 @@ t_command	*get_piped_command(t_token **tokens, t_env *env_lst)
 	{
 		current = (t_command *)malloc(sizeof(t_command));
 		if (current == NULL)
-			return (NULL);
+			return (FAILURE);
 		check_opening_parenthesis(tokens, &subshell);
 		init_command(current, subshell);
 		check_closing_parenthesis(tokens, &subshell);
 		if (new_command(tokens, current, env_lst) == FAILURE)
 		{
-			free_command(head.next);
-			return (NULL);
+			free_command(*command);
+			return (FAILURE);
 		}
-		add_new_command(&head.next, current, &last);
+		add_new_command(command, current, &last);
 		if (*tokens != NULL && (*tokens)->tk_type == PIPE)
 			clear_token(tokens, *tokens, free);
 	}
-	return (head.next);
+	return (SUCCESS);
 }
 
 int	new_exec_tree(t_token **tokens, t_exec **top, t_env *env_lst)
 {
 	t_exec	*node_exec;
+	int		ret;
 
 	node_exec = (t_exec *)malloc(sizeof(t_exec));
 	if (node_exec == NULL)
 		return (FAILURE);
 	init_node_exec(node_exec);
-	node_exec->command = get_piped_command(tokens, env_lst);
-	if (node_exec->command == NULL)
+	ret = get_piped_command(tokens, &node_exec->command, env_lst);
+	if (ret == FAILURE || ret == FORMAT_ERROR)
+	{
+		free(node_exec);
 		return (FAILURE);
+	}
 	*top = set_exec_elem(tokens, *top, node_exec);
 	if (*top == NULL)
 		return (FAILURE);
