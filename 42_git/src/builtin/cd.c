@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 10:27:23 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/24 10:47:07 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/24 11:06:58 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,45 @@ int	change_cwd_to_oldpwd(char **path, t_env *env_lst)
 	return (SUCCESS);
 }
 
+int	set_oldpwd(t_env *pwd, t_env *env_lst)
+{
+	char	*new_oldpwd;
+	int		is_success;
+
+	if (pwd == NULL)
+		return (SUCCESS);
+	new_oldpwd = ft_strjoin("OLDPWD=", pwd->value);
+	if (new_oldpwd == NULL)
+		return (FAILURE);
+	is_success = add_shell_var(new_oldpwd, env_lst);
+	free(new_oldpwd);
+	return (is_success);
+}
+
+int	set_pwd(t_env *env_lst)
+{
+	char	*cwd;
+	char	*new_pwd;
+	int		is_success;
+
+	cwd = getcwd(NULL, 0);
+	if (cwd == NULL)
+		return (FAILURE);
+	new_pwd = ft_strjoin("PWD=", cwd);
+	if (new_pwd == NULL)
+	{
+		free(cwd);
+		return (FAILURE);
+	}
+	is_success = add_shell_var(new_pwd, env_lst);
+	free(new_pwd);
+	return (is_success);
+}
+
 int	update_pwd(t_env *env_lst)
 {
 	t_env	*oldpwd;
 	t_env	*pwd;
-	char	*new_oldpwd;
-	char	*new_pwd;
-	char	*cwd;
 
 	oldpwd = env_find(env_lst, "OLDPWD");
 	pwd = env_find(env_lst, "PWD");
@@ -89,15 +121,8 @@ int	update_pwd(t_env *env_lst)
 	}
 	else if (oldpwd == NULL && pwd != NULL)
 	{
-		new_oldpwd = ft_strjoin("OLDPWD=", pwd->value);
-		if (new_oldpwd == NULL)
+		if (set_oldpwd(pwd, env_lst) == FAILURE)
 			return (FAILURE);
-		if (add_shell_var(new_oldpwd, env_lst) == FAILURE)
-		{
-			free(new_oldpwd);
-			return (FAILURE);
-		}
-		free(new_oldpwd);
 		free(pwd->value);
 		pwd->value = getcwd(NULL, 0);
 		if (pwd->value == NULL)
@@ -109,35 +134,13 @@ int	update_pwd(t_env *env_lst)
 		oldpwd->value = ft_strdup("");
 		if (oldpwd->value == NULL)
 			return (FAILURE);
-		cwd = getcwd(NULL, 0);
-		if (cwd == NULL)
+		if (set_pwd(env_lst) == FAILURE)
 			return (FAILURE);
-		new_pwd = ft_strjoin("PWD=", cwd);
-		free(cwd);
-		if (new_pwd == NULL)
-			return (FAILURE);
-		if (add_shell_var(new_pwd, env_lst) == FAILURE)
-		{
-			free(new_pwd);
-			return (FAILURE);
-		}
-		free(new_pwd);
 	}
 	else
 	{
-		cwd = getcwd(NULL, 0);
-		if (cwd == NULL)
+		if (set_pwd(env_lst) == FAILURE)
 			return (FAILURE);
-		new_pwd = ft_strjoin("PWD=", cwd);
-		free(cwd);
-		if (new_pwd == NULL)
-			return (FAILURE);
-		if (add_shell_var(new_pwd, env_lst) == FAILURE)
-		{
-			free(new_pwd);
-			return (FAILURE);
-		}
-		free(new_pwd);
 	}
 	return (SUCCESS);
 }

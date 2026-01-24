@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 13:54:46 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/12 20:42:56 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/24 11:16:22 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ int	ft_strcmp(const char *s1, const char *s2)
 		s1++;
 		s2++;
 	}
-	if (*s1 == '\0')
-		return (0);
 	return ((unsigned char)*s1 - (unsigned char)*s2);
 }
 
