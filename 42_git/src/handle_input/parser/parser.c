@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/24 18:36:45 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/24 18:52:12 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,21 +58,31 @@ int	new_command(t_token **tokens, t_command *command, t_env *env_lst)
 	return (SUCCESS);
 }
 
-void	check_opening_parenthesis(t_token **tokens, int *subshell)
+int	check_opening_parenthesis(t_token **tokens, int *subshell)
 {
 	t_token	*current;
 
+	while (*tokens != NULL && (*tokens)->tk_type == O_PAREN)
+	{
+		*subshell = *subshell + 1;
+		clear_token (tokens, *tokens, free);
+	}
 	current = *tokens;
 	while (current != NULL && current->tk_type != AND && current->tk_type != OR
 		&& current->tk_type != SEMI && current->tk_type != PIPE)
 	{
-		if (current->tk_type == O_PAREN)
+		if (current->tk_type == O_PAREN
+			|| (current->tk_type == C_PAREN && *subshell == 0))
 		{
-			*subshell = *subshell + 1;
-			clear_token(tokens, current, free);
+			if (current->tk_type == O_PAREN)
+				ft_dprintf(2, "minishell: syntax error near `('\n");
+			else
+				ft_dprintf(2, "minishell: syntax error near `)'\n");
+			return (FAILURE);
 		}
 		current = current->next;
 	}
+	return (SUCCESS);
 }
 
 void	check_closing_parenthesis(t_token **tokens, int *subshell)
@@ -92,14 +102,25 @@ void	check_closing_parenthesis(t_token **tokens, int *subshell)
 	}
 }
 
+int	initialize_command(t_token **tokens, t_command *current, int *subshell)
+{
+	int	is_success;
+
+	is_success = check_opening_parenthesis(tokens, subshell);
+	if (is_success == FAILURE)
+		return (FAILURE);
+	init_command(current, *subshell);
+	check_closing_parenthesis(tokens, subshell);
+	return (SUCCESS);
+}
+
 int	get_piped_command(t_token **tokens, t_command **command, t_env *env_lst)
 {
 	t_command	*current;
 	t_command	*last;
-	int			subshell;
+	static int	subshell;
 
 	last = NULL;
-	subshell = 0;
 	while (*tokens != NULL
 		&& (*tokens)->tk_type != AND && (*tokens)->tk_type != OR
 		&& (*tokens)->tk_type != SEMI)
@@ -107,9 +128,8 @@ int	get_piped_command(t_token **tokens, t_command **command, t_env *env_lst)
 		current = (t_command *)malloc(sizeof(t_command));
 		if (current == NULL)
 			return (FAILURE);
-		check_opening_parenthesis(tokens, &subshell);
-		init_command(current, subshell);
-		check_closing_parenthesis(tokens, &subshell);
+		if (initialize_command(tokens, current, &subshell) == FAILURE)
+			return (FORMAT_ERROR);
 		if (new_command(tokens, current, env_lst) == FAILURE)
 		{
 			free_command(*command);
@@ -135,7 +155,7 @@ int	new_exec_tree(t_token **tokens, t_exec **top, t_env *env_lst)
 	if (ret == FAILURE || ret == FORMAT_ERROR)
 	{
 		free(node_exec);
-		return (FAILURE);
+		return (ret);
 	}
 	*top = set_exec_elem(tokens, *top, node_exec);
 	if (*top == NULL)
@@ -164,8 +184,8 @@ int	parser(t_token **tokens, t_env *env_lst, t_exec **exec_tree,
 	while (*tokens != NULL)
 	{
 		is_success = new_exec_tree(tokens, &top, env_lst);
-		if (is_success == FAILURE)
-			return (FAILURE);
+		if (is_success == FAILURE || is_success == FORMAT_ERROR)
+			return (is_success);
 	}
 	*exec_tree = top;
 	return (SUCCESS);
