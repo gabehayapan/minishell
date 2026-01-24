@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 10:27:23 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/24 11:51:20 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/24 11:57:46 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "env_var.h"
 #include "parser.h"
 #include "ft_dprintf.h"
+#include "builtin.h"
 
 int	change_cwd_to_home(char **path, t_env *env_lst)
 {

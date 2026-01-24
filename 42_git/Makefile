@@ -13,6 +13,7 @@ SRCS =\
 	./src/env_var/init_env_list.c\
 	./src/env_var/convert_to_envp.c\
 	./src/builtin/cd.c\
+	./src/builtin/cd_utils.c\
 	./src/builtin/echo.c\
 	./src/builtin/env.c\
 	./src/builtin/export.c\
@@ -66,6 +67,7 @@ OBJS =\
 	./obj/init_env_list.o\
 	./obj/convert_to_envp.o\
 	./obj/cd.o\
+	./obj/cd_utils.o\
 	./obj/echo.o\
 	./obj/env.o\
 	./obj/export.o\
