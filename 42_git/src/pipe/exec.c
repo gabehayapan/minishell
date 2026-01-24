@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 23:11:26 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/23 20:14:39 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/24 11:40:41 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	pass_to_builtin(t_command *command, t_env *env_lst, t_exec *top)
 	if (is_builtin(cmdset[0]) == EXIT)
 		res = ft_exit(cmdset, env_lst, top);
 	if (is_builtin(cmdset[0]) == CD)
-		res = cd(cmdset, env_lst);
+		res = cd(cmdset, env_lst, top);
 	if (is_builtin(cmdset[0]) == ENV)
 		res = env(env_lst);
 	if (is_builtin(cmdset[0]) == EXPORT)
