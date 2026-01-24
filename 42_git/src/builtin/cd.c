@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 10:27:23 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/24 11:06:58 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/24 11:38:03 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,31 +104,9 @@ int	set_pwd(t_env *env_lst)
 	return (is_success);
 }
 
-int	update_pwd(t_env *env_lst)
+int	update_to_new_pwd(t_env *pwd, t_env *oldpwd, t_env *env_lst)
 {
-	t_env	*oldpwd;
-	t_env	*pwd;
-
-	oldpwd = env_find(env_lst, "OLDPWD");
-	pwd = env_find(env_lst, "PWD");
-	if (oldpwd != NULL && pwd != NULL)
-	{
-		free(oldpwd->value);
-		oldpwd->value = pwd->value;
-		pwd->value = getcwd(NULL, 0);
-		if (pwd->value == NULL)
-			return (FAILURE);
-	}
-	else if (oldpwd == NULL && pwd != NULL)
-	{
-		if (set_oldpwd(pwd, env_lst) == FAILURE)
-			return (FAILURE);
-		free(pwd->value);
-		pwd->value = getcwd(NULL, 0);
-		if (pwd->value == NULL)
-			return (FAILURE);
-	}
-	else if (oldpwd != NULL && pwd == NULL)
+	if (oldpwd != NULL)
 	{
 		free(oldpwd->value);
 		oldpwd->value = ft_strdup("");
@@ -141,6 +119,56 @@ int	update_pwd(t_env *env_lst)
 	{
 		if (set_pwd(env_lst) == FAILURE)
 			return (FAILURE);
+	}
+	return (SUCCESS);
+}
+
+int	update_to_new_oldpwd(t_env *pwd, t_env *oldpwd, t_env *env_lst)
+{
+	if (oldpwd != NULL)
+	{
+		free(oldpwd->value);
+		oldpwd->value = pwd->value;
+		pwd->value = getcwd(NULL, 0);
+		if (pwd->value == NULL)
+			return (FAILURE);
+	}
+	else
+	{
+		if (set_oldpwd(pwd, env_lst) == FAILURE)
+			return (FAILURE);
+		free(pwd->value);
+		pwd->value = getcwd(NULL, 0);
+		if (pwd->value == NULL)
+			return (FAILURE);
+	}
+	return (SUCCESS);
+}
+
+int	update_env_pwd(t_env *env_lst)
+{
+	t_env	*pwd;
+	t_env	*oldpwd;
+	int		is_success;
+
+	pwd = env_find(env_lst, "PWD");
+	oldpwd = env_find(env_lst, "OLDPWD");
+	if (pwd == NULL)
+		is_success = update_to_new_pwd(pwd, oldpwd, env_lst);
+	else
+		is_success = update_to_new_oldpwd();
+	return (is_success);
+}
+
+int	change_cwd_to_path(char *path)
+{
+	int	ret;
+
+	ret = chdir(path);
+	if (ret == -1)
+	{
+		perror("chdir");
+		return (FAILURE);
 	}
 	return (SUCCESS);
 }
@@ -166,13 +194,9 @@ int	cd(char **strs, t_env *env_lst)
 		if (ret == FAILURE)
 			return (FAILURE);
 	}
-	ret = chdir(path);
+	ret = change_cwd_to_path(path);
 	if (ret == -1)
-	{
-		ft_dprintf(2, "minishell: cd: ");
-		perror(*(strs + 1));
 		return (FAILURE);
-	}
-	update_pwd(env_lst);
+	update_env_pwd(env_lst);
 	return (SUCCESS);
 }
