@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 11:57:32 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/24 11:10:53 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/25 08:59:49 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	handle_others(t_token **tokens, t_token **current, t_env *env_lst,
 
 	is_success = SUCCESS;
 	if ((*current)->tk_type == DOLLAR)
-		is_success = expand_dollar(tokens, *current, env_lst, exit_status);
+		is_success = expand_dollar(tokens, current, env_lst, exit_status);
 	else if ((*current)->tk_type == TILDE)
 		is_success = expand_tilde(*current, env_lst);
 	else if ((*current)->tk_type == WILDCARD)

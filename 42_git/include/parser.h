@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/25 08:29:14 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/25 09:00:19 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void		get_command(char *exec, t_token *tokens);
 int			expand_specials(t_token **tokens, t_env *env_lst, long exit_status);
 int			expand_quoted_dollar(t_token **tokens, t_token *current,
 				t_env *env_lst, long exit_status);
-int			expand_dollar(t_token **tokens, t_token *current, t_env *env_lst,
+int			expand_dollar(t_token **tokens, t_token **current, t_env *env_lst,
 				long exit_status);
 int			expand_tilde(t_token *current, t_env *env_lst);
 int			expand_wildcard(t_token **tokens, t_token *current);
@@ -127,6 +127,10 @@ int			handle_dbl_quoted_dollar(t_token **tokens, t_token *current,
 				t_env *env_lst, long exit_status);
 int			handle_others(t_token **tokens, t_token **current, t_env *env_lst,
 				long exit_status);
+
+// handle_input/parser/replace_command.c
+int			replace_with_cmd_output(t_token **tokens, t_token **current,
+				t_env *env_lst);
 
 // handle_input/parser/init_wildcard.c
 char		*get_target_dir(t_token **current, char **disname);
