@@ -1,25 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   free_all.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/15 20:19:24 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/25 18:53:15 by hanakamu         ###   ########.fr       */
+/*   Created: 2026/01/25 18:48:56 by hanakamu          #+#    #+#             */
+/*   Updated: 2026/01/25 18:49:45 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env_var.h"
-#include "ftprintf.h"
+#include "parser.h"
 
-int	env(t_env *env_lst)
+void	free_all(t_env *env_lst, t_exec *top)
 {
-	while (env_lst != NULL)
-	{
-		if (env_lst->is_env == ENV_VAR)
-			ft_printf("%s=%s\n", env_lst->key, env_lst->value);
-		env_lst = env_lst->next;
-	}
-	return (EXIT_SUCCESS);
+	free_env_lst(env_lst);
+	free_node_exec(top);
 }

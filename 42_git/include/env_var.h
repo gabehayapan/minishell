@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 10:46:39 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/23 18:47:18 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/25 18:52:30 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,15 @@
 # define SUCCESS 0
 # define FAILURE 1
 
+# define ENV_VAR 0
+# define SHELL_VAR 1
+# define EXPORT_VAR 2
+
 typedef struct s_env
 {
 	char			*key;
 	char			*value;
-	bool			is_env;
+	int				is_env;
 	struct s_env	*next;
 }	t_env;
 

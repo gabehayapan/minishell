@@ -17,6 +17,7 @@ SRCS =\
 	./src/builtin/echo.c\
 	./src/builtin/env.c\
 	./src/builtin/export.c\
+	./src/builtin/export_utils.c\
 	./src/builtin/exit.c\
 	./src/builtin/pwd.c\
 	./src/builtin/unset.c\
@@ -35,6 +36,7 @@ SRCS =\
 	./src/handle_input/parser/shell_var.c\
 	./src/handle_input/parser/init.c\
 	./src/handle_input/parser/free.c\
+	./src/handle_input/parser/free_all.c\
 	./src/handle_input/parser/counter.c\
 	./src/handle_input/parser/get_redirect_file.c\
 	./src/handle_input/parser/get_redirect_file_utils.c\
@@ -73,6 +75,7 @@ OBJS =\
 	./obj/echo.o\
 	./obj/env.o\
 	./obj/export.o\
+	./obj/export_utils.o\
 	./obj/exit.o\
 	./obj/pwd.o\
 	./obj/unset.o\
@@ -91,6 +94,7 @@ OBJS =\
 	./obj/shell_var.o\
 	./obj/init.o\
 	./obj/free.o\
+	./obj/free_all.o\
 	./obj/counter.o\
 	./obj/get_redirect_file.o\
 	./obj/get_redirect_file_utils.o\
