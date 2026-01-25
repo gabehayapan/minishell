@@ -51,13 +51,13 @@ SRCS =\
 	./src/handle_input/parser/exec_nodes.c\
 	./src/handle_input/parser/exec_ast.c\
 	./src/handle_input/parser/add_path.c\
-	./src/pipe/execute_pipeline.c\
-	./src/pipe/redirect.c\
-	./src/pipe/pipe.c\
-	./src/pipe/exec.c\
-	./src/pipe/fork.c\
-	./src/pipe/wait.c\
-	./src/pipe/helper.c\
+	./src/execution/execute.c\
+	./src/execution/redirect.c\
+	./src/execution/pipe.c\
+	./src/execution/exec.c\
+	./src/execution/fork.c\
+	./src/execution/wait.c\
+	./src/execution/helper.c\
 	./src/signal/signal.c\
 
 OBJ_DIR = obj/
@@ -107,7 +107,7 @@ OBJS =\
 	./obj/exec_nodes.o\
 	./obj/exec_ast.o\
 	./obj/add_path.o\
-	./obj/execute_pipeline.o\
+	./obj/execute.o\
 	./obj/redirect.o\
 	./obj/pipe.o\
 	./obj/exec.o\
@@ -128,7 +128,7 @@ HEADERS =\
 LIBFT_DIR = libft/
 LIBFT = libft.a
 
-vpath %.c ./src/ ./src/env_var/ ./src/env_var/export/ ./src/env_var/unset/ ./src/env_var/env_module/ ./src/execution ./src/handle_input/ ./src/handle_input/tokenizer/ ./src/handle_input/parser/ ./src/pipe/ ./src/signal/ ./src/builtin/
+vpath %.c ./src/ ./src/env_var/ ./src/env_var/export/ ./src/env_var/unset/ ./src/env_var/env_module/ ./src/handle_input/ ./src/handle_input/tokenizer/ ./src/handle_input/parser/ ./src/execution/ ./src/signal/ ./src/builtin/
 
 #all: $(NAME) $(ECHO)
 all: $(NAME)

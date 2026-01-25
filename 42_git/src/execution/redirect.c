@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 01:08:17 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/24 01:10:24 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/25 18:32:47 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,13 @@ int	redirect_fd(t_command *command)
 	{
 		setfd_infile(command);
 		dup2(command->infd, STDIN_FILENO);
+		close(command->infd);
 	}
 	if (command->outrdt)
 	{
 		setfd_outfile(command);
 		dup2(command->outfd, STDOUT_FILENO);
+		close(command->outfd);
 	}
 	return (SUCCESS);
 }

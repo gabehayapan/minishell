@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 23:11:26 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/24 11:40:41 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/25 19:07:53 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,24 +24,14 @@ char	*free_arrs_ret_s(char **arrs, char *s)
 	return (s);
 }
 
-/*
-bool	is_builtin(char **command)
+int	handle_noexist_cmd(char **cmdset)
 {
-	if (ft_strncmp(command[0], "exit", ft_strlen("exit") + 1) == 0)
-		return (true);
-	if (ft_strncmp(command[0], "cd", ft_strlen("cd") + 1) == 0)
-		return (true);
-	if (ft_strncmp(command[0], "env", ft_strlen("env") + 1) == 0)
-		return (true);
-	if (ft_strncmp(command[0], "export", ft_strlen("export") + 1) == 0)
-		return (true);
-	if (ft_strncmp(command[0], "unset", ft_strlen("unset") + 1) == 0)
-		return (true);
-	if (ft_strncmp(command[0], "echo", ft_strlen("echo") + 1) == 0)
-		return (true);
-	return (false);
+	ft_putstr_fd("-minishell: ", 2);
+	ft_putstr_fd(cmdset[0], 2);
+	ft_putendl_fd(": command not found", 2);
+	free_arrs_ret_s(cmdset, NULL);
+	return (127);
 }
-*/
 
 int	pass_to_builtin(t_command *command, t_env *env_lst, t_exec *top)
 {

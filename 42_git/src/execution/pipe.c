@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:14:01 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/24 00:53:08 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/25 19:09:29 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	*init_pipefd(int count)
 	return (pipefd);
 }
 
-int	init_pipe(t_pipe *p, int count)
+int	init_pipe(t_pipe *p, int count, t_env *env_lst, t_exec *top)
 {
 	p->procid = init_procid(count);
 	if (p->procid == NULL)
@@ -55,21 +55,23 @@ int	init_pipe(t_pipe *p, int count)
 	p->pipefd = init_pipefd(count - 1);
 	if (p->pipefd == NULL)
 		return (free(p->procid), FAILURE);
+	p->env_lst = env_lst;
+	p->top = top;
 	return (SUCCESS);
 }
 
-int	pipeline(t_command *command, t_env *env_lst, int proc_count, t_exec *top)
+int	pipeline(t_command *command, int proc_count, t_env *env_lst, t_exec *top)
 {
 	t_pipe	p;
 	int		i;
 	int		exit_code;
 
-	if (init_pipe(&p, proc_count) == FAILURE)
+	if (init_pipe(&p, proc_count, env_lst, top) == FAILURE)
 		return (FAILURE);
 	i = 0;
 	while (i < proc_count)
 	{
-		p.procid[i] = fork_process(&p, command, env_lst, i, top);
+		p.procid[i] = fork_process(&p, command, i);
 		if (p.procid[i] == EXIT_FAILURE)
 		{
 			close_pipes(p.pipefd, proc_count - 1);

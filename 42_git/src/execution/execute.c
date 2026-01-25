@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_pipeline.c                                 :+:      :+:    :+:   */
+/*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:56:57 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/25 07:25:21 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/25 18:48:38 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,29 @@ int	count_proc(t_command *command)
 	return (count);
 }
 
+int	nopipe_builtin(t_command *command, t_env *env_lst, t_exec *top)
+{
+	int	stdin_fd;
+	int	stdout_fd;
+	int	exit_code;
+
+	stdin_fd = dup(STDIN_FILENO);
+	stdout_fd = dup(STDOUT_FILENO);
+	redirect_fd(command);
+	exit_code = pass_to_builtin(command, env_lst, top);
+	dup2(stdin_fd, STDIN_FILENO);
+	dup2(stdout_fd, STDOUT_FILENO);
+	close(stdin_fd);
+	close(stdout_fd);
+	return (exit_code);
+}
+
 int	nopipe_execute(t_command *command, t_env *env_lst, t_exec *top)
 {
 	pid_t	pid;
 
 	if (is_builtin(command->command[0]) != ELSE)
-	{
-		redirect_fd(command);
-		return (pass_to_builtin(command, env_lst, top));
-	}
+		return (nopipe_builtin(command, env_lst, top));
 	pid = fork();
 	if (pid < 0)
 	{

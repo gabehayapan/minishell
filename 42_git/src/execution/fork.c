@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 16:20:31 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/24 01:16:02 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/25 19:03:58 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	redirect_pipe(t_pipe *p, t_command *command, int p_nbr)
 	return (EXIT_SUCCESS);
 }
 
-int	fork_process(t_pipe *p, t_command *command, t_env *env_lst, int p_nbr, t_exec *top)
+int	fork_process(t_pipe *p, t_command *command, int p_nbr)
 {
 	pid_t	pid;
 
@@ -50,7 +50,7 @@ int	fork_process(t_pipe *p, t_command *command, t_env *env_lst, int p_nbr, t_exe
 			return (EXIT_FAILURE);
 		redirect_fd(command);
 		close_pipes(p->pipefd, p_nbr);
-		exec_command(command, env_lst, top);
+		exec_command(command, p->env_lst, p->top);
 	}
 	return (pid);
 }

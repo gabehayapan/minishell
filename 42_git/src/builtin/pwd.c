@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 19:32:04 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/23 20:08:11 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/25 19:22:02 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,10 @@
 
 int	pwd(void)
 {
-	char pathname[PATHNAME_SIZE];
+	char	pathname[PATHNAME_SIZE];
 
-	ft_memset(pathname, '\0', PATHNAME_SIZE); 
+	ft_memset(pathname, '\0', PATHNAME_SIZE);
 	getcwd(pathname, PATHNAME_SIZE);
 	ft_dprintf(STDOUT_FILENO, "%s\n", pathname);
-
 	return (EXIT_SUCCESS);
 }
