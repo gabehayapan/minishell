@@ -3,8 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */ /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 10:27:23 by hanakamu          #+#    #+#             */
 /*   Updated: 2026/01/24 11:57:46 by hanakamu         ###   ########.fr       */
 /*                                                                            */
@@ -35,7 +34,10 @@ int	change_cwd_to_oldpwd(char **path, t_env *env_lst)
 
 	oldpwd = env_find(env_lst, "OLDPWD");
 	if (oldpwd != NULL && *(oldpwd->value) != '\0')
+	{
 		*path = oldpwd->value;
+		ft_printf("%s\n", *path);
+	}
 	else
 	{
 		ft_dprintf(2, "minishell: cd: OLDPWD not set\n");
