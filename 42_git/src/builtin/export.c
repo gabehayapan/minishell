@@ -6,18 +6,20 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:50:38 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/23 18:46:39 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/25 18:56:39 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "parser.h"
 #include "env_var.h"
 #include "ft_dprintf.h"
+#include "builtin.h"
 
 void	export_no_args(t_env *env_lst)
 {
 	while (env_lst != NULL)
 	{
-		ft_printf("declare -x %s=%s\n", env_lst->key, env_lst->value);
+		ft_printf("declare -x %s=\"%s\"\n", env_lst->key, env_lst->value);
 		env_lst++;
 	}
 }
@@ -46,7 +48,7 @@ int	store_new_env_var(t_env *env_lst, char *new_env)
 		free(new_env_ptr);
 		return (FAILURE);
 	}
-	new_env_ptr->is_env = true;
+	new_env_ptr->is_env = ENV_VAR;
 	last_env = get_last_env(env_lst);
 	if (last_env == NULL)
 		env_lst = new_env_ptr;
@@ -55,7 +57,7 @@ int	store_new_env_var(t_env *env_lst, char *new_env)
 	return (SUCCESS);
 }
 
-int	export(char **strs, t_env *env_lst)
+int	export(char **strs, t_env *env_lst, t_exec *top)
 {
 	t_env	*target;
 	int		is_success;
@@ -66,14 +68,17 @@ int	export(char **strs, t_env *env_lst)
 	while (*strs != NULL)
 	{
 		if (ft_isalpha(**strs) == 0)
+		{
 			ft_dprintf(2,
 				"minishell: export: '%s': not a valid identifier", *strs);
+			return (FAILURE);
+		}
 		else
 		{
-			target = env_find(env_lst, *strs);
-			if (target != NULL)
+			is_success = check_existence(&target, env_lst, *strs, top);
+			if (target != NULL && is_success == SUCCESS)
 				is_success = update_env_value(target, *strs);
-			else
+			else if (is_success == SUCCESS)
 				is_success = store_new_env_var(env_lst, *strs);
 		}
 		strs++;

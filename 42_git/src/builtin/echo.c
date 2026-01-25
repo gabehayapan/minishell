@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 20:21:48 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/22 20:55:22 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/25 18:08:58 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,3 @@ int	echo(char **strs, int fd)
 		ft_dprintf(fd, "\n");
 	return (SUCCESS);
 }
-
-/*
-int	main(int argc, char **argv)
-{
-	(void)argc;
-	echo(argv, 1);
-	return (0);
-}
-*/

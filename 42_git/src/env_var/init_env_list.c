@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 13:57:47 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/24 15:39:25 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/25 18:53:00 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int	set_env_member(t_env *current, char *envp)
 	if (is_success == FAILURE)
 		return (FAILURE);
 	if (ft_strcmp(envp, "_") != 0)
-		current->is_env = true;
+		current->is_env = ENV_VAR;
 	else
-		current->is_env = false;
+		current->is_env = SHELL_VAR;
 	return (SUCCESS);
 }
 
