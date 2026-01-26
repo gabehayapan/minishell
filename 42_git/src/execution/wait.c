@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 20:34:18 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/26 15:21:21 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/26 16:26:36 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,32 @@ int	wait_for_children(int *procid, int proc_count)
 	g_sig = 0;
 	while (i < proc_count)
 	{
-		//if (waitpid(procid[i], &wstatus, 0) == error)
-		if (wait(&wstatus) == error)
+		while (1)
 		{
-			if (g_sig == SIGINT || g_sig == SIGQUIT)
-				return (detect_signal(procid[i], g_sig));
-			//perror("waitpid");
-			perror("wait");
-			return (failure);
+			//if (waitpid(procid[i], &wstatus, 0) == error)
+			if (wait(&wstatus) == error)
+			{
+				//if (WIFSIGNALED(wstatus))
+				//	detect_signal(procid[i], WTERMSIG(wstatus));
+				//else
+				//{
+				////	perror("wait");
+				//	return (failure);
+				//}
+				if (g_sig == SIGINT || g_sig == SIGQUIT)
+				{
+					detect_signal(procid[i], g_sig);
+					continue ;
+				}
+				else
+				{
+					//perror("waitpid");
+					perror("wait");
+					return (failure);
+				}
+			}
+			else
+				break ;
 		}
 		i++;
 	}
