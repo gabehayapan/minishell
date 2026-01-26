@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 10:46:39 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/25 18:52:30 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/26 11:08:31 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,6 @@ int		ft_strcmp(const char *s1, const char *s2);
 char	**convert_to_envp(t_env *env_lst);
 
 // env_var/unset/unset.c
-int	unset(t_env **env_lst, char **strs);
+int		unset(t_env **env_lst, char **strs);
 
 #endif
