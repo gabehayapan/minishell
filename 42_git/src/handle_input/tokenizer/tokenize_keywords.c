@@ -6,11 +6,12 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:53:06 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/24 11:13:18 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/26 12:32:45 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
+#include "ftprintf.h"
 
 t_token	*tokenize_parenthesis(char **input, char **str, t_token *current)
 {
