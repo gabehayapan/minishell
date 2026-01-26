@@ -59,27 +59,27 @@ int	change_cwd_to_path(char *path)
 	return (SUCCESS);
 }
 
-void	update_env_pwd(t_env *env_lst, t_exec *top)
+void	update_env_pwd(t_env **env_lst, t_exec *top)
 {
 	t_env	*pwd;
 	t_env	*oldpwd;
 	int		is_success;
 
-	pwd = env_find(env_lst, "PWD");
-	oldpwd = env_find(env_lst, "OLDPWD");
+	pwd = env_find(*env_lst, "PWD");
+	oldpwd = env_find(*env_lst, "OLDPWD");
 	if (pwd == NULL)
 		is_success = update_to_new_pwd(oldpwd, env_lst);
 	else
 		is_success = update_to_new_oldpwd(pwd, oldpwd, env_lst);
 	if (is_success == FAILURE)
 	{
-		free_env_lst(env_lst);
+		free_env_lst(*env_lst);
 		free_node_exec(top);
 		exit(1);
 	}
 }
 
-int	cd(char **strs, t_env *env_lst, t_exec *top)
+int	cd(char **strs, t_env **env_lst, t_exec *top)
 {
 	int		ret;
 	char	*path;
@@ -90,13 +90,13 @@ int	cd(char **strs, t_env *env_lst, t_exec *top)
 	path = *(strs + 1);
 	if (path == NULL)
 	{
-		ret = change_cwd_to_home(&path, env_lst);
+		ret = change_cwd_to_home(&path, *env_lst);
 		if (ret == FAILURE)
 			return (FAILURE);
 	}
 	else if (ft_strcmp(path, "-") == 0)
 	{
-		ret = change_cwd_to_oldpwd(&path, env_lst);
+		ret = change_cwd_to_oldpwd(&path, *env_lst);
 		if (ret == FAILURE)
 			return (FAILURE);
 	}

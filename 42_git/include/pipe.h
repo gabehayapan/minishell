@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:16:22 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/25 19:10:44 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/26 10:03:12 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,25 +43,25 @@ typedef struct s_pipe
 {
 	int		*procid;
 	int		*pipefd;
-	t_env	*env_lst;
+	t_env	**env_lst;
 	t_exec	*top;
 }	t_pipe;
 
 // main.c
-int		execute(t_command *command, t_env *env_lst, t_exec *top);
+int		execute(t_command *command, t_env **env_lst, t_exec *top);
 
 // redirect.c
 int		redirect_fd(t_command *command);
 
 // pipe.c
-int		pipeline(t_command *command, int count, t_env *env_lst, t_exec *top);
+int		pipeline(t_command *command, t_env **env_lst, int count, t_exec *top);
 
 // fork.c
 int		fork_process(t_pipe *p, t_command *command, int p_nbr);
 
 // exec.c
-int		exec_command(t_command *command, t_env *env_lst, t_exec *top);
-int		pass_to_builtin(t_command *command, t_env *env_lst, t_exec *top);
+int		exec_command(t_command *command, t_env **env_lst, t_exec *top);
+int		pass_to_builtin(t_command *command, t_env **env_lst, t_exec *top);
 int		handle_noexist_cmd(char **cmdset);
 char	*free_arrs_ret_s(char **arrs, char *s);
 

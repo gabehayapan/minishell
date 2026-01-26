@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 11:49:28 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/24 11:51:12 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/26 09:56:48 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	validate_args(char **strs)
 	return (SUCCESS);
 }
 
-int	set_oldpwd(t_env *pwd, t_env *env_lst)
+int	set_oldpwd(t_env *pwd, t_env **env_lst)
 {
 	char	*new_oldpwd;
 	int		is_success;
@@ -50,7 +50,7 @@ int	set_oldpwd(t_env *pwd, t_env *env_lst)
 	return (is_success);
 }
 
-int	set_pwd(t_env *env_lst)
+int	set_pwd(t_env **env_lst)
 {
 	char	*cwd;
 	char	*new_pwd;
@@ -70,7 +70,7 @@ int	set_pwd(t_env *env_lst)
 	return (is_success);
 }
 
-int	update_to_new_pwd(t_env *oldpwd, t_env *env_lst)
+int	update_to_new_pwd(t_env *oldpwd, t_env **env_lst)
 {
 	if (oldpwd != NULL)
 	{
@@ -89,7 +89,7 @@ int	update_to_new_pwd(t_env *oldpwd, t_env *env_lst)
 	return (SUCCESS);
 }
 
-int	update_to_new_oldpwd(t_env *pwd, t_env *oldpwd, t_env *env_lst)
+int	update_to_new_oldpwd(t_env *pwd, t_env *oldpwd, t_env **env_lst)
 {
 	if (oldpwd != NULL)
 	{

@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:14:01 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/25 19:09:29 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/26 10:03:29 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	*init_pipefd(int count)
 	return (pipefd);
 }
 
-int	init_pipe(t_pipe *p, int count, t_env *env_lst, t_exec *top)
+int	init_pipe(t_pipe *p, int count, t_env **env_lst, t_exec *top)
 {
 	p->procid = init_procid(count);
 	if (p->procid == NULL)
@@ -60,7 +60,7 @@ int	init_pipe(t_pipe *p, int count, t_env *env_lst, t_exec *top)
 	return (SUCCESS);
 }
 
-int	pipeline(t_command *command, int proc_count, t_env *env_lst, t_exec *top)
+int	pipeline(t_command *command, t_env **env_lst, int proc_count, t_exec *top)
 {
 	t_pipe	p;
 	int		i;

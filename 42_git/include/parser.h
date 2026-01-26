@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/25 18:50:17 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/26 09:50:12 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,11 @@ typedef struct s_exec
 }	t_exec;
 
 // handle_input/handle_input.c
-int			handle_input(char **input, t_env *env_lst, t_exec **exec_tree,
+int			handle_input(char **input, t_env **env_lst, t_exec **exec_tree,
 				long exit_status);
 
 // handle_input/parser/parser.c
-int			parser(t_token **tokens, t_env *env_lst, t_exec **exec_tree,
+int			parser(t_token **tokens, t_env **env_lst, t_exec **exec_tree,
 				long exit_status);
 char		**new_exec(t_token **tokens, t_exec *node_exec, t_env *env_lst);
 void		free_command(t_command *command);
@@ -79,8 +79,8 @@ int			join_command(t_token **tokens, t_token *current, char **command,
 				t_token **next);
 
 // handle_input/parser/shell_var.c
-int			check_assignment(t_token **tokens, t_env *env_lst);
-int			add_shell_var(char *new_shell, t_env *env_lst);
+int			check_assignment(t_token **tokens, t_env **env_lst);
+int			add_shell_var(char *new_shell, t_env **env_lst);
 
 // handle_input/parser/init.c
 void		init_node_exec(t_exec *node_exec);

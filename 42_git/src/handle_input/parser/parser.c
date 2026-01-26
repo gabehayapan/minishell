@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/25 08:29:18 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/26 09:48:41 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	new_exec_tree(t_token **tokens, t_exec **head, t_env *env_lst)
 	return (ret);
 }
 
-int	parser(t_token **tokens, t_env *env_lst, t_exec **exec_tree,
+int	parser(t_token **tokens, t_env **env_lst, t_exec **exec_tree,
 			long exit_status)
 {
 	t_exec	*head;
@@ -119,13 +119,13 @@ int	parser(t_token **tokens, t_env *env_lst, t_exec **exec_tree,
 	is_success = check_assignment(tokens, env_lst);
 	if (is_success == FAILURE)
 		return (FAILURE);
-	is_success = expand_specials(tokens, env_lst, exit_status);
+	is_success = expand_specials(tokens, *env_lst, exit_status);
 	if (is_success == FAILURE)
 		return (FAILURE);
 	remove_tk_spaces(tokens);
 	while (*tokens != NULL)
 	{
-		is_success = new_exec_tree(tokens, &head, env_lst);
+		is_success = new_exec_tree(tokens, &head, *env_lst);
 		if (is_success == FAILURE || is_success == FORMAT_ERROR)
 			return (is_success);
 	}

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:50:38 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/25 18:56:39 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/26 10:15:34 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	export_no_args(t_env *env_lst)
 	while (env_lst != NULL)
 	{
 		ft_printf("declare -x %s=\"%s\"\n", env_lst->key, env_lst->value);
-		env_lst++;
+		env_lst = env_lst->next;
 	}
 }
 
@@ -33,7 +33,7 @@ int	update_env_value(t_env *target, char *new_env)
 	return (SUCCESS);
 }
 
-int	store_new_env_var(t_env *env_lst, char *new_env)
+int	store_new_env_var(t_env **env_lst, char *new_env)
 {
 	t_env	*new_env_ptr;
 	t_env	*last_env;
@@ -49,22 +49,22 @@ int	store_new_env_var(t_env *env_lst, char *new_env)
 		return (FAILURE);
 	}
 	new_env_ptr->is_env = ENV_VAR;
-	last_env = get_last_env(env_lst);
+	last_env = get_last_env(*env_lst);
 	if (last_env == NULL)
-		env_lst = new_env_ptr;
+		*env_lst = new_env_ptr;
 	else
 		last_env->next = new_env_ptr;
 	return (SUCCESS);
 }
 
-int	export(char **strs, t_env *env_lst, t_exec *top)
+int	export(char **strs, t_env **env_lst, t_exec *top)
 {
 	t_env	*target;
 	int		is_success;
 
 	strs = strs + 1;
 	if (*strs == NULL)
-		export_no_args(env_lst);
+		export_no_args(*env_lst);
 	while (*strs != NULL)
 	{
 		if (ft_isalpha(**strs) == 0)
@@ -75,7 +75,7 @@ int	export(char **strs, t_env *env_lst, t_exec *top)
 		}
 		else
 		{
-			is_success = check_existence(&target, env_lst, *strs, top);
+			is_success = check_existence(&target, *env_lst, *strs, top);
 			if (target != NULL && is_success == SUCCESS)
 				is_success = update_env_value(target, *strs);
 			else if (is_success == SUCCESS)

@@ -6,15 +6,15 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 11:06:32 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/25 07:27:09 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/26 09:51:23 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-long	execute_command(t_exec *exec_node, t_env *env_lst, t_exec *top);
+long	execute_command(t_exec *exec_node, t_env **env_lst, t_exec *top);
 
-long	handle_ctrl_op(t_exec *exec_node, t_env *env_lst, t_exec *top)
+long	handle_ctrl_op(t_exec *exec_node, t_env **env_lst, t_exec *top)
 {
 	int	ret;
 
@@ -40,7 +40,7 @@ long	handle_ctrl_op(t_exec *exec_node, t_env *env_lst, t_exec *top)
 	return (1);
 }
 
-long	execute_command(t_exec *exec_node, t_env *env_lst, t_exec *top)
+long	execute_command(t_exec *exec_node, t_env **env_lst, t_exec *top)
 {
 	if (exec_node == NULL)
 		return (0);

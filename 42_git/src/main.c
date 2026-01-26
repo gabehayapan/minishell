@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/25 07:35:04 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/26 09:51:00 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	display_minishell(void)
 	return (SUCCESS);
 }
 
-int	execute_input_command(char **input, t_env *env_lst)
+int	execute_input_command(char **input, t_env **env_lst)
 {
 	t_exec		*exec_tree;
 	int			ret;
@@ -57,7 +57,7 @@ int	execute_input_command(char **input, t_env *env_lst)
 	return (SUCCESS);
 }
 
-int	read_and_execute(t_env *env_lst)
+int	read_and_execute(t_env **env_lst)
 {
 	char	*input;
 	int		is_success;
@@ -99,7 +99,7 @@ int	main(int argc, char **argv, char **envp)
 	env_lst = init_env_list(envp);
 	if (env_lst == NULL)
 		return (EXIT_FAILURE);
-	is_success = read_and_execute(env_lst);
+	is_success = read_and_execute(&env_lst);
 	free_env_lst(env_lst);
 	if (is_success == FAILURE)
 		return (EXIT_FAILURE);

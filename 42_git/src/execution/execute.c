@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:56:57 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/25 18:48:38 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/26 10:03:00 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	count_proc(t_command *command)
 	return (count);
 }
 
-int	nopipe_builtin(t_command *command, t_env *env_lst, t_exec *top)
+int	nopipe_builtin(t_command *command, t_env **env_lst, t_exec *top)
 {
 	int	stdin_fd;
 	int	stdout_fd;
@@ -43,7 +43,7 @@ int	nopipe_builtin(t_command *command, t_env *env_lst, t_exec *top)
 	return (exit_code);
 }
 
-int	nopipe_execute(t_command *command, t_env *env_lst, t_exec *top)
+int	nopipe_execute(t_command *command, t_env **env_lst, t_exec *top)
 {
 	pid_t	pid;
 
@@ -63,7 +63,7 @@ int	nopipe_execute(t_command *command, t_env *env_lst, t_exec *top)
 	return (wait_for_children(&pid, 1));
 }
 
-int	execute(t_command *command, t_env *env_lst, t_exec *top)
+int	execute(t_command *command, t_env **env_lst, t_exec *top)
 {
 	int		proc_count;
 	int		ret;

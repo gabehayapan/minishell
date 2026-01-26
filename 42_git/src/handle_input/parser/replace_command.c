@@ -6,14 +6,14 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 08:52:30 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/25 09:22:15 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/26 09:46:47 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include <sys/wait.h>
 
-int	execute_input_command(char **input, t_env *env_lst);
+int	execute_input_command(char **input, t_env **env_lst);
 
 void	free_cmd_replace(t_token **tokens, t_token **current)
 {
@@ -62,7 +62,7 @@ void	get_cmd_output(int *pipefd, t_token *current, t_env *env_lst)
 	close(pipefd[1]);
 	if ((current->next)->next != NULL)
 	{
-		ret = execute_input_command(&((current->next)->next)->word, env_lst);
+		ret = execute_input_command(&((current->next)->next)->word, &env_lst);
 		if (ret == FAILURE)
 			exit(EXIT_FAILURE);
 	}
