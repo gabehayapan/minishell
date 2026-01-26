@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 11:54:45 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/22 19:11:42 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/26 10:38:51 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int	get_word(char **str, t_token *new_token, t_tk_type tk_type)
 	}
 	else
 		len = 1;
+	if (tk_type == BACKSLASH)
+		*str = *str + 1;
 	new_token->word = ft_substr(*str, 0, len);
 	if (new_token->word == NULL)
 		return (FAILURE);
@@ -58,30 +60,30 @@ t_token	*create_new_token(char **str, t_token *current, t_tk_type tk_type)
 	return (new_token);
 }
 
-int	tokenizer(char **input, t_token **tokens)
+t_token	*tokenizer(char **input)
 {
 	t_token		head;
 	t_token		*current;
 	t_tk_type	tk_type;
 	char		*str;
+	char		*cp_str;
 
 	if (init_token_vars(&head, &current, input, &str) == FAILURE)
-		return (FAILURE);
+		return (NULL);
+	cp_str = str;
 	while (*str != '\0')
 	{
 		tk_type = get_token_type(str);
 		current = create_new_token(&str, current, tk_type);
 		if (current == NULL)
-			return (free_token(head.next), FAILURE);
+			return (free_token(head.next));
 		if (tk_type == SGL_QTE || tk_type == DBL_QTE)
 		{
 			current = tokenize_quote(input, &str, current, tk_type);
 			if (current == NULL)
-				return (free_token(head.next), FAILURE);
+				return (free_token(head.next));
 		}
 	}
-	*tokens = head.next;
-	if (*tokens != NULL)
-		(*tokens)->prev = NULL;
-	return (SUCCESS);
+	free(cp_str);
+	return (head.next);
 }

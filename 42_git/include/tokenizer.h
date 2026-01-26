@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:01:56 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/22 19:19:02 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/26 10:35:10 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct s_syntax_err
 }	t_syntax_err;
 
 // handle_input/tokenizer/tokenizer.c
-int			tokenizer(char **input, t_token **tokens);
+t_token		*tokenizer(char **input);
 t_token		*create_new_token(char **str, t_token *current, t_tk_type tk_type);
 
 // handle_input/tokenizer/tokenizer_utils.c

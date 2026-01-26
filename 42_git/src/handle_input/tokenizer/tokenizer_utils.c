@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:57:43 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/22 19:24:47 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/26 10:22:05 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ t_tk_type	get_token_type(char *str)
 		return (DBL_HIS);
 	if (*str == '!' && ft_isspace(*(str + 1)) == 0)
 		return (SGL_HIS);
+	if (*str == '\\')
+		return (BACKSLASH);
 	if (ft_strncmp(str, "&&", 2) == 0)
 		return (AND);
 	if (ft_strncmp(str, "||", 2) == 0)

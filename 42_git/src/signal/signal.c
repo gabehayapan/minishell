@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:59:55 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/16 12:18:45 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/26 10:56:18 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <unistd.h>
+#include <sys/wait.h>
+#include "ftprintf.h"
 
 volatile sig_atomic_t	g_sig;
 
@@ -55,9 +57,16 @@ int	signal_in_loop(void)
 
 int	detect_signal(pid_t pid, int signum)
 {
+	int	wstatus;
+
 	kill(pid, signum);
 	write(1, "\n", 1);
-	return (signum + 128);
+	if (waitpid(pid, &wstatus, 0) == -1)
+	{
+		perror("waitpid");
+		return (EXIT_FAILURE);
+	}
+	return (WTERMSIG(wstatus) + 128);
 }
 
 int	handle_signal(void)

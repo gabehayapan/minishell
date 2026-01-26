@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 20:34:18 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/24 01:03:20 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/26 10:54:51 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	status_code(int status)
 {
 	int	code;
 
+	code = status;
 	if (WIFEXITED(status))
 		code = WEXITSTATUS(status);
 	if (WIFSIGNALED(status))
