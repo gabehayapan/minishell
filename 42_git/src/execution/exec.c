@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 23:11:26 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/26 10:44:14 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/26 12:25:28 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ char	*free_arrs_ret_s(char **arrs, char *s)
 
 int	handle_noexist_cmd(char **cmdset)
 {
-	ft_putstr_fd("-minishell: ", 2);
 	ft_putstr_fd(cmdset[0], 2);
 	ft_putendl_fd(": command not found", 2);
 	free_arrs_ret_s(cmdset, NULL);
