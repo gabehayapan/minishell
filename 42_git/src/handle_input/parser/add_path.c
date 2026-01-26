@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 08:44:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/21 13:26:40 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/26 22:06:28 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 t_builtin	is_builtin(char *cmd)
 {
+	if (cmd == NULL)
+		return (ELSE);
 	if (ft_strcmp("echo", cmd) == 0)
 		return (ECHO);
 	if (ft_strcmp("cd", cmd) == 0)

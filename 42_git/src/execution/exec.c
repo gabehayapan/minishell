@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 23:11:26 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/26 12:25:28 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/26 22:13:16 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,16 @@ int	exec_command(t_command *command, t_env **env_lst, t_exec *top)
 	char	**cmdset;
 	char	**envp;
 
-	envp = convert_to_envp(*env_lst);
-	if (envp == NULL)
-		exit(EXIT_FAILURE);
 	cmdset = command->command;
+	if (*cmdset == NULL)
+		exit(EXIT_SUCCESS);
 	if (**cmdset == '\0')
 		return (handle_noexist_cmd(cmdset));
 	if (is_builtin(cmdset[0]) != ELSE)
 		exit(pass_to_builtin(command, env_lst, top));
+	envp = convert_to_envp(*env_lst);
+	if (envp == NULL)
+		exit(EXIT_FAILURE);
 	else if (execve(cmdset[0], cmdset, envp) == -1)
 	{
 		if (errno == ENOENT)
