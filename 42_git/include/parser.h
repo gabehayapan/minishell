@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/26 12:24:57 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/27 12:06:45 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
 
 # define NOT_FOUND 4
 # define FORMAT_ERROR 5
-# define END 6
+# define SIGNALED 6
+# define END 7
 
 typedef enum s_rdt_type
 {

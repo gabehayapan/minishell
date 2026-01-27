@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/26 12:23:18 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/27 12:12:05 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,13 +113,13 @@ int	expand_specials(t_token **tokens, t_env *env_lst, long exit_status)
 		if (current->tk_type == SGL_QTE || current->tk_type == DBL_QTE)
 		{
 			is_success = expand_quote(tokens, &current, env_lst, exit_status);
-			if (is_success == FAILURE)
-				return (FAILURE);
+			if (is_success == FAILURE || is_success == SIGNALED)
+				return (is_success);
 			continue ;
 		}
 		is_success = handle_others(tokens, &current, env_lst, exit_status);
-		if (is_success == FAILURE)
-			return (FAILURE);
+		if (is_success == FAILURE || is_success == SIGNALED)
+			return (is_success);
 		if (current == NULL)
 			break ;
 		current = current->next;

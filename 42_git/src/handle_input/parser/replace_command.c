@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 08:52:30 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/27 11:00:04 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/27 12:44:22 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	get_cmd_output(int *pipefd, t_token *current, t_env *env_lst)
 {
 	int	ret;
 
+	if (default_signal() == EXIT_FAILURE)
+		exit(EXIT_FAILURE);
 	close(STDOUT_FILENO);
 	ret = dup2(pipefd[1], STDOUT_FILENO);
 	if (ret == -1)
@@ -70,12 +72,25 @@ void	get_cmd_output(int *pipefd, t_token *current, t_env *env_lst)
 	exit(EXIT_FAILURE);
 }
 
+int	wait_for_child(void)
+{
+	int	status;
+
+	wait(&status);
+	if (WIFSIGNALED(status))
+	{
+		write(1, "\n", 1);
+		return (SIGNALED);
+	}
+	return (SUCCESS);
+}
+
 int	replace_with_cmd_output(t_token **tokens, t_token **current,
 			t_env *env_lst)
 {
 	int		pipefd[2];
 	pid_t	pid;
-	int		status;
+	int		ret;
 
 	if (((*current)->next)->next != NULL
 		&& (((*current)->next)->next)->tk_type == C_PAREN)
@@ -91,11 +106,9 @@ int	replace_with_cmd_output(t_token **tokens, t_token **current,
 		return (FAILURE);
 	}
 	else if (pid == 0)
-	{
-		if (default_signal() == EXIT_FAILURE)
-			exit(EXIT_FAILURE);
 		get_cmd_output(pipefd, *current, env_lst);
-	}
-	waitpid(pid, &status, 0);
+	ret = wait_for_child();
+	if (ret == SIGNALED)
+		return (SIGNALED);
 	return (set_cmd_output(tokens, current, pipefd));
 }
