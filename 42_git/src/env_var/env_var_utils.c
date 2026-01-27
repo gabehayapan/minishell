@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 14:01:12 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/08 16:12:17 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/23 16:43:43 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,26 @@ void	free_env_lst(t_env *env_lst)
 		free(current);
 		current = next;
 	}
+}
+
+t_env	*get_last_env(t_env *env_lst)
+{
+	if (env_lst == NULL)
+		return (NULL);
+	while (env_lst->next != NULL)
+		env_lst = env_lst->next;
+	return (env_lst);
+}
+
+size_t	count_size_env_lst(t_env *env_lst)
+{
+	size_t	counter;
+
+	counter = 0;
+	while (env_lst != NULL)
+	{
+		counter = counter + 1;
+		env_lst = env_lst->next;
+	}
+	return (counter);
 }

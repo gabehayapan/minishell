@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 11:54:45 by hanakamu          #+#    #+#             */
-/*   Updated: 2025/12/28 18:40:28 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/07 12:12:56 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,8 +152,10 @@ t_tk_type	get_token_type(char *str)
 		return (DOUBLE_HISTORY);
 	if (*str == '!' && ft_isspace(*(str + 1)) == 0)
 		return (SINGLE_HISTORY);
-	if (ft_strncmp(str, "&&", 2) == 0 || ft_strncmp(str, "||", 2) == 0)
-		return (LOGICAL_OPERATOR);
+	if (ft_strncmp(str, "&&", 2) == 0)
+		return (AND);
+	if (ft_strncmp(str, "||", 2) == 0)
+		return (OR);
 	if (*str == '|')
 		return (PIPE);
 	return (get_token_type_util(str));
@@ -166,7 +168,7 @@ int	get_word(char **str, t_token *new_token, t_tk_type tk_type)
 
 	tmp = *str;
 	if (tk_type == DOUBLE_REDIRECTION || tk_type == DOUBLE_HISTORY
-		|| tk_type == LOGICAL_OPERATOR)
+		|| tk_type == AND || tk_type == OR)
 		len = 2;
 	else if (tk_type == WORD)
 	{

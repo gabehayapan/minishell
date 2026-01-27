@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2025/12/31 11:31:31 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/07 11:46:55 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,11 @@ typedef struct s_exec
 	struct s_exec	*left;
 	struct s_exec	*right;
 	char			**exec;
+	size_t			size_exec;
+	size_t			num_infile;
+	size_t			num_outfile;
+	size_t			is_heredoc;
+	size_t			num_command;
 }	t_exec;
-
-typedef struct s_parser
-{
-	size_t	num_infile;
-	size_t	num_outfile;
-	size_t	is_heredoc;
-	size_t	num_command;
-	t_exec	*exec_tree;
-}	t_parser;
 
 #endif

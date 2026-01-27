@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 10:48:00 by hanakamu          #+#    #+#             */
-/*   Updated: 2025/12/30 13:54:38 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/07 10:49:19 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,18 @@
 
 void	free_env_lst(t_env *env_lst)
 {
-	t_env	*tmp;
+	t_env	*current;
+	t_env	*next;
 
-	tmp = env_lst;
-	while (tmp != NULL)
+	current = env_lst;
+	while (current != NULL)
 	{
-		free(tmp->key);
-		free(tmp->value);
-		tmp = tmp->next;
+		next = current->next;
+		free(current->key);
+		free(current->value);
+		free(current);
+		current = next;
 	}
-	free(env_lst);
 }
 
 size_t	get_array_size(char **strs)
@@ -80,33 +82,62 @@ int	new_env_var(t_env *tmp, char *env)
 
 t_env	*init_env_list(char **envp)
 {
-	size_t	size;
-	t_env	*env_lst;
-	t_env	*last_node;
+	t_env	head;
+	t_env	*current;
+	t_env	*prev;
 	int		is_success;
 
-	size = get_array_size(envp);
-	env_lst = (t_env *)malloc(sizeof(t_env) * size);
-	if (env_lst == NULL)
-		return (NULL);
-	last_node = env_lst;
+	head.next = NULL;
+	prev = NULL;
 	while (*envp != NULL)
 	{
-		is_success = new_env_var(last_node, *envp);
+		current = (t_env *)malloc(sizeof(t_env));
+		if (current == NULL)
+			return (NULL);
+		if (head.next == NULL)
+			head.next = current;
+		is_success = new_env_var(current, *envp);
 		if (is_success == FAILURE)
 		{
-			free(env_lst);
+			free_env_lst(head.next);
 			return (NULL);
 		}
-		last_node->next = last_node + 1;
-		last_node++;
+		if (prev != NULL)
+			prev->next = current;
+		prev = current;
 		envp++;
 	}
-	last_node = env_lst + size - 1;
-	last_node->next = NULL;
-	return (env_lst);
+	return (head.next);
 }
 
+//t_env	*init_env_list(char **envp)
+//{
+//	size_t	size;
+//	t_env	*env_lst;
+//	t_env	*last_node;
+//	int		is_success;
+//
+//	size = get_array_size(envp);
+//	env_lst = (t_env *)malloc(sizeof(t_env) * size);
+//	if (env_lst == NULL)
+//		return (NULL);
+//	last_node = env_lst;
+//	while (*envp != NULL)
+//	{
+//		is_success = new_env_var(last_node, *envp);
+//		if (is_success == FAILURE)
+//		{
+//			free(env_lst);
+//			return (NULL);
+//		}
+//		last_node->next = last_node + 1;
+//		last_node++;
+//		envp++;
+//	}
+//	last_node = env_lst + size - 1;
+//	last_node->next = NULL;
+//	return (env_lst);
+//}
 //#include <stdio.h>
 //int	main(int argc, char **argv, char **envp)
 //{

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:01:56 by hanakamu          #+#    #+#             */
-/*   Updated: 2025/12/28 18:39:57 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/07 12:12:13 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ typedef enum e_tk_type
 	OPTION,				/* - */
 	PARENTHESIS,		/* () */
 	BRACES,				/* {} */
-	LOGICAL_OPERATOR,	/* &&, || */
+	AND,				/* && */
+	OR,					/* || */
 	TILDE,				/* ~ */
 	SEMICOLON,			/* ; */
 	END,				/* \0 */

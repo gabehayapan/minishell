@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 15:03:27 by hanakamu          #+#    #+#             */
-/*   Updated: 2025/10/23 15:04:13 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/24 10:41:45 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static size_t	get_strs_size(char const *s, char c)
 {
-	size_t	counter;
+	size_t		counter;
 
 	counter = 0;
 	while (*s == c && *s)
@@ -26,6 +26,21 @@ static size_t	get_strs_size(char const *s, char c)
 		while (*s == c && *s)
 			s++;
 		counter++;
+	}
+	if (*s != c && counter == 0)
+		counter = counter + 1;
+	return (counter);
+}
+
+static size_t	get_len_str(char const **s, char c)
+{
+	size_t	counter;
+
+	counter = 0;
+	while (**s != c && **s)
+	{
+		counter++;
+		(*s)++;
 	}
 	return (counter);
 }
@@ -39,12 +54,7 @@ static void	assign_substrs(char **strs, char const *s, char c, size_t *i)
 	start = 0;
 	while (*s)
 	{
-		count_len = 0;
-		while (*s != c && *s)
-		{
-			count_len++;
-			s++;
-		}
+		count_len = get_len_str(&s, c);
 		if ((*s == c || !*s) && count_len)
 		{
 			strs[*i] = ft_substr(cp_s, start, count_len);
@@ -56,6 +66,11 @@ static void	assign_substrs(char **strs, char const *s, char c, size_t *i)
 		if (*s)
 			s++;
 		start++;
+	}
+	if (*s != c && *i == 0)
+	{
+		strs[*i] = ft_strdup("");
+		(*i)++;
 	}
 }
 

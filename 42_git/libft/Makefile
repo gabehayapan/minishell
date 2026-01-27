@@ -73,6 +73,27 @@ PRINTF_SRCS =\
 	utils/ft_putchar.c\
 	utils/ft_putstr.c\
 
+DPRINTF_SRCS =\
+	ft_dprintf.c\
+	convert_type_d.c\
+	type_conversion/convert_c_d.c\
+	type_conversion/convert_s_d.c\
+	type_conversion/convert_p_d.c\
+	type_conversion/convert_d_i_d.c\
+	type_conversion/convert_d_i_utils_d.c\
+	type_conversion/convert_u_d.c\
+	type_conversion/convert_lower_x_d.c\
+	type_conversion/convert_lower_x_utils_d.c\
+	type_conversion/convert_upper_x_d.c\
+	type_conversion/convert_upper_x_utils_d.c\
+	type_conversion/convert_percent_d.c\
+	utils/ft_puthexa_d.c\
+	utils/count_digits_d.c\
+	utils/ft_putunbr_d.c\
+	utils/ft_putspaces_d.c\
+	utils/ft_putzeros_d.c\
+	utils/handle_num_sign_d.c\
+
 GNL_SRCS =\
 	get_next_line.c\
 	get_next_line_utils.c\
@@ -80,6 +101,7 @@ GNL_SRCS =\
 LIBFT_DIR = libft
 LIST_DIR = list
 PRINTF_DIR = ft_printf ft_printf/type_conversion ft_printf/utils
+DPRINTF_DIR = ft_dprintf ft_dprintf/type_conversion ft_dprintf/utils
 GNL_DIR = get_next_line
 OBJ_DIR = obj
 HEADER_DIR = header
@@ -87,14 +109,20 @@ HEADER_DIR = header
 LIBFT_OBJS = $(addprefix $(OBJ_DIR)/, $(LIBFT_SRCS:.c=.o))
 LIST_OBJS = $(addprefix $(OBJ_DIR)/, $(LIST_SRCS:.c=.o))
 PRINTF_OBJS = $(addprefix $(OBJ_DIR)/, $(notdir $(PRINTF_SRCS:.c=.o)))
+DPRINTF_OBJS = $(addprefix $(OBJ_DIR)/, $(notdir $(DPRINTF_SRCS:.c=.o)))
 GNL_OBJS = $(addprefix $(OBJ_DIR)/, $(GNL_SRCS:.c=.o))
 
-vpath %.c $(LIBFT_DIR) $(LIST_DIR) $(PRINTF_DIR) $(GNL_DIR)
+#vpath %.c $(LIBFT_DIR) $(LIST_DIR) $(PRINTF_DIR) $(GNL_DIR)
+vpath %.c $(LIBFT_DIR) $(LIST_DIR) $(PRINTF_DIR) $(DPRINTF_DIR) $(GNL_DIR)
 
 all: $(NAME)
 
-$(NAME): $(LIBFT_OBJS) $(LIST_OBJS) $(PRINTF_OBJS) $(GNL_OBJS)
-	ar rcs $(NAME) $(LIBFT_OBJS) $(LIST_OBJS) $(PRINTF_OBJS) $(GNL_OBJS)
+#$(NAME): $(LIBFT_OBJS) $(LIST_OBJS) $(PRINTF_OBJS) $(GNL_OBJS)
+#	ar rcs $(NAME) $(LIBFT_OBJS) $(LIST_OBJS) $(PRINTF_OBJS) $(GNL_OBJS)
+
+$(NAME): $(LIBFT_OBJS) $(LIST_OBJS) $(PRINTF_OBJS) $(DPRINTF_OBJS) $(GNL_OBJS)
+	ar rcs $(NAME) $(LIBFT_OBJS) $(LIST_OBJS) $(PRINTF_OBJS) $(DPRINTF_OBJS) \
+	$(GNL_OBJS)
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)

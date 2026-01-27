@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:47:12 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/08 18:39:01 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/27 10:59:49 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@
 # include <term.h>
 # include "libft.h"
 # include "ftprintf.h"
+# include "ft_dprintf.h"
 # include "execution.h"
+
+int	signal_in_loop(void);
+int	ignore_signal(void);
 
 #endif

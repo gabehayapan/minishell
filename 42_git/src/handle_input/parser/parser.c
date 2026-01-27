@@ -6,102 +6,129 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/08 20:21:22 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/26 17:57:07 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include <stdbool.h>
 
-size_t	get_len_command(t_token *tokens)
+char	**get_execution(t_token **tokens)
 {
-	size_t	len_command;
-	size_t	i;
+	size_t	size_cmd;
+	char	**command;
+	char	**ret;
+	t_token	*current;
+	t_token	*next;
 
-	len_command = 0;
-	while (tokens != NULL && tokens->tk_type != AND && tokens->tk_type != OR
-		&& tokens->tk_type != SEMICOLON && tokens->tk_type != PIPE)
+	size_cmd = get_size_command(*tokens);
+	command = (char **)malloc(sizeof(char *) * (size_cmd + 1));
+	if (command == NULL)
+		return (NULL);
+	ret = command;
+	current = *tokens;
+	while (current != NULL && current->tk_type != AND && current->tk_type != OR
+		&& current->tk_type != SEMI && current->tk_type != PIPE)
 	{
-		i = 0;
-		while ((tokens->word)[i] != '\0')
+		if (join_command(tokens, current, command, &next) == FAILURE)
 		{
-			len_command = len_command + 1;
-			i++;
+			free_strs(ret, command - ret);
+			return (NULL);
 		}
-		len_command = len_command + 1;
-		tokens = tokens->next;
+		command++;
+		current = next;
 	}
-	return (len_command);
+	*command = NULL;
+	return (ret);
 }
 
-int	get_execution(char **exec, size_t size, t_token **tokens)
+int	new_command(t_token **tokens, t_command *command, t_env *env_lst)
 {
-	size_t	len_command;
-	size_t	i;
+	int			is_success;
 
-	len_command = get_len_command(*tokens);
-	i = 1;
+	is_success = get_in_out_rdt(tokens, command);
+	if (is_success == FAILURE)
+		return (FAILURE);
+	is_success = add_path_to_command(*tokens, env_lst);
+	if (is_success == FAILURE)
+		return (FAILURE);
+	command->command = get_execution(tokens);
+	if (command->command == NULL)
+		return (FAILURE);
+	return (SUCCESS);
+}
+
+int	get_piped_command(t_token **tokens, t_command **command, t_env *env_lst)
+{
+	t_command	*current;
+	t_command	*last;
+	static int	subshell;
+
+	last = NULL;
 	while (*tokens != NULL
 		&& (*tokens)->tk_type != AND && (*tokens)->tk_type != OR
-		&& (*tokens)->tk_type != SEMICOLON && (*tokens)->tk_type != PIPE)
+		&& (*tokens)->tk_type != SEMI)
 	{
-		*(exec + i) = (char *)ft_calloc(len_command + 2, sizeof(char));
-		if (*(exec + i) == NULL)
+		current = (t_command *)malloc(sizeof(t_command));
+		if (current == NULL)
+			return (FAILURE);
+		if (initialize_command(tokens, current, &subshell) == FAILURE)
+			return (FORMAT_ERROR);
+		if (new_command(tokens, current, env_lst) == FAILURE)
 		{
-			while (i--)
-				free(*(exec + i));
-			free(*(exec + size - 1));
+			free_command(*command);
 			return (FAILURE);
 		}
-		get_command(*(exec + i), *tokens);
-		while (*tokens != NULL
-			&& (*tokens)->tk_type != AND && (*tokens)->tk_type != OR
-			&& (*tokens)->tk_type != SEMICOLON && (*tokens)->tk_type != PIPE)
-			clear_token(tokens, *tokens, free);
+		add_new_command(command, current, &last);
 		if (*tokens != NULL && (*tokens)->tk_type == PIPE)
 			clear_token(tokens, *tokens, free);
-		i++;
 	}
 	return (SUCCESS);
 }
 
-char	**new_exec(t_token **tokens, t_exec *node_exec)
+int	new_exec_tree(t_token **tokens, t_exec **head, t_env *env_lst)
 {
-	char	**exec;
-	size_t	size;
-	int		is_success;
+	t_exec	*node_exec;
+	int		ret;
 
-	size = count_array_size(*tokens, node_exec);
-	exec = (char **)malloc(sizeof(char *) * size);
-	if (exec == NULL)
-		return (NULL);
-	is_success = get_redirect_file(tokens, exec, size);
-	if (is_success == FAILURE)
+	node_exec = (t_exec *)malloc(sizeof(t_exec));
+	if (node_exec == NULL)
+		return (FAILURE);
+	init_node_exec(node_exec);
+	ret = get_piped_command(tokens, &node_exec->command, env_lst);
+	if (ret == FAILURE || ret == FORMAT_ERROR)
 	{
-		free(exec);
-		return (NULL);
+		free(node_exec);
+		return (ret);
 	}
-	is_success = get_execution(exec, size, tokens);
-	if (is_success == FAILURE)
-	{
-		free(exec);
-		return (NULL);
-	}
-	node_exec->size_exec = size;
-	return (exec);
+	ret = add_exec_node(tokens, head, node_exec);
+	return (ret);
 }
 
-t_exec	*parser(t_token **tokens, t_env *env_lst)
+int	parser(t_token **tokens, t_env **env_lst, t_exec **exec_tree,
+			long exit_status)
 {
-	t_exec	*top;
+	t_exec	*head;
 	int		is_success;
 
-	top = NULL;
-	expand_specials(tokens, env_lst);
-	while(*tokens != NULL)
+	while (*tokens != NULL && (*tokens)->tk_type == SPACES)
+		clear_token(tokens, *tokens, free);
+	if (*tokens == NULL)
+		return (NO_COMMAND);
+	head = NULL;
+	is_success = check_assignment(tokens, env_lst);
+	if (is_success == FAILURE)
+		return (FAILURE);
+	is_success = expand_specials(tokens, *env_lst, exit_status);
+	if (is_success == FAILURE)
+		return (FAILURE);
+	remove_tk_spaces(tokens);
+	while (*tokens != NULL)
 	{
-		is_success = new_exec_tree(tokens, &top);
-		if (is_success == FAILURE)
-			return (NULL);
+		is_success = new_exec_tree(tokens, &head, *env_lst);
+		if (is_success == FAILURE || is_success == FORMAT_ERROR)
+			return (is_success);
 	}
-	return (top);
+	*exec_tree = create_exec_ast(head);
+	return (SUCCESS);
 }

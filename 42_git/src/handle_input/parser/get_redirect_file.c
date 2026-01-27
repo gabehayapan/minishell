@@ -5,93 +5,70 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/29 14:19:41 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/08 18:52:42 by hanakamu         ###   ########.fr       */
+/*   Created: 2026/01/14 17:37:05 by hanakamu          #+#    #+#             */
+/*   Updated: 2026/01/14 19:19:00 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-t_token	*get_token_infile(t_token *tokens)
+int	new_rdt_node(t_token *current, t_rdt **head)
 {
-	while (tokens != NULL && tokens->tk_type != AND && tokens->tk_type != OR
-		&& tokens->tk_type != SEMICOLON)
+	t_rdt	*new_rdt;
+
+	if (current->next == NULL)
 	{
-		if (*(tokens->word) == '<' && tokens->tk_type == SINGLE_REDIRECTION)
-			return (tokens);
-		tokens = tokens->next;
+		no_rdt_file(current);
+		return (SUCCESS);
 	}
-	return (NULL);
-}
-
-int	get_infile(t_token *tokens, char **exec)
-{
-	t_token	*token_infile;
-
-	token_infile = get_token_infile(tokens);
-	if (token_infile != NULL && token_infile->next == NULL)
-	{
-		syntax_error_redirection();
+	new_rdt = (t_rdt *)malloc(sizeof(t_rdt));
+	if (new_rdt == NULL)
 		return (FAILURE);
-	}
-	else if (token_infile != NULL && token_infile != NULL)
-		*exec = (token_infile->next)->word;
+	new_rdt->rdt = (current->next)->word;
+	new_rdt->type = get_rdt_type(current);
+	new_rdt->next = NULL;
+	if (*head == NULL)
+		*head = new_rdt;
 	else
-		*exec = NULL;
+		add_last(head, new_rdt);
 	return (SUCCESS);
 }
 
-t_token	*get_token_outfile(t_token *tokens)
+int	set_rdt_node(t_token **tokens, t_token *current, t_rdt **head)
 {
-	while (tokens != NULL && tokens->tk_type != AND && tokens->tk_type != OR
-		&& tokens->tk_type != SEMICOLON)
+	if (new_rdt_node(current, head) == FAILURE)
 	{
-		if (*(tokens->word) == '>' && tokens->tk_type == SINGLE_REDIRECTION)
-			return (tokens);
-		tokens = tokens->next;
-	}
-	return (NULL);
-}
-
-int	get_outfile(t_token *tokens, char **exec)
-{
-	t_token	*token_outfile;
-
-	token_outfile = get_token_outfile(tokens);
-	if (token_outfile != NULL && token_outfile->next == NULL)
-	{
-		syntax_error_redirection();
+		free_rdt(*head);
 		return (FAILURE);
 	}
-	else if (token_outfile != NULL && token_outfile != NULL)
-		*exec = (token_outfile->next)->word;
-	else
-		*exec = NULL;
+	clear_token(tokens, current->next, NULL);
+	clear_token(tokens, current, free);
 	return (SUCCESS);
 }
 
-int	get_redirect_file(t_token **tokens, char **exec, size_t size)
+int	get_in_out_rdt(t_token **tokens, t_command *command)
 {
+	t_rdt	*head_in;
+	t_rdt	*head_out;
+	t_token	*current;
 	int		is_success;
-	t_token	*tmp_token;
 
-	is_success = get_infile(*tokens, exec);
-	if (is_success == FAILURE)
-		return (FAILURE);
-	tmp_token = get_token_infile(*tokens);
-	if (tmp_token != NULL)
+	head_in = NULL;
+	head_out = NULL;
+	current = *tokens;
+	is_success = SUCCESS;
+	while (current != NULL && current->tk_type != AND && current->tk_type != OR
+		&& current->tk_type != SEMI && current->tk_type != PIPE)
 	{
-		clear_token(tokens, tmp_token->next, NULL);
-		clear_token(tokens, tmp_token, free);
+		if (current->tk_type == SGL_INRDT || current->tk_type == DBL_INRDT)
+			is_success = set_rdt_node(tokens, current, &head_in);
+		if (current->tk_type == SGL_OUTRDT || current->tk_type == DBL_OUTRDT)
+			is_success = set_rdt_node(tokens, current, &head_out);
+		if (is_success == FAILURE)
+			return (FAILURE);
+		current = current->next;
 	}
-	is_success = get_outfile(*tokens, exec + size - 1);
-	if (is_success == FAILURE)
-		return (FAILURE);
-	tmp_token = get_token_outfile(*tokens);
-	if (tmp_token != NULL)
-	{
-		clear_token(tokens, tmp_token->next, NULL);
-		clear_token(tokens, tmp_token, free);
-	}
+	command->inrdt = head_in;
+	command->outrdt = head_out;
 	return (SUCCESS);
 }
