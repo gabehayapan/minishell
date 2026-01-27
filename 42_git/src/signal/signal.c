@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:59:55 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/26 16:49:08 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/27 10:57:53 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,6 @@
 #include <sys/wait.h>
 #include "ftprintf.h"
 
-volatile sig_atomic_t	g_sig;
-
-void	signal_handler(int signum)
-{
-//	(void)signum;
-	g_sig = signum;
-//	ft_printf("num:%d", getpid());
-}
-
 void	redisplay_prompt(int signum)
 {
 	if (signum == SIGINT)
@@ -35,54 +26,54 @@ void	redisplay_prompt(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-//	ft_printf("dis:%d", getpid());
 }
 
-int	signal_in_loop(struct sigaction *sa_int, struct sigaction *sa_quit)
+int	signal_in_loop(void)
 {
-	sa_int->sa_handler = redisplay_prompt;
-	sa_quit->sa_handler = SIG_IGN;
-	if (sigemptyset(&sa_int->sa_mask) == -1)
+	struct sigaction	sa_int;
+	struct sigaction	sa_quit;
+
+	sa_int.sa_handler = redisplay_prompt;
+	sa_quit.sa_handler = SIG_IGN;
+	if (sigemptyset(&sa_int.sa_mask) == -1)
 		return (EXIT_FAILURE);
-	if (sigemptyset(&sa_quit->sa_mask) == -1)
+	if (sigemptyset(&sa_quit.sa_mask) == -1)
 		return (EXIT_FAILURE);
-	sa_int->sa_flags = 0;
-	sa_quit->sa_flags = 0;
-	if (sigaction(SIGINT, sa_int, NULL) == -1)
+	sa_int.sa_flags = 0;
+	sa_quit.sa_flags = 0;
+	if (sigaction(SIGINT, &sa_int, NULL) == -1)
 		return (EXIT_FAILURE);
-	if (sigaction(SIGQUIT, sa_quit, NULL) == -1)
+	if (sigaction(SIGQUIT, &sa_quit, NULL) == -1)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
-int	detect_signal(pid_t pid, int signum)
+int	ignore_signal(void)
 {
-//	int	wstatus;
+	struct sigaction	sa;
 
-	kill(pid, signum);
-	write(1, "\n", 1);
-//	if (waitpid(pid, &wstatus, 0) == -1)
-//j	{
-//j		perror("waitpid");
-//j		return (EXIT_FAILURE);
-//j	}
-//j	return (WTERMSIG(wstatus) + 128);
-	return (0);
+	sa.sa_handler = SIG_IGN;
+	if (sigemptyset(&sa.sa_mask) == -1)
+		return (EXIT_FAILURE);
+	sa.sa_flags = 0;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+		return (EXIT_FAILURE);
+	if (sigaction(SIGQUIT, &sa, NULL) == -1)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
-int	handle_signal(struct sigaction *sa_int, struct sigaction *sa_quit)
+int	default_signal(void)
 {
-	sa_int->sa_handler = signal_handler;
-	sa_quit->sa_handler = signal_handler;
-	if (sigemptyset(&sa_int->sa_mask) == -1)
+	struct sigaction	sa;
+
+	sa.sa_handler = SIG_DFL;
+	if (sigemptyset(&sa.sa_mask) == -1)
 		return (EXIT_FAILURE);
-	if (sigemptyset(&sa_quit->sa_mask) == -1)
+	sa.sa_flags = 0;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
 		return (EXIT_FAILURE);
-	sa_int->sa_flags = 0;
-	sa_quit->sa_flags = 0;
-	if (sigaction(SIGINT, sa_int, NULL) == -1)
-		return (EXIT_FAILURE);
-	if (sigaction(SIGQUIT, sa_quit, NULL) == -1)
+	if (sigaction(SIGQUIT, &sa, NULL) == -1)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

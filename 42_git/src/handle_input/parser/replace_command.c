@@ -6,13 +6,14 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 08:52:30 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/26 12:10:45 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/27 11:00:04 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include <sys/wait.h>
 
+int	default_signal(void);
 int	execute_input_command(char **input, t_env **env_lst);
 
 void	free_cmd_replace(t_token **tokens, t_token **current)
@@ -90,7 +91,11 @@ int	replace_with_cmd_output(t_token **tokens, t_token **current,
 		return (FAILURE);
 	}
 	else if (pid == 0)
+	{
+		if (default_signal() == EXIT_FAILURE)
+			exit(EXIT_FAILURE);
 		get_cmd_output(pipefd, *current, env_lst);
+	}
 	waitpid(pid, &status, 0);
 	return (set_cmd_output(tokens, current, pipefd));
 }

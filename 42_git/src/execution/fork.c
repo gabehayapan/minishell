@@ -6,11 +6,13 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 16:20:31 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/25 19:03:58 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/27 11:00:18 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipe.h"
+
+int	default_signal(void);
 
 int	redirect_pipe(t_pipe *p, t_command *command, int p_nbr)
 {
@@ -46,6 +48,8 @@ int	fork_process(t_pipe *p, t_command *command, int p_nbr)
 	}
 	if (pid == 0)
 	{
+		if (default_signal() == EXIT_FAILURE)
+			exit(EXIT_FAILURE);
 		if (redirect_pipe(p, command, p_nbr) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		redirect_fd(command);

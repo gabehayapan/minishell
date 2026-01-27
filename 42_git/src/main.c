@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/26 18:10:24 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/27 10:58:07 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,20 +61,18 @@ int	read_and_execute(t_env **env_lst)
 {
 	char				*input;
 	int					is_success;
-	struct sigaction	sa_int;
-	struct sigaction	sa_quit;
 
 	input = NULL;
 	while (1)
 	{
-		if (signal_in_loop(&sa_int, &sa_quit) == FAILURE)
+		if (signal_in_loop() == FAILURE)
 			return (FAILURE);
 		input = readline("minishell> ");
 		if (input == NULL)
 			break ;
 		if (*input != '\0')
 		{
-			if (handle_signal(&sa_int, &sa_quit) == FAILURE)
+			if (ignore_signal() == FAILURE)
 				return (FAILURE);
 			is_success = execute_input_command(&input, env_lst);
 			free(input);

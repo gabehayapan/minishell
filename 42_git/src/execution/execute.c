@@ -6,12 +6,14 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:56:57 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/26 22:10:37 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/27 10:58:30 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipe.h"
 #include "builtin.h"
+
+int	default_signal(void);
 
 int	count_proc(t_command *command)
 {
@@ -57,6 +59,8 @@ int	nopipe_execute(t_command *command, t_env **env_lst, t_exec *top)
 	}
 	if (pid == 0)
 	{
+		if (default_signal() == EXIT_FAILURE)
+			exit(EXIT_FAILURE);
 		redirect_fd(command);
 		exec_command(command, env_lst, top);
 	}

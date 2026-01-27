@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:16:22 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/26 11:09:08 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/27 11:00:41 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@
 
 # define STDIN 0
 # define STDOUT 1
-
-extern volatile sig_atomic_t	g_sig;
 
 typedef enum s_bool
 {
