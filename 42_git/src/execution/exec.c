@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 23:11:26 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/26 22:13:16 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/27 17:17:04 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	pass_to_builtin(t_command *command, t_env **env_lst, t_exec *top)
 	if (is_builtin(cmdset[0]) == UNSET)
 		res = unset(env_lst, cmdset);
 	if (is_builtin(cmdset[0]) == PWD)
-		res = pwd();
+		res = pwd(env_lst);
 	if (is_builtin(cmdset[0]) == ECHO)
 		res = echo(cmdset, 1);
 	return (res);
