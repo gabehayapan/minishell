@@ -6,24 +6,18 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 19:32:04 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/25 19:22:02 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/27 17:15:49 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include "env_var.h"
 #include "ft_dprintf.h"
 
-#define PATHNAME_SIZE 512
-
-int	pwd(void)
+int	pwd(t_env **env_lst)
 {
-	char	pathname[PATHNAME_SIZE];
+	t_env	*pwd;
 
-	ft_memset(pathname, '\0', PATHNAME_SIZE);
-	getcwd(pathname, PATHNAME_SIZE);
-	ft_dprintf(STDOUT_FILENO, "%s\n", pathname);
+	pwd = env_find(*env_lst, "PWD");
+	ft_dprintf(STDOUT_FILENO, "%s\n", pwd->value);
 	return (EXIT_SUCCESS);
 }
