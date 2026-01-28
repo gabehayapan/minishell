@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/27 12:06:45 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 10:03:47 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ void		free_command(t_command *command);
 void		get_remaining_tokens(t_token **tokens);
 void		add_new_command(t_command **head, t_command *new_command,
 				t_command **last);
-void		remove_tk_spaces(t_token **tokens);
 int			join_command(t_token **tokens, t_token *current, char **command,
 				t_token **next);
 
@@ -87,6 +86,9 @@ int			add_shell_var(char *new_shell, t_env **env_lst);
 void		init_node_exec(t_exec *node_exec);
 int			initialize_command(t_token **tokens, t_command *current,
 				int *subshell);
+
+// handle_input/parser/init_tokens.c
+int			init_tokens(t_token **tokens, t_env **env_lst, long exit_status);
 
 // handle_input/parser/free.c
 void		free_strs(char **strs, size_t size);

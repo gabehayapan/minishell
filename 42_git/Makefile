@@ -35,6 +35,7 @@ SRCS =\
 	./src/handle_input/parser/parser_utils.c\
 	./src/handle_input/parser/shell_var.c\
 	./src/handle_input/parser/init.c\
+	./src/handle_input/parser/init_tokens.c\
 	./src/handle_input/parser/free.c\
 	./src/handle_input/parser/free_all.c\
 	./src/handle_input/parser/counter.c\
@@ -93,6 +94,7 @@ OBJS =\
 	./obj/parser_utils.o\
 	./obj/shell_var.o\
 	./obj/init.o\
+	./obj/init_tokens.o\
 	./obj/free.o\
 	./obj/free_all.o\
 	./obj/counter.o\
