@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 11:27:35 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 12:39:59 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	main(int argc, char **argv, char **envp)
 	free_env_lst(env_lst);
 	if (is_success == FAILURE)
 		return (EXIT_FAILURE);
-	if (isatty(STDOUT_FILENO))
+	if (isatty(STDERR_FILENO))
 		ft_dprintf(2, "exit\n");
 	return (EXIT_SUCCESS);
 }
