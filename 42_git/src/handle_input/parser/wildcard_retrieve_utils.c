@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:20:30 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/21 14:58:42 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 14:42:31 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,18 @@ int	handle_return_value(t_token *head, DIR *dir, int ret)
 	}
 }
 
-int	check_file_name(t_token *head, struct dirent *ent)
+int	check_file_name(t_token *head, struct dirent *ent, t_dir dnames)
 {
 	char	*d_name;
 	size_t	len_d_name;
 
+	(void)dnames;
 	d_name = ent->d_name;
 	len_d_name = ft_strlen(ent->d_name);
 	while (head != NULL && head->tk_type != SPACES)
 	{
+		//if (*(head->word) == '/')
+		//	open_another_dir(head, ent, dnames);
 		if (head->tk_type != WILDCARD)
 		{
 			d_name = ft_strnstr(d_name, head->word, len_d_name);

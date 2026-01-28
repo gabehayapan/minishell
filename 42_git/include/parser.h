@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 13:36:56 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 14:24:01 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,12 @@ typedef struct s_exec
 	t_command		*command;
 	struct s_exec	*next;
 }	t_exec;
+
+typedef struct s_dir
+{
+	char	*dirname;
+	char	*disname;
+}	t_dir;
 
 // handle_input/handle_input.c
 int			handle_input(char **input, t_env **env_lst, t_exec **exec_tree,
@@ -146,14 +152,13 @@ int			replace_with_cmd_output(t_token **tokens, t_token **current,
 char		*get_target_dir(t_token **current, char **disname);
 
 // handle_input/parser/wildcard_retrieve.c
-int			get_matching_files(t_token **tokens, t_token *head,
-				char *dirname, char *disname);
+int			get_matching_files(t_token **tokens, t_token *head, t_dir dnames);
 
 // handle_input/parser/wildcard_retrieve_utils.c
 void		set_type_word(t_token *current);
 void		clear_filter_token(t_token **tokens, t_token *head);
 int			handle_return_value(t_token *head, DIR *dir, int ret);
-int			check_file_name(t_token *head, struct dirent *ent);
+int			check_file_name(t_token *head, struct dirent *ent, t_dir dnames);
 t_token		*new_file_token(t_token *head, char *name);
 
 // handle_input/parser/handle_exit_status.c

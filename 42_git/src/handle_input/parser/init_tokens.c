@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 09:57:15 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 13:19:43 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 14:58:10 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	is_separator(t_token *token)
 {
 	if (token != NULL
 		&& (token->tk_type == AND || token->tk_type == OR
-		|| token->tk_type == SEMI || token->tk_type == PIPE))
+			|| token->tk_type == SEMI || token->tk_type == PIPE))
 		return (1);
 	return (0);
 }
@@ -59,7 +59,7 @@ int	join_token_word(t_token **tokens)
 	{
 		next = current->next;
 		while (next != NULL && (current->tk_type == WORD
-			&& next->is_join == true && next->tk_type == WORD))
+				&& next->is_join == true && next->tk_type == WORD))
 		{
 			tmp = next->next;
 			current->word = join_word_no_space(current->word, next->word);

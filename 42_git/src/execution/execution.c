@@ -6,14 +6,14 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 11:06:32 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 11:24:16 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 14:59:12 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
 unsigned char	execute_command(t_exec *exec_node, t_env **env_lst,
-			t_exec *top);
+					t_exec *top);
 
 unsigned char	handle_ctrl_op(t_exec *exec_node, t_env **env_lst, t_exec *top)
 {

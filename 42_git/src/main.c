@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 13:25:31 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 14:59:27 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ int	display_minishell(void)
 	return (SUCCESS);
 }
 
-int	execute_input_command(char **input, t_env **env_lst)
+int	execute_input_command(char **input, t_env **env_lst, int is_child)
 {
-	t_exec		*exec_tree;
-	int			ret;
+	t_exec					*exec_tree;
+	int						ret;
 	static unsigned char	exit_status;
 
 	ret = handle_input(input, env_lst, &exec_tree, exit_status);
@@ -52,6 +52,8 @@ int	execute_input_command(char **input, t_env **env_lst)
 	{
 		exit_status = execute_command(exec_tree, env_lst, exec_tree);
 		free_node_exec(exec_tree);
+		if (is_child == 1)
+			return (exit_status);
 	}
 	add_history(*input);
 	return (SUCCESS);
@@ -74,7 +76,7 @@ int	read_and_execute(t_env **env_lst)
 		{
 			if (ignore_signal() == FAILURE)
 				return (FAILURE);
-			is_success = execute_input_command(&input, env_lst);
+			is_success = execute_input_command(&input, env_lst, 0);
 			free(input);
 			if (is_success == FAILURE)
 				return (FAILURE);

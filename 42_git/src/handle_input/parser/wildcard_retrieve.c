@@ -6,13 +6,13 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 11:01:34 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/23 16:06:24 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 14:44:35 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-int	filter_file(t_token *head, DIR *dir, char **name)
+int	filter_file(t_token *head, DIR *dir, char **name, t_dir dnames)
 {
 	struct dirent	*ent;
 	int				ret;
@@ -27,7 +27,7 @@ int	filter_file(t_token *head, DIR *dir, char **name)
 		return (END);
 	if (head->tk_type == WILDCARD && *(ent->d_name) == '.')
 		return (NOT_FOUND);
-	ret = check_file_name(head, ent);
+	ret = check_file_name(head, ent, dnames);
 	if (ret == NOT_FOUND)
 		return (NOT_FOUND);
 	*name = ft_strdup(ent->d_name);
@@ -53,18 +53,18 @@ t_token	*get_file_token(t_token *head, char *disname, char *name)
 	return (new_token);
 }
 
-int	get_first_file(t_token **tokens, t_token *head, char *disname, DIR *dir)
+int	get_first_file(t_token **tokens, t_token *head, t_dir dnames, DIR *dir)
 {
 	char	*name;
 	t_token	*new_token;
 	int		ret;
 
-	ret = filter_file(head, dir, &name);
+	ret = filter_file(head, dir, &name, dnames);
 	while (ret != END)
 	{
 		if (ret == SUCCESS)
 		{
-			new_token = get_file_token(head, disname, name);
+			new_token = get_file_token(head, dnames.disname, name);
 			free(name);
 			if (new_token == NULL)
 				return (FAILURE);
@@ -75,55 +75,54 @@ int	get_first_file(t_token **tokens, t_token *head, char *disname, DIR *dir)
 		}
 		else if (ret == FAILURE)
 			return (FAILURE);
-		ret = filter_file(head, dir, &name);
+		ret = filter_file(head, dir, &name, dnames);
 	}
 	return (NOT_FOUND);
 }
 
-int	get_remaining_files(t_token *head, char *disname, DIR *dir)
+int	get_remaining_files(t_token *head, t_dir dnames, DIR *dir)
 {
 	char	*name;
 	t_token	*new_token;
 	int		ret;
 
-	ret = filter_file(head, dir, &name);
+	ret = filter_file(head, dir, &name, dnames);
 	while (ret != END)
 	{
 		if (ret == SUCCESS)
 		{
-			new_token = get_file_token(head, disname, name);
+			new_token = get_file_token(head, dnames.disname, name);
 			free(name);
 			if (new_token == NULL)
 				return (FAILURE);
 		}
 		else if (ret == FAILURE)
 			return (FAILURE);
-		ret = filter_file(head, dir, &name);
+		ret = filter_file(head, dir, &name, dnames);
 	}
 	return (SUCCESS);
 }
 
-int	get_matching_files(t_token **tokens, t_token *head,
-			char *dirname, char *disname)
+int	get_matching_files(t_token **tokens, t_token *head, t_dir dnames)
 {
 	DIR		*dir;
 	int		ret;
 
-	dir = opendir(dirname);
+	dir = opendir(dnames.dirname);
 	if (dir == NULL)
 	{
 		if (errno != 0)
 		{
 			perror("opendir");
-			return (FAILURE);
+			return (SUCCESS);
 		}
 		set_type_word(head);
 		return (SUCCESS);
 	}
-	ret = get_first_file(tokens, head, disname, dir);
+	ret = get_first_file(tokens, head, dnames, dir);
 	if (ret != SUCCESS)
 		return (handle_return_value(head, dir, ret));
-	if (get_remaining_files(head, disname, dir) == FAILURE)
+	if (get_remaining_files(head, dnames, dir) == FAILURE)
 	{
 		closedir(dir);
 		return (FAILURE);
