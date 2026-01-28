@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 14:17:10 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 15:07:08 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	expand_wildcard(t_token **tokens, t_token *current)
 		return (FAILURE);
 	errno = 0;
 	is_success = get_matching_files(tokens, current, dnames);
-	if (is_success == FAILURE || errno != 0)
+	if (is_success == FAILURE)
 	{
 		free(dnames.dirname);
 		free(dnames.disname);
@@ -95,7 +95,8 @@ int	expand_wildcard(t_token **tokens, t_token *current)
 			perror("readdir");
 		return (FAILURE);
 	}
-	free(dnames.dirname);
+	if (is_success != NO_DIR)
+		free(dnames.dirname);
 	free(dnames.disname);
 	return (SUCCESS);
 }

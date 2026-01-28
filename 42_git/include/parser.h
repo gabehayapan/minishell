@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 14:24:01 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 15:02:32 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@
 # include "../libft/header/ftprintf.h"
 
 # define NOT_FOUND 4
-# define FORMAT_ERROR 5
-# define SIGNALED 6
-# define END 7
+# define NO_DIR 5
+# define FORMAT_ERROR 6
+# define SIGNALED 7
+# define END 8
 
 typedef enum s_rdt_type
 {

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 11:01:34 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 14:44:35 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 15:06:30 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,13 +111,11 @@ int	get_matching_files(t_token **tokens, t_token *head, t_dir dnames)
 	dir = opendir(dnames.dirname);
 	if (dir == NULL)
 	{
-		if (errno != 0)
-		{
-			perror("opendir");
-			return (SUCCESS);
-		}
+		head->word = join_word_no_space(dnames.dirname, head->word);
+		if (head->word == NULL)
+			return (FAILURE);
 		set_type_word(head);
-		return (SUCCESS);
+		return (NO_DIR);
 	}
 	ret = get_first_file(tokens, head, dnames, dir);
 	if (ret != SUCCESS)
