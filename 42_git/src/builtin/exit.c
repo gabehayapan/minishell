@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 20:41:00 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/25 19:21:12 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/28 11:15:41 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	is_numeric(char *str)
 {
+	if (*str == '+' || *str == '-')
+		str = str + 1;
 	while (*str)
 	{
 		if (ft_isdigit(*str++) == 0)
