@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 11:57:32 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/27 19:08:27 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 11:26:05 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*rm_extra_space(char *str)
 }
 
 int	expand_quoted_dollar(t_token **tokens, t_token **current, t_env *env_lst,
-			long exit_status)
+			unsigned char exit_status)
 {
 	t_token	*next;
 	char	*env_var;
@@ -65,7 +65,7 @@ int	expand_quoted_dollar(t_token **tokens, t_token **current, t_env *env_lst,
 }
 
 int	handle_dbl_quoted_dollar(t_token **tokens, t_token **current,
-			t_env *env_lst, long exit_status)
+			t_env *env_lst, unsigned char exit_status)
 {
 	int	ret;
 
@@ -89,7 +89,7 @@ bool	check_end_of_tokens(t_token *current)
 }
 
 int	handle_others(t_token **tokens, t_token **current, t_env *env_lst,
-			long exit_status)
+			unsigned char exit_status)
 {
 	int		is_success;
 	bool	set_null;

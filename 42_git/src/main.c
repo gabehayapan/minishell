@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/27 12:39:48 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 11:27:35 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	execute_input_command(char **input, t_env **env_lst)
 {
 	t_exec		*exec_tree;
 	int			ret;
-	static long	exit_status;
+	static unsigned char	exit_status;
 
 	ret = handle_input(input, env_lst, &exec_tree, exit_status);
 	if (ret == FAILURE)

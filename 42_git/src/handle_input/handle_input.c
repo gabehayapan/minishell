@@ -6,14 +6,14 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 18:40:19 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/27 12:07:47 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 11:24:30 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
 int	handle_input(char **input, t_env **env_lst, t_exec **exec_tree,
-			long exit_status)
+			unsigned char exit_status)
 {
 	t_token	*tokens;
 	int		ret;

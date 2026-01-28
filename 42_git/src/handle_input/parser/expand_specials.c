@@ -6,14 +6,14 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/27 12:12:05 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 11:25:43 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
 int	expand_dollar(t_token **tokens, t_token **current, t_env *env_lst,
-			long exit_status)
+			unsigned char exit_status)
 {
 	t_token	*next;
 	char	*env_var;
@@ -54,7 +54,7 @@ int	expand_tilde(t_token *current, t_env *env_lst)
 }
 
 int	expand_quote(t_token **tokens, t_token **current, t_env *env_lst,
-			long exit_status)
+			unsigned char exit_status)
 {
 	t_tk_type	tk_qte;
 	t_token		*next;
@@ -101,7 +101,7 @@ int	expand_wildcard(t_token **tokens, t_token *current)
 	return (SUCCESS);
 }
 
-int	expand_specials(t_token **tokens, t_env *env_lst, long exit_status)
+int	expand_specials(t_token **tokens, t_env *env_lst, unsigned char exit_status)
 {
 	t_token	*current;
 	int		is_success;

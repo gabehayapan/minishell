@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 09:57:15 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 11:13:31 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 11:27:11 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	rm_space_and_join_tokens(t_token **tokens)
 	return (is_success);
 }
 
-int	init_tokens(t_token **tokens, t_env **env_lst, long exit_status)
+int	init_tokens(t_token **tokens, t_env **env_lst, unsigned char exit_status)
 {
 	int	is_success;
 

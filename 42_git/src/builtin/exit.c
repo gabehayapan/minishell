@@ -6,22 +6,48 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 20:41:00 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/28 11:15:41 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 12:11:22 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipe.h"
+#include <limits.h>
+
+int	check_long_overflow(char *str, int sign)
+{
+	long	num;
+
+	num = *str - '0';
+	while (*(str + 1) >= '0' && *(str + 1) <= '9')
+	{
+		if ((num >= LONG_MAX / 10 && sign == 1)
+			|| (num <= LONG_MIN / 10 && sign == -1))
+			return (0);
+		num = (num * 10) + (*(str + 1) - '0');
+		str++;
+	}
+	return (1);
+}
 
 int	is_numeric(char *str)
 {
-	if (*str == '+' || *str == '-')
+	int		sign;
+	char	*cp_str;
+
+	sign = 1;
+	if ((*str == '+' || *str == '-') && ft_isdigit(*(str + 1)) == 1)
+	{
+		if (*str == '-')
+			sign = -1;
 		str = str + 1;
+	}
+	cp_str = str;
 	while (*str)
 	{
 		if (ft_isdigit(*str++) == 0)
 			return (0);
 	}
-	return (1);
+	return (check_long_overflow(cp_str, sign));
 }
 
 char	exit_code(char **cmdset)

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 11:57:05 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/26 12:33:03 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 11:26:53 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,30 +25,28 @@ size_t	count_size(int num)
 	return (counter);
 }
 
-char	*convert_int_to_str(long exit_status)
+char	*convert_int_to_str(unsigned char exit_status)
 {
-	unsigned char	status;
 	size_t			size;
 	char			*str;
 	size_t			i;
 
-	status = (unsigned char)exit_status;
-	size = count_size((int)status);
+	size = count_size((int)exit_status);
 	str = (char *)ft_calloc(size + 1, sizeof(char));
 	if (str == NULL)
 		return (NULL);
 	i = size - 1;
 	while (i)
 	{
-		str[i] = status % 10 + '0';
-		status = status / 10;
+		str[i] = exit_status % 10 + '0';
+		exit_status = exit_status / 10;
 		i--;
 	}
-	str[i] = status % 10 + '0';
+	str[i] = exit_status % 10 + '0';
 	return (str);
 }
 
-char	*handle_exit_status(t_token **next, long exit_status)
+char	*handle_exit_status(t_token **next, unsigned char exit_status)
 {
 	char	*ret;
 	char	*tmp;
