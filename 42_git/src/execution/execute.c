@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:56:57 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/27 10:58:30 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/29 07:44:25 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ int	nopipe_builtin(t_command *command, t_env **env_lst, t_exec *top)
 
 	stdin_fd = dup(STDIN_FILENO);
 	stdout_fd = dup(STDOUT_FILENO);
-	redirect_fd(command);
+	if (redirect_fd(command) == FAILURE)
+		return (FAILURE);
 	exit_code = pass_to_builtin(command, env_lst, top);
 	dup2(stdin_fd, STDIN_FILENO);
 	dup2(stdout_fd, STDOUT_FILENO);
@@ -61,7 +62,8 @@ int	nopipe_execute(t_command *command, t_env **env_lst, t_exec *top)
 	{
 		if (default_signal() == EXIT_FAILURE)
 			exit(EXIT_FAILURE);
-		redirect_fd(command);
+		if (redirect_fd(command) == EXIT_FAILURE)
+			exit(EXIT_FAILURE);
 		exec_command(command, env_lst, top);
 	}
 	return (wait_for_children(&pid, 1));

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 15:02:32 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 16:52:46 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,13 @@ typedef struct s_dir
 	char	*dirname;
 	char	*disname;
 }	t_dir;
+
+typedef struct s_d_info
+{
+	char	*d_name;
+	size_t	len_d_name;
+	size_t	len_str;
+}	t_d_info;
 
 // handle_input/handle_input.c
 int			handle_input(char **input, t_env **env_lst, t_exec **exec_tree,

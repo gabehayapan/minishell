@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 01:08:17 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/28 13:49:21 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/29 07:46:24 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,15 @@ int	setfd_infile(t_command *command)
 	while (command->inrdt != NULL)
 	{
 		if (command->inrdt->type == INFILE)
+		{
 			command->infd = open(command->inrdt->rdt, O_RDONLY);
+			if (command->infd == -1)
+			{
+				ft_dprintf(2, "-minishell: ");
+				perror(command->inrdt->rdt);
+				return (FAILURE);
+			}
+		}
 		if (command->inrdt->type == HEREDOC)
 			command->infd = heredoc(command->inrdt->rdt);
 		command->inrdt = command->inrdt->next;
@@ -71,9 +79,13 @@ int	setfd_outfile(t_command *command)
 
 int	redirect_fd(t_command *command)
 {
+	int	is_success;
+
 	if (command->inrdt)
 	{
-		setfd_infile(command);
+		is_success = setfd_infile(command);
+		if (is_success == FAILURE)
+			return (FAILURE);
 		dup2(command->infd, STDIN_FILENO);
 		close(command->infd);
 	}

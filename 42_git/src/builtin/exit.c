@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 20:41:00 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/28 12:11:22 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/29 08:02:58 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ char	exit_code(char **cmdset)
 			return ((char)ft_atoi(cmdset[1]));
 		else
 		{
-			ft_dprintf(2, "minishell: exit: too many arguments\n");
+			ft_dprintf(2, "-minishell: exit: too many arguments\n");
 			return (1);
 		}
 	}
 	else
 	{
-		ft_dprintf(2, "minishell: exit: %s: ", cmdset[1]);
+		ft_dprintf(2, "-minishell: exit: %s: ", cmdset[1]);
 		ft_dprintf(2, "numeric argument required\n");
 		return (2);
 	}

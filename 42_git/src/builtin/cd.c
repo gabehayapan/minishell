@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 11:07:28 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 09:41:49 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/29 07:47:22 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	change_cwd_to_home(char **path, t_env *env_lst)
 	*path = env_value(env_lst, "HOME");
 	if (*path == NULL)
 	{
-		ft_dprintf(2, "minishell: cd: HOME not set\n");
+		ft_dprintf(2, "-minishell: cd: HOME not set\n");
 		return (FAILURE);
 	}
 	return (SUCCESS);
@@ -41,7 +41,7 @@ int	change_cwd_to_oldpwd(char **path, t_env *env_lst)
 	}
 	else
 	{
-		ft_dprintf(2, "minishell: cd: OLDPWD not set\n");
+		ft_dprintf(2, "-minishell: cd: OLDPWD not set\n");
 		return (FAILURE);
 	}
 	return (SUCCESS);
@@ -54,7 +54,7 @@ int	change_cwd_to_path(char *path)
 	ret = chdir(path);
 	if (ret == -1)
 	{
-		ft_dprintf(2, "minishell: ");
+		ft_dprintf(2, "-minishell: ");
 		perror("chdir");
 		return (FAILURE);
 	}

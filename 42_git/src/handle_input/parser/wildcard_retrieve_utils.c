@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:20:30 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 14:42:31 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 18:35:23 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,26 +49,73 @@ int	handle_return_value(t_token *head, DIR *dir, int ret)
 	}
 }
 
+int	open_another_dir(t_token *head, t_dir dnames, t_d_info *d_info)
+{
+	t_dir	cp_dnames;
+
+	(void)head;
+	(void)dnames;
+	cp_dnames.dirname = ft_strdup(d_info->d_name);
+	if (cp_dnames.dirname == NULL)
+		return (FAILURE);
+	return (SUCCESS);
+}
+
+int	verify_file_name(t_token *head, t_dir dnames, t_d_info *d_info)
+{
+	char	**strs;
+	char	**cp_strs;
+	int		is_slash;
+
+	strs = ft_split(head->word, '/');
+	if (strs == NULL)
+		return (FAILURE);
+	cp_strs = strs;
+	is_slash = 0;
+	while (*strs != NULL)
+	{
+		if (is_slash == 1)
+			open_another_dir(head, dnames, d_info);
+		d_info->d_name = ft_strnstr(d_info->d_name, *strs, d_info->len_d_name);
+		if (d_info->d_name == NULL)
+		{
+			free_null_term_strs(cp_strs);
+			return (NOT_FOUND);
+		}
+		d_info->len_str = ft_strlen(*strs);
+		is_slash = 1;
+		strs++;
+	}
+	free_null_term_strs(cp_strs);
+	return (SUCCESS);
+}
+
 int	check_file_name(t_token *head, struct dirent *ent, t_dir dnames)
 {
-	char	*d_name;
-	size_t	len_d_name;
+	t_d_info	d_info;
+	int			ret;
+	int			is_wildcard;
 
 	(void)dnames;
-	d_name = ent->d_name;
-	len_d_name = ft_strlen(ent->d_name);
+	d_info.d_name = ent->d_name;
+	d_info.len_d_name = ft_strlen(ent->d_name);
+	d_info.len_str = 0;
+	is_wildcard = 0;
 	while (head != NULL && head->tk_type != SPACES)
 	{
-		//if (*(head->word) == '/')
-		//	open_another_dir(head, ent, dnames);
 		if (head->tk_type != WILDCARD)
 		{
-			d_name = ft_strnstr(d_name, head->word, len_d_name);
-			if (d_name == NULL)
-				return (NOT_FOUND);
+			ret = verify_file_name(head, dnames, &d_info);
+			if (ret == FAILURE || ret == NOT_FOUND)
+				return (ret);
+			is_wildcard = 0;
 		}
+		else
+			is_wildcard = 1;
 		head = head->next;
 	}
+	if (is_wildcard == 0 && *(d_info.d_name + d_info.len_str) != '\0')
+		return (NOT_FOUND);
 	return (SUCCESS);
 }
 

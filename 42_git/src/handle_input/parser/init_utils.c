@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 13:34:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 13:39:57 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/29 07:49:13 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ void	print_syntax_error_paren(t_token *token)
 	if (token->tk_type == O_PAREN)
 	{
 		if (token->next != NULL)
-			ft_dprintf(2, "minishell: syntax error near unexpected token "
+			ft_dprintf(2, "-minishell: syntax error near unexpected token "
 				"`%s'\n", (token->next)->word);
 		else
-			ft_dprintf(2, "minishell: syntax error near `('\n");
+			ft_dprintf(2, "-minishell: syntax error near `('\n");
 	}
 	else
-		ft_dprintf(2, "minishell: syntax error near `)'\n");
+		ft_dprintf(2, "-minishell: syntax error near `)'\n");
 }
 
 int	check_opening_parenthesis(t_token **tokens, int *subshell)
@@ -64,7 +64,7 @@ int	check_closing_parenthesis(t_token **tokens, int *subshell)
 			clear_token(tokens, current, free);
 			if (current->next != NULL && (current->next)->tk_type == WORD)
 			{
-				ft_dprintf(2, "minishell: syntax error near unexpected token "
+				ft_dprintf(2, "-minishell: syntax error near unexpected token "
 					"%s\n", (current->next)->word);
 				return (FAILURE);
 			}

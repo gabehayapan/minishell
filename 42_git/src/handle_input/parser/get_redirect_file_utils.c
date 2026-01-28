@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 19:12:13 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/15 10:40:56 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/29 07:49:43 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,5 @@ void	no_rdt_file(t_token *token)
 		missing_rdt = "<<";
 	else
 		missing_rdt = ">>";
-	ft_dprintf(2, "minishell: syntax error after \'%s\'\n", missing_rdt);
+	ft_dprintf(2, "-minishell: syntax error after \'%s\'\n", missing_rdt);
 }

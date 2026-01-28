@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:50:38 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/27 19:36:22 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/29 07:48:40 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	check_invalid_identifier(char *str)
 		}
 	}
 	if (is_success == FAILURE)
-		ft_dprintf(2, "minishell: export: '%s': not a valid identifier\n",
+		ft_dprintf(2, "-minishell: export: '%s': not a valid identifier\n",
 			cp_str);
 	return (is_success);
 }

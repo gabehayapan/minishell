@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 08:44:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 12:30:57 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 17:32:37 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ t_builtin	is_builtin(char *cmd)
 		return (ENV);
 	if (ft_strcmp("exit", cmd) == 0)
 		return (EXIT);
+	if (ft_strcmp("terminal0142", cmd) == 0)
+		return (TERMINAL0142);
 	else
 		return (ELSE);
 }

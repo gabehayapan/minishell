@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 11:01:34 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 15:06:30 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 15:10:23 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	filter_file(t_token *head, DIR *dir, char **name, t_dir dnames)
 	if (head->tk_type == WILDCARD && *(ent->d_name) == '.')
 		return (NOT_FOUND);
 	ret = check_file_name(head, ent, dnames);
-	if (ret == NOT_FOUND)
-		return (NOT_FOUND);
+	if (ret == FAILURE || ret == NOT_FOUND)
+		return (ret);
 	*name = ft_strdup(ent->d_name);
 	if (*name == NULL)
 		return (FAILURE);
