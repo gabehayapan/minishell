@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 16:52:46 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/29 08:15:48 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_rdt
 {
 	char			*rdt;
 	t_rdt_type		type;
+	int				fd_rdt;
 	struct s_rdt	*next;
 }	t_rdt;
 

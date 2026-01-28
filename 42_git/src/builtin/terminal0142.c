@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 17:12:50 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 18:57:59 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/29 08:09:11 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "parser.h"
 #include "env_var.h"
 #include <sys/wait.h>
+
+int	default_signal(void);
 
 char	**clone_term0142(void)
 {
@@ -101,6 +103,9 @@ int	exec_clone_term0142(t_term *term, char **envp)
 		return (FAILURE);
 	else if (pid == 0)
 	{
+		close(2);
+		if (default_signal() == FAILURE)
+			exit(EXIT_FAILURE);
 		execve(*term->git, term->git, envp);
 		perror("execve");
 		free_null_term_strs(envp);
@@ -127,6 +132,8 @@ int	exec_launch_term0142(t_term *term, char **envp)
 		return (FAILURE);
 	else if (pid == 0)
 	{
+		if (default_signal() == FAILURE)
+			exit(EXIT_FAILURE);
 		if (chdir("TERMINAL0142") != -1)
 		{
 			execve(*term->term0142, term->term0142, envp);
@@ -156,6 +163,8 @@ int	exec_remove_term0142(t_term *term, char **envp)
 		return (FAILURE);
 	else if (pid == 0)
 	{
+		if (default_signal() == FAILURE)
+			exit(EXIT_FAILURE);
 		execve(*term->rm, term->rm, envp);
 		perror("execve");
 		free_null_term_strs(envp);

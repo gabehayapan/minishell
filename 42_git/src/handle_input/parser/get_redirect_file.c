@@ -6,13 +6,41 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 17:37:05 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 13:16:11 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/29 08:55:23 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-int	new_rdt_node(t_token *current, t_rdt **head)
+int	is_numeric_word(char *str)
+{
+	while (*str != '\0')
+	{
+		if (ft_isdigit(*str) == 0)
+			return (FAILURE);
+		str++;
+	}
+	return (SUCCESS);
+}
+
+int	get_fd_rdt(t_token **tokens, t_token *current, t_rdt_type rdt_type)
+{
+	int	fd;
+
+	if (current->prev == NULL || current->is_join == false
+		|| is_numeric_word(current->prev->word) == FAILURE)
+	{
+		if (rdt_type == INFILE || rdt_type == HEREDOC)
+			return (STDIN_FILENO);
+		else
+			return (STDOUT_FILENO);
+	}
+	fd = ft_atoi(current->prev->word);
+	clear_token(tokens, current->prev, free);
+	return (fd);
+}
+
+int	new_rdt_node(t_token **tokens, t_token *current, t_rdt **head)
 {
 	t_rdt	*new_rdt;
 
@@ -26,6 +54,7 @@ int	new_rdt_node(t_token *current, t_rdt **head)
 		return (FAILURE);
 	new_rdt->rdt = (current->next)->word;
 	new_rdt->type = get_rdt_type(current);
+	new_rdt->fd_rdt = get_fd_rdt(tokens, current, new_rdt->type);
 	new_rdt->next = NULL;
 	if (*head == NULL)
 		*head = new_rdt;
@@ -36,7 +65,10 @@ int	new_rdt_node(t_token *current, t_rdt **head)
 
 int	set_rdt_node(t_token **tokens, t_token *current, t_rdt **head)
 {
-	if (new_rdt_node(current, head) == FAILURE)
+	int	is_success;
+
+	is_success = new_rdt_node(tokens, current, head);
+	if (is_success == FAILURE)
 	{
 		free_rdt(*head);
 		return (FAILURE);
