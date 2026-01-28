@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 08:52:30 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/27 12:44:22 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 11:05:07 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,32 @@ void	free_cmd_replace(t_token **tokens, t_token **current)
 	*current = next;
 }
 
-int	set_cmd_output(t_token **tokens, t_token **current, int *pipefd)
+int	set_cmd_output(t_token **tokens, t_token **current, int *pipefd, int status)
 {
 	char	*buf;
 	ssize_t	n;
+	t_token	*next;
 
-	buf = (char *)malloc(sizeof(char) * 8192);
-	if (buf == NULL)
-		return (FAILURE);
-	n = read(pipefd[0], buf, 8192);
-	buf[n - 1] = '\0';
-	close(pipefd[0]);
-	free((*current)->word);
-	(*current)->word = buf;
-	*current = (*current)->next;
-	free_cmd_replace(tokens, current);
+	if (status != 0)
+	{
+		next = (*current)->next;
+		clear_token(tokens, *current, free);
+		*current = next;
+		free_cmd_replace(tokens, current);
+	}
+	else
+	{
+		buf = (char *)malloc(sizeof(char) * 8192);
+		if (buf == NULL)
+			return (FAILURE);
+		n = read(pipefd[0], buf, 8192);
+		buf[n - 1] = '\0';
+		close(pipefd[0]);
+		free((*current)->word);
+		(*current)->word = buf;
+		*current = (*current)->next;
+		free_cmd_replace(tokens, current);
+	}
 	return (SUCCESS);
 }
 
@@ -76,13 +87,17 @@ int	wait_for_child(void)
 {
 	int	status;
 
-	wait(&status);
+	if (wait(&status) == -1)
+	{
+		perror("wait");
+		return (FAILURE);
+	}
 	if (WIFSIGNALED(status))
 	{
 		write(1, "\n", 1);
 		return (SIGNALED);
 	}
-	return (SUCCESS);
+	return (status);
 }
 
 int	replace_with_cmd_output(t_token **tokens, t_token **current,
@@ -108,7 +123,7 @@ int	replace_with_cmd_output(t_token **tokens, t_token **current,
 	else if (pid == 0)
 		get_cmd_output(pipefd, *current, env_lst);
 	ret = wait_for_child();
-	if (ret == SIGNALED)
-		return (SIGNALED);
-	return (set_cmd_output(tokens, current, pipefd));
+	if (ret == FAILURE || ret == SIGNALED)
+		return (ret);
+	return (set_cmd_output(tokens, current, pipefd, ret));
 }

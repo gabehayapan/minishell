@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 11:54:45 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/26 12:36:47 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 10:55:18 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ t_token	*create_new_token(char **str, t_token *current, t_tk_type tk_type)
 t_token	*new_token(char **input, char **str,
 			t_token *current, t_tk_type tk_type)
 {
-	if (tk_type == O_PAREN)
-		return (tokenize_parenthesis(input, str, current));
+	if (tk_type == DOLLAR)
+		return (tokenize_dollar(input, *str, str, current));
 	else
 		return (create_new_token(str, current, tk_type));
 }
