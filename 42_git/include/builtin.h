@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 10:37:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/27 17:16:40 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/27 19:36:11 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int			env(t_env *env_lst);
 int			ft_exit(char **cmdset, t_env *env_lst, t_exec *top);
 
 int			export(char **strs, t_env **env_lst, t_exec *top);
-int			check_existence(t_env **target, t_env *env_lst, char *str,
+int			check_existence(t_env **target, t_env **env_lst, char *str,
 				t_exec *top);
 
 int			pwd(t_env **env_lst);

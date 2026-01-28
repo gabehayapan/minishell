@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 11:07:28 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/26 11:07:29 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 09:41:49 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	change_cwd_to_path(char *path)
 	ret = chdir(path);
 	if (ret == -1)
 	{
+		ft_dprintf(2, "minishell: ");
 		perror("chdir");
 		return (FAILURE);
 	}
@@ -102,7 +103,7 @@ int	cd(char **strs, t_env **env_lst, t_exec *top)
 			return (FAILURE);
 	}
 	ret = change_cwd_to_path(path);
-	if (ret == -1)
+	if (ret == FAILURE)
 		return (FAILURE);
 	update_env_pwd(env_lst, top);
 	return (SUCCESS);

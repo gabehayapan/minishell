@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_envp.c                                         :+:      :+:    :+:   */
+/*   convert_to_envp.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 20:59:41 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/13 16:36:08 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 09:36:03 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,27 @@ void	fill_envp_str(char *envp, t_env *env_lst, t_envp_len envp_info)
 		envp_info.len_value + 1);
 }
 
+int	set_env_ptr(t_env *env_lst, char **envp, char **head)
+{
+	t_envp_len	envp_info;
+
+	set_envp_info(env_lst, &envp_info);
+	*envp = (char *)ft_calloc(envp_info.size_len + 1, sizeof(char));
+	if (*envp == NULL)
+	{
+		free_strs(head, envp - head);
+		return (FAILURE);
+	}
+	fill_envp_str(*envp, env_lst, envp_info);
+	return (SUCCESS);
+}
+
 char	**convert_to_envp(t_env *env_lst)
 {
 	char		**envp;
 	char		**ret;
 	size_t		size;
-	t_envp_len	envp_info;
+	int			is_success;
 
 	size = count_size_env_lst(env_lst);
 	envp = (char **)malloc(sizeof(char *) * (size + 1));
@@ -41,14 +56,14 @@ char	**convert_to_envp(t_env *env_lst)
 	ret = envp;
 	while (env_lst != NULL)
 	{
-		set_envp_info(env_lst, &envp_info);
-		*envp = (char *)ft_calloc(envp_info.size_len + 1, sizeof(char));
-		if (*envp == NULL)
+		if (env_lst->is_env != ENV_VAR)
 		{
-			free_strs(ret, envp - ret);
-			return (NULL);
+			env_lst = env_lst->next;
+			continue ;
 		}
-		fill_envp_str(*envp, env_lst, envp_info);
+		is_success = set_env_ptr(env_lst, envp, ret);
+		if (is_success == FAILURE)
+			return (NULL);
 		env_lst = env_lst->next;
 		envp++;
 	}
