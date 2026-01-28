@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 11:28:57 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 13:36:56 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,10 @@ int			add_shell_var(char *new_shell, t_env **env_lst);
 void		init_node_exec(t_exec *node_exec);
 int			initialize_command(t_token **tokens, t_command *current,
 				int *subshell);
+
+// handle_input/parser/init_utils.c
+int			check_opening_parenthesis(t_token **tokens, int *subshell);
+int			check_closing_parenthesis(t_token **tokens, int *subshell);
 
 // handle_input/parser/init_tokens.c
 int			init_tokens(t_token **tokens, t_env **env_lst,

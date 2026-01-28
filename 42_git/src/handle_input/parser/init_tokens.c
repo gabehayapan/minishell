@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 09:57:15 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 11:27:11 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 13:19:43 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ int	join_token_word(t_token **tokens)
 	while (current != NULL)
 	{
 		next = current->next;
-		while (next != NULL && (next->is_join == true && next->tk_type == WORD))
+		while (next != NULL && (current->tk_type == WORD
+			&& next->is_join == true && next->tk_type == WORD))
 		{
 			tmp = next->next;
 			current->word = join_word_no_space(current->word, next->word);
