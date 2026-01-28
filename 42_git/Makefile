@@ -1,7 +1,5 @@
 NAME = minishell
 
-#ECHO = echo
-
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
@@ -140,11 +138,7 @@ LIBFT = libft.a
 
 vpath %.c ./src/ ./src/env_var/ ./src/env_var/export/ ./src/env_var/unset/ ./src/env_var/env_module/ ./src/handle_input/ ./src/handle_input/tokenizer/ ./src/handle_input/parser/ ./src/execution/ ./src/signal/ ./src/builtin/
 
-#all: $(NAME) $(ECHO)
 all: $(NAME)
-
-#$(ECHO): ./src/builtin/echo.c $(LIBFT_DIR)$(LIBFT)
-#	$(CC) $(CFLAGS) -o $(ECHO) ./src/builtin/echo.c -I./include/ -I./libft/header/ $(LIBFT_DIR)$(LIBFT)
 
 $(NAME): $(OBJS) $(LIBFT_DIR)$(LIBFT)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT_DIR)$(LIBFT) -lcurses -lreadline
@@ -164,11 +158,7 @@ clean:
 
 fclean: clean
 	rm -f $(NAME) $(LIBFT_DIR)$(LIBFT)
-#	rm -f $(NAME) $(ECHO) $(LIBFT_DIR)$(LIBFT)
 
 re: fclean all
-
-debug:
-	gcc -g -no-pie $(OBJS) $(LIBFT_DIR)$(LIBFT) -lcurses -lreadline
 
 .PHONY: all clean fclean re
