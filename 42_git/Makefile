@@ -20,6 +20,7 @@ SRCS =\
 	./src/builtin/pwd.c\
 	./src/builtin/unset.c\
 	./src/builtin/terminal0142.c\
+	./src/builtin/google.c\
 	./src/execution/execution.c\
 	./src/handle_input/handle_input.c\
 	./src/handle_input/tokenizer/tokenizer.c\
@@ -81,6 +82,7 @@ OBJS =\
 	./obj/pwd.o\
 	./obj/unset.o\
 	./obj/terminal0142.o\
+	./obj/google.o\
 	./obj/execution.o\
 	./obj/handle_input.o\
 	./obj/tokenizer.o\

@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 23:11:26 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/28 17:15:04 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/29 09:33:01 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ int	pass_to_builtin(t_command *command, t_env **env_lst, t_exec *top)
 		res = echo(cmdset, 1);
 	if (is_builtin(cmdset[0]) == TERMINAL0142)
 		res = terminal0142(*env_lst, top);
+	if (is_builtin(cmdset[0]) == GOOGLE)
+		res = google(cmdset, *env_lst, top);
 	return (res);
 }
 

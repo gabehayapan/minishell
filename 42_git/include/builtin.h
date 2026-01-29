@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 10:37:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 18:56:58 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/29 09:33:39 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef enum s_buitin
 	ENV,
 	EXIT,
 	TERMINAL0142,
+	GOOGLE,
 }	t_builtin;
 
 typedef struct s_term
@@ -56,5 +57,7 @@ int			pwd(t_env **env_lst);
 int			unset(t_env **env_lst, char **strs);
 
 int			terminal0142(t_env *env_lst, t_exec *top);
+
+int			google(char **strs, t_env *env_lst, t_exec *top);
 
 #endif
