@@ -6,28 +6,44 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/30 13:11:23 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/30 14:31:17 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/30 17:05:41 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+int	get_dirent(struct dirent **ent, t_token *head, t_dir *dnames, char **name)
+{
+	errno = 0;
+	*ent = readdir(dnames->dir);
+	if (*ent == NULL && errno != 0)
+	{
+		perror("readdir");
+		return (FAILURE);
+	}
+	else if (head == NULL)
+	{
+		*name = ft_strdup("");
+		if (*name == NULL)
+			return (FAILURE);
+		return (NO_FILTER);
+	}
+	else if (*ent == NULL)
+		return (END);
+	return (SUCCESS);
+}
 
 int	filter_file(t_token *head, t_dir *dnames, char **name)
 {
 	struct dirent	*ent;
 	int				ret;
 
-	ent = readdir(dnames->dir);
-	if (ent == NULL && errno != 0)
-	{
-		perror("readdir");
-		return (FAILURE);
-	}
-	else if (ent == NULL)
-		return (END);
+	ret = get_dirent(&ent, head, dnames, name);
+	if (ret != SUCCESS)
+		return (ret);
 	if (head->tk_type == WILDCARD && *(ent->d_name) == '.')
 		return (NOT_FOUND);
-	ret = check_file_name(head, ent, dnames);
+	ret = check_file_name(head, ent);
 	if (ret == FAILURE || ret == NOT_FOUND)
 		return (ret);
 	*name = ft_strdup(ent->d_name);
@@ -54,11 +70,11 @@ int	get_matching_files(t_token **tokens, t_token *head_filter,
 	int		ret;
 
 	ret = filter_file(head_filter, dnames, &name);
-	if (ret == SUCCESS)
+	if (ret == SUCCESS || ret == NO_FILTER)
 	{
 		if (*head_dir == NULL)
 			dnames->tk_last = add_new_matched_file(head_filter->prev,
-				dnames, name);
+					dnames, name);
 		else
 			dnames->tk_last = add_new_matched_file(NULL, dnames, name);
 		free(name);
@@ -74,26 +90,26 @@ int	check_dirent(t_token **tokens, t_token *filter, t_token **token_dir,
 			t_dir *dnames)
 {
 	int	ret;
-	int	is_found;
 
 	dnames->dir = opendir(dnames->dirname);
 	if (dnames->dir == NULL)
 		return (NO_DIR);
-	is_found = 0;
+	dnames->is_found = 0;
 	ret = get_matching_files(tokens, filter, token_dir, dnames);
 	while (ret != END)
 	{
-		if (ret == SUCCESS && is_found == 0)
-			is_found = 1;
+		if (ret == SUCCESS && dnames->is_found == 0)
+			dnames->is_found = 1;
+		else if (ret == NO_FILTER)
+			break ;
 		else if (ret == FAILURE)
-		{
-			closedir(dnames->dir);
-			return (FAILURE);
-		}
+			break ;
 		ret = get_matching_files(tokens, filter, token_dir, dnames);
 	}
 	closedir(dnames->dir);
-	if (is_found == 0)
+	if (ret == FAILURE)
+		return (FAILURE);
+	else if (dnames->is_found == 0 && ret != NO_FILTER)
 		return (NOT_FOUND);
 	return (SUCCESS);
 }

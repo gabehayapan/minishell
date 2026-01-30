@@ -47,12 +47,14 @@ SRCS =\
 	./src/handle_input/parser/expand_specials_utils.c\
 	./src/handle_input/parser/replace_command.c\
 	./src/handle_input/parser/wildcard/wildcard_init.c\
+	./src/handle_input/parser/wildcard/wildcard_init_dirname.c\
+	./src/handle_input/parser/wildcard/wildcard_init_utils.c\
 	./src/handle_input/parser/wildcard/wildcard_initial_dir.c\
 	./src/handle_input/parser/wildcard/wildcard_deeper_dir.c\
 	./src/handle_input/parser/wildcard/wildcard_get_dirent.c\
 	./src/handle_input/parser/wildcard/wildcard_file_token.c\
 	./src/handle_input/parser/wildcard/wildcard_utils.c\
-	./src/handle_input/parser/wildcard/wildcard_expansion_utils.c\
+	./src/handle_input/parser/wildcard/wildcard_file_name_validation.c\
 	./src/handle_input/parser/handle_exit_status.c\
 	./src/handle_input/parser/join_word.c\
 	./src/handle_input/parser/get_command.c\
@@ -113,12 +115,14 @@ OBJS =\
 	./obj/expand_specials_utils.o\
 	./obj/replace_command.o\
 	./obj/wildcard_init.o\
+	./obj/wildcard_init_dirname.o\
+	./obj/wildcard_init_utils.o\
 	./obj/wildcard_initial_dir.o\
 	./obj/wildcard_deeper_dir.o\
 	./obj/wildcard_get_dirent.o\
 	./obj/wildcard_file_token.o\
 	./obj/wildcard_utils.o\
-	./obj/wildcard_expansion_utils.o\
+	./obj/wildcard_file_name_validation.o\
 	./obj/handle_exit_status.o\
 	./obj/join_word.o\
 	./obj/get_command.o\

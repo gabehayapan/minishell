@@ -6,11 +6,21 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/30 13:08:22 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/30 14:32:15 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/30 18:06:23 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+void	set_type_word(t_token *current)
+{
+	while (current != NULL && current->tk_type != SPACES)
+	{
+		if (current->tk_type == WILDCARD)
+			current->tk_type = WORD;
+		current = current->next;
+	}
+}
 
 int	reset_wildcard_tokens(t_token **tokens, t_token *filter,
 			t_token *token_dir, char *disname)
@@ -30,7 +40,7 @@ int	reset_wildcard_tokens(t_token **tokens, t_token *filter,
 		free(disname);
 		return (SUCCESS);
 	}
-	new_token = new_file_token(filter, disname);
+	new_token = new_file_token(filter->prev, disname);
 	if (new_token == NULL)
 	{
 		free(disname);
@@ -70,6 +80,6 @@ int	set_dnames(t_token *dir, t_dir *dnames)
 		return (FAILURE);
 	dnames->disname = dnames->dirname;
 	dnames->dir = NULL;
-	dnames->tk_last = NULL;
+	dnames->tk_last = dir;
 	return (SUCCESS);
 }

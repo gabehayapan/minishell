@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/30 14:33:16 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/30 18:37:57 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	expand_wildcard(t_token **tokens, t_token *filter)
 		return (FAILURE);
 	else if (is_success == NOT_FOUND || is_success == NO_DIR)
 		return (reset_wildcard_tokens(tokens, filter, token_dir,
-			dnames.disname));
+				dnames.disname));
 	is_success = check_deeper_dir(tokens, filter, &token_dir, dnames.disname);
 	if (is_success == SUCCESS)
 		clear_filter_token(tokens, filter);
