@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:17:51 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/30 19:37:13 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/30 19:42:50 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,13 @@ t_token	*new_separated_tokens(t_token *curr_filter, char *str)
 int	separate_tokens(t_token **curr_filter, char **strs, size_t len)
 {
 	t_token	*new_dir;
-	t_token	*fil;
+	t_token	*new_slash;
+	int		is_slash;
 
-	(void)len;
+	is_slash = 0;
+	if ((((*curr_filter)->word)[len - 1] == '/') && len > 1
+		&& ((*curr_filter)->word)[len - 2] != '/')
+		is_slash = 1;
 	if (*((*curr_filter)->word) == '/')
 	{
 		free((*curr_filter)->word);
@@ -98,6 +102,7 @@ int	separate_tokens(t_token **curr_filter, char **strs, size_t len)
 			new_dir = new_dir_token(*curr_filter, *strs);
 			if (new_dir == NULL)
 				return (FAILURE);
+			*curr_filter = new_dir;
 		}
 	}
 	else
@@ -108,11 +113,17 @@ int	separate_tokens(t_token **curr_filter, char **strs, size_t len)
 			return (FAILURE);
 	}
 	strs = strs + 1;
-	fil = *curr_filter;
 	while (*strs != NULL)
 	{
 		*curr_filter = new_separated_tokens(*curr_filter, *strs);
 		strs++;
+	}
+	if (is_slash == 1)
+	{
+		new_slash = new_slash_token(*curr_filter);
+		if (new_slash == NULL)
+			return (FAILURE);
+		*curr_filter = new_slash;
 	}
 	return (SUCCESS);
 }
