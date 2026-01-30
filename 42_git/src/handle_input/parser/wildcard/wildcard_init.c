@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:17:51 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/30 19:26:08 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/30 19:35:09 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,12 @@ int	separate_tokens(t_token **curr_filter, char **strs, size_t len)
 		(*curr_filter)->word = ft_strdup("/");
 		if ((*curr_filter)->word == NULL)
 			return (FAILURE);
-		new_dir = new_dir_token(*curr_filter, *strs);
-		if (new_dir == NULL)
-			return (FAILURE);
+		if (**strs != '\0')
+		{
+			new_dir = new_dir_token(*curr_filter, *strs);
+			if (new_dir == NULL)
+				return (FAILURE);
+		}
 	}
 	else
 	{
@@ -153,6 +156,12 @@ int	init_wildcard(t_token **filter, t_token **token_dir,
 	dnames->tk_last = NULL;
 	dnames->is_found = 0;
 	is_success = init_filter_tokens(*filter);
+	t_token	*tmp = *filter;
+	while (tmp != NULL)
+	{
+		ft_printf("%s\n", tmp->word);
+		tmp = tmp->next;
+	}
 	if (is_success == FAILURE)
 	{
 		free(dnames->dirname);
