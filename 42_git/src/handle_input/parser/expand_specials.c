@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 15:07:08 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/30 14:33:16 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,27 +77,26 @@ int	expand_quote(t_token **tokens, t_token **current, t_env *env_lst,
 	return (SUCCESS);
 }
 
-int	expand_wildcard(t_token **tokens, t_token *current)
+int	expand_wildcard(t_token **tokens, t_token *filter)
 {
+	t_token	*token_dir;
 	t_dir	dnames;
 	int		is_success;
 
-	dnames.dirname = get_target_dir(&current, &dnames.disname);
-	if (dnames.dirname == NULL)
-		return (FAILURE);
-	errno = 0;
-	is_success = get_matching_files(tokens, current, dnames);
+	is_success = init_wildcard(&filter, &token_dir, &dnames);
 	if (is_success == FAILURE)
-	{
-		free(dnames.dirname);
-		free(dnames.disname);
-		if (errno != 0)
-			perror("readdir");
 		return (FAILURE);
-	}
-	if (is_success != NO_DIR)
-		free(dnames.dirname);
-	free(dnames.disname);
+	is_success = check_initial_dir(tokens, filter, &token_dir, &dnames);
+	if (is_success == FAILURE)
+		return (FAILURE);
+	else if (is_success == NOT_FOUND || is_success == NO_DIR)
+		return (reset_wildcard_tokens(tokens, filter, token_dir,
+			dnames.disname));
+	is_success = check_deeper_dir(tokens, filter, &token_dir, dnames.disname);
+	if (is_success == SUCCESS)
+		clear_filter_token(tokens, filter);
+	else if (is_success == FAILURE)
+		return (FAILURE);
 	return (SUCCESS);
 }
 

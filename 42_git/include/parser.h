@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/29 08:15:48 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/30 14:30:55 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ typedef struct s_dir
 {
 	char	*dirname;
 	char	*disname;
+	DIR		*dir;
+	t_token	*tk_last;
 }	t_dir;
 
 typedef struct s_d_info
@@ -75,6 +77,21 @@ typedef struct s_d_info
 	size_t	len_d_name;
 	size_t	len_str;
 }	t_d_info;
+
+typedef struct s_tk_ptr
+{
+	t_token	*head_filter;
+	t_token	*tk_filter;
+	t_token	*head_dir;
+	t_token	*tk_dir;
+}	t_tk_ptr;
+
+typedef struct s_his
+{
+	int				id;
+	char			*line;
+	struct s_his	*next;
+}	t_his;
 
 // handle_input/handle_input.c
 int			handle_input(char **input, t_env **env_lst, t_exec **exec_tree,
@@ -157,17 +174,34 @@ int			handle_others(t_token **tokens, t_token **current, t_env *env_lst,
 int			replace_with_cmd_output(t_token **tokens, t_token **current,
 				t_env *env_lst);
 
-// handle_input/parser/init_wildcard.c
-char		*get_target_dir(t_token **current, char **disname);
+// handle_input/parser/wildcard/wildcard_init.c
+int			init_wildcard(t_token **filter, t_token **token_dir, t_dir *dnames);
 
-// handle_input/parser/wildcard_retrieve.c
-int			get_matching_files(t_token **tokens, t_token *head, t_dir dnames);
+// handle_input/parser/wildcard/wildcard_initial_dir.c
+int			check_initial_dir(t_token **tokens, t_token *filter,
+				t_token **head_dir, t_dir *dnames);
 
-// handle_input/parser/wildcard_retrieve_utils.c
+// handle_input/parser/wildcard/wildcard_deeper_dir.c
+int			check_deeper_dir(t_token **tokens, t_token *head_filter,
+				t_token **head_dir, char *disname);
+
+// handle_input/parser/wildcard/wildcard_get_dirent.c
+int			check_dirent(t_token **tokens, t_token *filter, t_token **head_dir,
+				t_dir *dnames);
+
+// handle_input/parser/wildcard/wildcard_file_token.c
+t_token		*add_new_matched_file(t_token *last_dir, t_dir *dnames, char *name);
+
+// handle_input/parser/wildcard/wildcard_utils.c
+int			reset_wildcard_tokens(t_token **tokens, t_token *filter,
+				t_token *token_dir, char *disname);
+void		clear_filter_token(t_token **tokens, t_token *filter);
+t_token		*skip_one_filter_dir(t_token *filter);
+int			set_dnames(t_token *dir, t_dir *dnames);
+
+// handle_input/parser/wildcard/wildcard_expansion_utils.c
 void		set_type_word(t_token *current);
-void		clear_filter_token(t_token **tokens, t_token *head);
-int			handle_return_value(t_token *head, DIR *dir, int ret);
-int			check_file_name(t_token *head, struct dirent *ent, t_dir dnames);
+int			check_file_name(t_token *head, struct dirent *ent, t_dir *dnames);
 t_token		*new_file_token(t_token *head, char *name);
 
 // handle_input/parser/handle_exit_status.c
