@@ -6,19 +6,20 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 09:20:42 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 11:16:58 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/01 08:32:17 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "builtin.h"
 #include "env_var.h"
-#include "parser.h"
 #include <sys/wait.h>
 
-void	free_google(char **cmd, t_env *env_lst, t_exec *top)
+void	free_google(char **cmd, t_env *env_lst, t_to_free *to_free)
 {
 	free(cmd);
 	free_env_lst(env_lst);
-	free_node_exec(top);
+	free_node_exec(to_free->top);
+	free_his(to_free->his);
 	exit(EXIT_FAILURE);
 }
 
@@ -88,22 +89,22 @@ int	google_search(char **cmd, t_env *env_lst)
 	return (status);
 }
 
-int	google(char **strs, t_env *env_lst, t_exec *top)
+int	google(char **strs, t_env *env_lst, t_to_free *to_free)
 {
 	char	**cmd;
 	int		is_success;
 
 	cmd = init_google_command();
 	if (cmd == NULL)
-		free_google(cmd, env_lst, top);
+		free_google(cmd, env_lst, to_free);
 	is_success = append_search_word(strs + 1, cmd);
 	if (is_success == FAILURE)
-		free_google(cmd, env_lst, top);
+		free_google(cmd, env_lst, to_free);
 	is_success = google_search(cmd, env_lst);
 	if (is_success == FAILURE)
 	{
 		free(*(cmd + 1));
-		free_google(cmd, env_lst, top);
+		free_google(cmd, env_lst, to_free);
 	}
 	return (SUCCESS);
 }

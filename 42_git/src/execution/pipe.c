@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:14:01 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/31 19:28:25 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/01 08:24:14 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	*init_pipefd(int count)
 	return (pipefd);
 }
 
-int	init_pipe(t_pipe *p, int count, t_env **env_lst, t_exec *top, t_his *his)
+int	init_pipe(t_pipe *p, int count, t_env **env_lst, t_to_free *to_free)
 {
 	p->procid = init_procid(count);
 	if (p->procid == NULL)
@@ -56,19 +56,18 @@ int	init_pipe(t_pipe *p, int count, t_env **env_lst, t_exec *top, t_his *his)
 	if (p->pipefd == NULL)
 		return (free(p->procid), FAILURE);
 	p->env_lst = env_lst;
-	p->top = top;
-	p->his = his;
+	p->to_free = to_free;
 	return (SUCCESS);
 }
 
-int	pipeline(t_command *command, t_env **env_lst, int proc_count, t_exec *top,
-			t_his *his)
+int	pipeline(t_command *command, t_env **env_lst, int proc_count,
+			t_to_free *to_free)
 {
 	t_pipe	p;
 	int		i;
 	int		exit_code;
 
-	if (init_pipe(&p, proc_count, env_lst, top, his) == FAILURE)
+	if (init_pipe(&p, proc_count, env_lst, to_free) == FAILURE)
 		return (FAILURE);
 	i = 0;
 	while (i < proc_count)

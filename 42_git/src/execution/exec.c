@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 23:11:26 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/31 19:38:42 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/01 08:32:37 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,21 +32,20 @@ int	handle_noexist_cmd(char **cmdset)
 	return (127);
 }
 
-int	pass_to_builtin(t_command *command, t_env **env_lst, t_exec *top,
-			t_his *his)
+int	pass_to_builtin(t_command *command, t_env **env_lst, t_to_free *to_free)
 {
 	char	**cmdset;
 	int		res;
 
 	cmdset = command->command;
 	if (is_builtin(cmdset[0]) == EXIT)
-		res = ft_exit(cmdset, *env_lst, top, his);
+		res = ft_exit(cmdset, *env_lst, to_free);
 	if (is_builtin(cmdset[0]) == CD)
-		res = cd(cmdset, env_lst, top, his);
+		res = cd(cmdset, env_lst, to_free);
 	if (is_builtin(cmdset[0]) == ENV)
 		res = env(*env_lst);
 	if (is_builtin(cmdset[0]) == EXPORT)
-		res = export(cmdset, env_lst, top, his);
+		res = export(cmdset, env_lst, to_free);
 	if (is_builtin(cmdset[0]) == UNSET)
 		res = unset(env_lst, cmdset);
 	if (is_builtin(cmdset[0]) == PWD)
@@ -54,15 +53,15 @@ int	pass_to_builtin(t_command *command, t_env **env_lst, t_exec *top,
 	if (is_builtin(cmdset[0]) == ECHO)
 		res = echo(cmdset, 1);
 	if (is_builtin(cmdset[0]) == HISTORY)
-		res = history(his);
+		res = history(to_free->his);
 	if (is_builtin(cmdset[0]) == TERMINAL0142)
-		res = terminal0142(*env_lst, top, his);
+		res = terminal0142(*env_lst, to_free);
 	if (is_builtin(cmdset[0]) == GOOGLE)
-		res = google(cmdset, *env_lst, top, his);
+		res = google(cmdset, *env_lst, to_free);
 	return (res);
 }
 
-int	exec_command(t_command *command, t_env **env_lst, t_exec *top, t_his *his)
+int	exec_command(t_command *command, t_env **env_lst, t_to_free *to_free)
 {
 	char	**cmdset;
 	char	**envp;
@@ -73,7 +72,7 @@ int	exec_command(t_command *command, t_env **env_lst, t_exec *top, t_his *his)
 	if (**cmdset == '\0')
 		return (handle_noexist_cmd(cmdset));
 	if (is_builtin(cmdset[0]) != ELSE)
-		exit(pass_to_builtin(command, env_lst, top, his));
+		exit(pass_to_builtin(command, env_lst, to_free));
 	envp = convert_to_envp(*env_lst);
 	if (envp == NULL)
 		exit(EXIT_FAILURE);

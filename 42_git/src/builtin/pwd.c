@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 19:32:04 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/31 20:17:41 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/02/01 08:13:59 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	is_symbolic_link(const char *pathname)
 		return (1);
 	return (0);
 }
-
 
 int	pwd(t_env **env_lst)
 {

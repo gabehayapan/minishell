@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/01 07:57:26 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/01 08:43:48 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,20 +166,17 @@ void		no_rdt_file(t_token *token);
 void		get_command(char *exec, t_token *tokens);
 
 // handle_input/parser/expand_specials.c
-int			expand_specials(t_token **tokens, t_env *env_lst,
-				unsigned char exit_status);
+int			expand_specials(t_token **tokens, t_env *env_lst, t_sub *sub);
 int			expand_dollar(t_token **tokens, t_token **current, t_env *env_lst,
-				unsigned char exit_status);
+				t_sub *sub);
 int			expand_tilde(t_token *current, t_env *env_lst);
 
 // handle_input/parser/expand_specials_utils.c
 char		*rm_extra_space(char *str);
 int			expand_quoted_dollar(t_token **tokens, t_token **current,
-				t_env *env_lst, unsigned char exit_status);
+				t_env *env_lst, t_sub *sub);
 int			handle_dbl_quoted_dollar(t_token **tokens, t_token **current,
-				t_env *env_lst, unsigned char exit_status);
-int			handle_others(t_token **tokens, t_token **current, t_env *env_lst,
-				unsigned char exit_status);
+				t_env *env_lst, t_sub *sub);
 
 // handle_input/parser/history_substitution.c
 int			check_history(t_token **tokens, t_his *his);
@@ -195,7 +192,7 @@ int			replace_his_token(t_token **tokens, t_token **current, t_his *his);
 
 // handle_input/parser/replace_command.c
 int			replace_with_cmd_output(t_token **tokens, t_token **current,
-				t_env *env_lst);
+				t_env *env_lst, t_sub *sub);
 
 // handle_input/parser/replace_command.c
 void		free_cmd_replace(t_token **tokens, t_token **current);

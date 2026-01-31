@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 10:37:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 19:38:31 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/01 08:31:20 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define BUILTIN_H
 
 # include "parser.h"
+# include "pipe.h"
 
 typedef enum s_buitin
 {
@@ -39,7 +40,7 @@ typedef struct s_term
 
 t_builtin	is_builtin(char *cmd);
 
-int			cd(char **strs, t_env **env_lst, t_exec *top, t_his *his);
+int			cd(char **strs, t_env **env_lst, t_to_free *to_free);
 int			validate_args(char **strs);
 int			set_oldpwd(t_env *pwd, t_env **env_lst);
 int			set_pwd(t_env **env_lst);
@@ -48,24 +49,24 @@ int			update_to_new_oldpwd(t_env *pwd, t_env *oldpwd, t_env **env_lst);
 
 int			echo(char **strs, int fd);
 int			env(t_env *env_lst);
-int			ft_exit(char **cmdset, t_env *env_lst, t_exec *top, t_his *his);
+int			ft_exit(char **cmdset, t_env *env_lst, t_to_free *to_free);
 
-int			export(char **strs, t_env **env_lst, t_exec *top, t_his *his);
+int			export(char **strs, t_env **env_lst, t_to_free *to_free);
 int			check_existence(t_env **target, t_env **env_lst, char *str,
-				t_exec *top, t_his *his);
+				t_to_free *to_free);
 
 int			pwd(t_env **env_lst);
 int			unset(t_env **env_lst, char **strs);
 
 int			history(t_his *his);
 
-int			terminal0142(t_env *env_lst, t_exec *top, t_his *his);
+int			terminal0142(t_env *env_lst, t_to_free *to_free);
 int			init_term_var(t_env *env_lst, t_term *term, char ***envp);
 int			exec_clone_term0142(t_term *term, char **envp);
 int			exec_launch_term0142(t_term *term, char **envp);
 int			exec_remove_term0142(t_term *term, char **envp);
 void		free_term(t_term *term);
 
-int			google(char **strs, t_env *env_lst, t_exec *top, t_his *his);
+int			google(char **strs, t_env *env_lst, t_to_free *to_free);
 
 #endif

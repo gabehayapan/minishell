@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 09:57:15 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 18:39:43 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/01 08:39:17 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	init_tokens(t_token **tokens, t_env **env_lst, t_sub *sub)
 		clear_token(tokens, *tokens, free);
 	if (*tokens == NULL)
 		return (NO_COMMAND);
-	is_success = expand_specials(tokens, *env_lst, sub->exit_status);
+	is_success = expand_specials(tokens, *env_lst, sub);
 	if (is_success == FAILURE || is_success == SIGNALED)
 		return (is_success);
 	is_success = check_assignment(tokens, env_lst);

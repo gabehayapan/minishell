@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 11:07:28 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 19:14:02 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/01 08:31:28 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "env_var.h"
-#include "parser.h"
 #include "ft_dprintf.h"
 #include "builtin.h"
 
@@ -61,7 +60,7 @@ int	change_cwd_to_path(char *path)
 	return (SUCCESS);
 }
 
-void	update_env_pwd(t_env **env_lst, t_exec *top, t_his *his)
+void	update_env_pwd(t_env **env_lst, t_to_free *to_free)
 {
 	t_env	*pwd;
 	t_env	*oldpwd;
@@ -76,13 +75,13 @@ void	update_env_pwd(t_env **env_lst, t_exec *top, t_his *his)
 	if (is_success == FAILURE)
 	{
 		free_env_lst(*env_lst);
-		free_node_exec(top);
-		free_his(his);
+		free_node_exec(to_free->top);
+		free_his(to_free->his);
 		exit(1);
 	}
 }
 
-int	cd(char **strs, t_env **env_lst, t_exec *top, t_his *his)
+int	cd(char **strs, t_env **env_lst, t_to_free *to_free)
 {
 	int		ret;
 	char	*path;
@@ -106,6 +105,6 @@ int	cd(char **strs, t_env **env_lst, t_exec *top, t_his *his)
 	ret = change_cwd_to_path(path);
 	if (ret == FAILURE)
 		return (FAILURE);
-	update_env_pwd(env_lst, top, his);
+	update_env_pwd(env_lst, to_free);
 	return (SUCCESS);
 }

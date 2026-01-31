@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 19:44:34 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/01 08:46:13 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,24 +64,29 @@ int	new_history_node(t_his **his, char *input)
 	return (SUCCESS);
 }
 
-int	execute_input_command(char **input, t_env **env_lst, int is_child)
+int	execute_input_command(char **input, t_env **env_lst, t_sub *sub,
+			int is_child)
 {
 	t_exec			*exec_tree;
 	int				ret;
-	static t_sub	sub;
+	t_to_free		to_free;
 
-	ret = handle_input(input, env_lst, &exec_tree, &sub);
+	ret = handle_input(input, env_lst, &exec_tree, sub);
 	if (ret == FAILURE)
 		return (FAILURE);
-	if (new_history_node(&sub.his, *input) == FAILURE)
-		return (FAILURE);
+	if (is_child == 0)
+	{
+		if (new_history_node(&sub->his, *input) == FAILURE)
+			return (FAILURE);
+	}
 	if (ret == SUCCESS)
 	{
-		sub.exit_status = execute_command(exec_tree, env_lst, exec_tree,
-				sub.his);
+		to_free.top = exec_tree;
+		to_free.his = sub->his;
+		sub->exit_status = execute_command(exec_tree, env_lst, &to_free);
 		free_node_exec(exec_tree);
 		if (is_child == 1)
-			return (sub.exit_status);
+			return (sub->exit_status);
 	}
 	add_history(*input);
 	return (SUCCESS);
@@ -89,28 +94,31 @@ int	execute_input_command(char **input, t_env **env_lst, int is_child)
 
 int	read_and_execute(t_env **env_lst)
 {
-	char				*input;
-	int					is_success;
+	char	*input;
+	int		is_success;
+	t_sub	sub;
 
 	input = NULL;
+	sub.his = NULL;
+	sub.exit_status = 0;
 	while (1)
 	{
 		if (readline_signal() == FAILURE)
-			return (FAILURE);
+			return (free_his(sub.his), FAILURE);
 		input = readline("minishell> ");
 		if (input == NULL)
 			break ;
 		if (*input != '\0')
 		{
 			if (ignore_signal() == FAILURE)
-				return (FAILURE);
-			is_success = execute_input_command(&input, env_lst, 0);
+				return (free_his(sub.his), FAILURE);
+			is_success = execute_input_command(&input, env_lst, &sub, 0);
 			free(input);
 			if (is_success == FAILURE)
-				return (FAILURE);
+				return (free_his(sub.his), FAILURE);
 		}
 	}
-	return (SUCCESS);
+	return (free_his(sub.his), SUCCESS);
 }
 
 int	main(int argc, char **argv, char **envp)

@@ -6,11 +6,11 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 18:54:51 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 19:24:15 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/01 08:32:02 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "builtin.h"
 #include "env_var.h"
 #include "ft_dprintf.h"
 
@@ -34,15 +34,16 @@ int	new_env_no_value(char *str, t_env **env_lst)
 	return (SUCCESS);
 }
 
-int	check_existence(t_env **target, t_env **env_lst, char *str, t_exec *top,
-			t_his *his)
+int	check_existence(t_env **target, t_env **env_lst, char *str,
+			t_to_free *to_free)
 {
 	char	**new_strs;
 
 	new_strs = ft_split(str, '=');
 	if (new_strs == NULL)
 	{
-		free_all(*env_lst, top);
+		free_all(*env_lst, to_free->top);
+		free_his(to_free->his);
 		exit(1);
 	}
 	*target = env_find(*env_lst, *new_strs);
@@ -52,8 +53,8 @@ int	check_existence(t_env **target, t_env **env_lst, char *str, t_exec *top,
 			return (FAILURE);
 		if (new_env_no_value(*new_strs, env_lst) == FAILURE)
 		{
-			free_all(*env_lst, top);
-			free_his(his);
+			free_all(*env_lst, to_free->top);
+			free_his(to_free->his);
 			exit(1);
 		}
 		free(new_strs);

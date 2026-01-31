@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 11:57:32 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 17:55:09 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/01 08:43:29 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,20 @@ char	*rm_extra_space(char *str)
 }
 
 int	expand_quoted_dollar(t_token **tokens, t_token **current, t_env *env_lst,
-			unsigned char exit_status)
+			t_sub *sub)
 {
 	t_token	*next;
 	char	*env_var;
 
 	next = (*current)->next;
 	if (next->tk_type == O_PAREN)
-		return (replace_with_cmd_output(tokens, current, env_lst));
+		return (replace_with_cmd_output(tokens, current, env_lst, sub));
 	env_var = env_value(env_lst, next->word);
 	free((*current)->word);
 	if (env_var != NULL)
 		(*current)->word = ft_strdup(env_var);
 	else if (next->word != NULL && *(next->word) == '?')
-		(*current)->word = ft_itoa(exit_status);
+		(*current)->word = ft_itoa(sub->exit_status);
 	else
 		(*current)->word = ft_strdup("");
 	clear_token(tokens, next, free);
@@ -65,13 +65,13 @@ int	expand_quoted_dollar(t_token **tokens, t_token **current, t_env *env_lst,
 }
 
 int	handle_dbl_quoted_dollar(t_token **tokens, t_token **current,
-			t_env *env_lst, unsigned char exit_status)
+			t_env *env_lst, t_sub *sub)
 {
 	int	ret;
 
 	if ((*current)->tk_type == DOLLAR)
 	{
-		ret = expand_quoted_dollar(tokens, current, env_lst, exit_status);
+		ret = expand_quoted_dollar(tokens, current, env_lst, sub);
 		if (ret == FAILURE || ret == SIGNALED)
 			return (ret);
 	}
