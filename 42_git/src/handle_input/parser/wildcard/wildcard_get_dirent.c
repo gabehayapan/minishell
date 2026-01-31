@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/30 13:11:23 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 08:45:22 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 09:50:20 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,10 @@ int	check_dirent(t_token **tokens, t_token *filter, t_token **token_dir,
 		if (ret == SUCCESS && dnames->is_found == 0)
 			dnames->is_found = 1;
 		else if (ret == NO_FILTER)
+		{
+			dnames->is_found = 1;
 			break ;
+		}
 		else if (ret == FAILURE)
 			break ;
 		ret = get_matching_files(tokens, filter, token_dir, dnames);
@@ -108,7 +111,7 @@ int	check_dirent(t_token **tokens, t_token *filter, t_token **token_dir,
 	closedir(dnames->dir);
 	if (ret == FAILURE)
 		return (FAILURE);
-	else if (dnames->is_found == 0 && ret != NO_FILTER)
+	else if (dnames->is_found == 0)
 		return (NOT_FOUND);
 	return (SUCCESS);
 }
