@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 09:20:42 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/29 09:47:04 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 11:16:58 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,11 @@ int	google_search(char **cmd, t_env *env_lst)
 	{
 		execve(*cmd, cmd, envp);
 		perror("execve");
-		free_null_term_strs(envp);
 		exit(EXIT_FAILURE);
 	}
-	if (wait(&status) == -1)
-	{
-		free_null_term_strs(envp);
-		return (FAILURE);
-	}
 	free_null_term_strs(envp);
+	if (wait(&status) == -1)
+		return (FAILURE);
 	return (status);
 }
 
