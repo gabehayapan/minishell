@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 17:50:11 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 17:52:17 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 18:47:45 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,12 @@ int	wildcard_expansion(t_token **tokens)
 	current = *tokens;
 	while (current != NULL)
 	{
-		is_success = expand_wildcard(tokens, current);
-		if (is_success == FAILURE)
-			return (FAILURE);
+		if (current->tk_type == WILDCARD)
+		{
+			is_success = expand_wildcard(tokens, current);
+			if (is_success == FAILURE)
+				return (FAILURE);
+		}
 		current = current->next;
 	}
 	return (SUCCESS);
