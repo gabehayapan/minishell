@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 15:51:16 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 16:54:52 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,9 @@ int			handle_others(t_token **tokens, t_token **current, t_env *env_lst,
 // handle_input/parser/replace_command.c
 int			replace_with_cmd_output(t_token **tokens, t_token **current,
 				t_env *env_lst);
+
+// handle_input/parser/replace_command.c
+void		free_cmd_replace(t_token **tokens, t_token **current);
 
 // handle_input/parser/wildcard/wildcard_init.c
 int			init_wildcard(t_token **filter, t_token **token_dir, t_dir *dnames);

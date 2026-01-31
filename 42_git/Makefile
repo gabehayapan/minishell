@@ -48,6 +48,7 @@ SRCS =\
 	./src/handle_input/parser/expand_specials.c\
 	./src/handle_input/parser/expand_specials_utils.c\
 	./src/handle_input/parser/replace_command.c\
+	./src/handle_input/parser/replace_command_utils.c\
 	./src/handle_input/parser/wildcard/wildcard_init.c\
 	./src/handle_input/parser/wildcard/wildcard_init_slash.c\
 	./src/handle_input/parser/wildcard/wildcard_init_dirname.c\
@@ -119,6 +120,7 @@ OBJS =\
 	./obj/expand_specials.o\
 	./obj/expand_specials_utils.o\
 	./obj/replace_command.o\
+	./obj/replace_command_utils.o\
 	./obj/wildcard_init.o\
 	./obj/wildcard_init_slash.o\
 	./obj/wildcard_init_dirname.o\

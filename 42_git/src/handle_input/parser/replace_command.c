@@ -6,47 +6,57 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 08:52:30 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 14:58:20 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 16:56:00 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "get_next_line.h"
 #include <sys/wait.h>
 
 int	default_signal(void);
 int	execute_input_command(char **input, t_env **env_lst, int is_child);
 
-void	free_cmd_replace(t_token **tokens, t_token **current)
+int	new_cmd_output_token(t_token **current, int pipefd)
 {
+	char	*line;
+	char	*new_str;
+	t_token	*new_token;
 	t_token	*next;
 
+	line = get_next_line(pipefd);
 	next = (*current)->next;
-	clear_token(tokens, *current, free);
-	*current = next;
-	next = (*current)->next;
-	clear_token(tokens, *current, free);
-	*current = next;
-	next = (*current)->next;
-	clear_token(tokens, *current, free);
-	*current = next;
+	while (line != NULL)
+	{
+		new_str = ft_strtrim(line, " \n\t\r\v\f");
+		free(line);
+		if (new_str == NULL)
+			return (FAILURE);
+		new_token = new_token_str(new_str, *current, WILDCARD);
+		free(new_str);
+		if (new_token == NULL)
+			return (FAILURE);
+		new_token->next = next;
+		if (next != NULL)
+			next->prev = new_token;
+		*current = new_token;
+		line = get_next_line(pipefd);
+	}
+	return (SUCCESS);
 }
 
 int	set_cmd_output(t_token **tokens, t_token **current, int *pipefd, int status)
 {
-	char	*buf;
-	ssize_t	n;
+	t_token	*tmp;
 	t_token	*next;
 
+	close(pipefd[1]);
 	if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
 	{
-		buf = (char *)malloc(sizeof(char) * 8192);
-		if (buf == NULL)
-			return (FAILURE);
-		n = read(pipefd[0], buf, 8192);
-		buf[n - 1] = '\0';
+		tmp = *current;
+		new_cmd_output_token(current, pipefd[0]);
+		clear_token(tokens, tmp, free);
 		close(pipefd[0]);
-		free((*current)->word);
-		(*current)->word = buf;
 		*current = (*current)->next;
 		free_cmd_replace(tokens, current);
 	}
@@ -56,6 +66,7 @@ int	set_cmd_output(t_token **tokens, t_token **current, int *pipefd, int status)
 		clear_token(tokens, *current, free);
 		*current = next;
 		free_cmd_replace(tokens, current);
+		close(pipefd[0]);
 	}
 	return (SUCCESS);
 }
@@ -66,6 +77,7 @@ void	get_cmd_output(int *pipefd, t_token *current, t_env *env_lst)
 
 	if (default_signal() == EXIT_FAILURE)
 		exit(EXIT_FAILURE);
+	close(pipefd[0]);
 	close(STDOUT_FILENO);
 	ret = dup2(pipefd[1], STDOUT_FILENO);
 	if (ret == -1)
@@ -83,18 +95,22 @@ void	get_cmd_output(int *pipefd, t_token *current, t_env *env_lst)
 	exit(EXIT_FAILURE);
 }
 
-int	wait_for_child(void)
+int	wait_for_child(int *pipefd)
 {
 	int	status;
 
 	if (wait(&status) == -1)
 	{
 		perror("wait");
+		close(pipefd[0]);
+		close(pipefd[1]);
 		return (FAILURE);
 	}
 	if (WIFSIGNALED(status))
 	{
 		write(1, "\n", 1);
+		close(pipefd[0]);
+		close(pipefd[1]);
 		return (SIGNALED);
 	}
 	return (status);
@@ -122,7 +138,7 @@ int	replace_with_cmd_output(t_token **tokens, t_token **current,
 	}
 	else if (pid == 0)
 		get_cmd_output(pipefd, *current, env_lst);
-	ret = wait_for_child();
+	ret = wait_for_child(pipefd);
 	if (ret == FAILURE || ret == SIGNALED)
 		return (ret);
 	return (set_cmd_output(tokens, current, pipefd, ret));
