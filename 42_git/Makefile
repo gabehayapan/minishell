@@ -49,7 +49,8 @@ SRCS =\
 	./src/handle_input/parser/expand_specials.c\
 	./src/handle_input/parser/expand_specials_utils.c\
 	./src/handle_input/parser/history_substitution.c\
-	./src/handle_input/parser/history_substitution_utils.c\
+	./src/handle_input/parser/history_utils.c\
+	./src/handle_input/parser/history_single.c\
 	./src/handle_input/parser/replace_command.c\
 	./src/handle_input/parser/replace_command_utils.c\
 	./src/handle_input/parser/wildcard/wildcard_expansion.c\
@@ -125,7 +126,8 @@ OBJS =\
 	./obj/expand_specials.o\
 	./obj/expand_specials_utils.o\
 	./obj/history_substitution.o\
-	./obj/history_substitution_utils.o\
+	./obj/history_utils.o\
+	./obj/history_single.o\
 	./obj/replace_command.o\
 	./obj/replace_command_utils.o\
 	./obj/wildcard_expansion.o\

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 18:10:49 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 19:03:57 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/01 07:58:05 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,21 @@ int	substitute_sgl_his(t_token **tokens, t_token **current, t_his *his)
 int	substitute_dbl_his(t_token **tokens, t_token **current, t_his *his)
 {
 	t_token	*next;
+	t_token	*token_set;
 
-	next = (*current)->next;
 	if (his == NULL)
+	{
+		next = (*current)->next;
 		clear_token(tokens, *current, free);
+	}
 	else
 	{
-		free((*current)->word);
-		(*current)->word = ft_strdup(his->line);
-		if ((*current)->word == NULL)
+		token_set = tokenizer(&his->line);
+		if (token_set == NULL)
 			return (FAILURE);
+		next = (*current)->next;
+		insert_token(*current, token_set);
+		clear_token(tokens, *current, free);
 	}
 	*current = next;
 	return (SUCCESS);

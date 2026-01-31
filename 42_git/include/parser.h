@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 19:09:07 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/01 07:57:26 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,10 @@ int			handle_others(t_token **tokens, t_token **current, t_env *env_lst,
 // handle_input/parser/history_substitution.c
 int			check_history(t_token **tokens, t_his *his);
 
-// handle_input/parser/history_substitution_utils.c
+// handle_input/parser/history_utils.c
+void		insert_token(t_token *head, t_token *new);
+
+// handle_input/parser/history_single.c
 char		*trace_history(t_token *target, t_his *his);
 int			skip_his(t_token **tokens, t_token **current);
 int			his_no_event(t_token *current);
