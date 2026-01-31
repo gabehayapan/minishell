@@ -59,7 +59,6 @@ SRCS =\
 	./src/handle_input/parser/wildcard/wildcard_file_token.c\
 	./src/handle_input/parser/wildcard/wildcard_utils.c\
 	./src/handle_input/parser/wildcard/wildcard_file_name_validation.c\
-	./src/handle_input/parser/handle_exit_status.c\
 	./src/handle_input/parser/join_word.c\
 	./src/handle_input/parser/get_command.c\
 	./src/handle_input/parser/exec_nodes.c\
@@ -131,7 +130,6 @@ OBJS =\
 	./obj/wildcard_file_token.o\
 	./obj/wildcard_utils.o\
 	./obj/wildcard_file_name_validation.o\
-	./obj/handle_exit_status.o\
 	./obj/join_word.o\
 	./obj/get_command.o\
 	./obj/exec_nodes.o\

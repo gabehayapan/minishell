@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:45:43 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/26 12:33:40 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 15:35:52 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,15 @@ t_token	*tokenize_single_quote(char **input, char **str, t_token *current)
 {
 	char	*start;
 
+	current = create_new_token(str, current, SGL_QTE);
+	if (current == NULL)
+		return (NULL);
 	while (**str != '\'')
 	{
 		start = *str;
-		while (get_token_type(*str) != SGL_QTE
-			&& get_token_type(*str) != END)
+		while (**str != '\0' && **str != '\'')
 			(*str)++;
-		if (get_token_type(*str) == END)
+		if (**str == '\0')
 			*str = syntax_error(input, start, SGL_QTE);
 		else
 		{
@@ -61,26 +63,26 @@ t_token	*tokenize_double_quote(char **input, char **str, t_token *current)
 {
 	char	*tmp;
 
-	while (get_token_type(*str) != DBL_QTE)
+	current = create_new_token(str, current, DBL_QTE);
+	if (current == NULL)
+		return (NULL);
+	while (**str != '\"')
 	{
 		tmp = *str;
-		while (get_token_type(*str) != END && get_token_type(*str) != DOLLAR
-			&& get_token_type(*str) != DBL_QTE)
+		while (**str != '\0' && **str != '$' && **str != '\"')
 			(*str)++;
-		if (get_token_type(*str) == END)
+		if (**str == '\0')
 			*str = syntax_error(input, tmp, DBL_QTE);
-		else if (get_token_type(*str) == DBL_QTE)
-		{
-			current = new_token_quoted_str(tmp, *str, current);
-			if (current == NULL)
-				return (NULL);
-			break ;
-		}
 		else
 		{
-			current = tokenize_dollar(input, tmp, str, current);
+			if (**str == '"')
+				current = new_token_quoted_str(tmp, *str, current);
+			else
+				current = tokenize_dollar(input, tmp, str, current);
 			if (current == NULL)
 				return (NULL);
+			if (**str == '"')
+				break ;
 		}
 	}
 	return (create_new_token(str, current, DBL_QTE));

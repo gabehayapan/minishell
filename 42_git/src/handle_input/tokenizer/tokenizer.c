@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 11:54:45 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 11:02:20 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 15:24:57 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,16 +66,12 @@ t_token	*new_token(char **input, char **str,
 {
 	if (tk_type == DOLLAR)
 		*current = tokenize_dollar(input, *str, str, *current);
+	else if (tk_type == SGL_QTE || tk_type == DBL_QTE)
+		*current = tokenize_quote(input, str, *current, tk_type);
 	else
 		*current = create_new_token(str, *current, tk_type);
 	if (*current == NULL)
 		return (NULL);
-	if (tk_type == SGL_QTE || tk_type == DBL_QTE)
-	{
-		*current = tokenize_quote(input, str, *current, tk_type);
-		if (*current == NULL)
-			return (NULL);
-	}
 	return (*current);
 }
 

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 10:43:29 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 15:51:16 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,9 +228,6 @@ int			set_dnames(t_token *dir, t_dir *dnames);
 // handle_input/parser/wildcard/wildcard_expansion_utils.c
 int			check_file_name(t_token *head, struct dirent *ent);
 t_token		*new_file_token(t_token *head, char *name);
-
-// handle_input/parser/handle_exit_status.c
-char		*handle_exit_status(t_token **next, unsigned char exit_status);
 
 // handle_input/parser/join_word.c
 char		*join_word_with_space(char *str, char *word, size_t *len_str);

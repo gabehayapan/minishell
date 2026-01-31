@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/30 18:37:57 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 15:49:55 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	expand_dollar(t_token **tokens, t_token **current, t_env *env_lst,
 	free((*current)->word);
 	if (env_var != NULL)
 		(*current)->word = rm_extra_space(env_var);
-	else if (next->word != NULL && ft_strncmp(next->word, "?", 1) == 0)
-		(*current)->word = handle_exit_status(&next, exit_status);
+	else if (next->word != NULL && *(next->word) == '?')
+		(*current)->word = ft_itoa(exit_status);
 	else
 		(*current)->word = ft_strdup("");
 	clear_token(tokens, next, free);
