@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 08:20:41 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/26 17:47:01 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 17:05:10 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,11 @@ t_exec	*add_exec_tree_branch(t_exec **top, t_exec *current, t_exec **target,
 
 t_exec	*exec_tree_term(t_exec *top, t_exec *term, t_exec **target)
 {
+	*target = NULL;
 	if (term == NULL)
-	{
-		*target = NULL;
 		return (top);
-	}
 	else
-	{
-		*target = NULL;
 		return (term);
-	}
 }
 
 void	handle_same_layer(t_exec **top, t_exec *current, t_exec **target,
