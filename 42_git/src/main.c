@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 19:37:54 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 19:44:34 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	execute_input_command(char **input, t_env **env_lst, int is_child)
 	if (ret == SUCCESS)
 	{
 		sub.exit_status = execute_command(exec_tree, env_lst, exec_tree,
-			sub.his);
+				sub.his);
 		free_node_exec(exec_tree);
 		if (is_child == 1)
 			return (sub.exit_status);
