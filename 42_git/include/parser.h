@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 16:54:52 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 19:09:07 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@
 # define NO_DIR 5
 # define NO_FILTER 6
 # define NEW_MATCH 7
-# define FORMAT_ERROR 8
-# define SIGNALED 9
-# define END 10
+# define NO_EVENT 8
+# define FORMAT_ERROR 9
+# define SIGNALED 10
+# define END 11
 
 typedef enum s_rdt_type
 {
@@ -93,16 +94,23 @@ typedef struct s_his
 {
 	int				id;
 	char			*line;
+	struct s_his	*prev;
 	struct s_his	*next;
 }	t_his;
 
+typedef struct s_sub
+{
+	unsigned char	exit_status;
+	t_his			*his;
+}	t_sub;
+
 // handle_input/handle_input.c
 int			handle_input(char **input, t_env **env_lst, t_exec **exec_tree,
-				unsigned char exit_status);
+				t_sub *sub);
 
 // handle_input/parser/parser.c
 int			parser(t_token **tokens, t_env **env_lst, t_exec **exec_tree,
-				unsigned char exit_status);
+				t_sub *sub);
 char		**new_exec(t_token **tokens, t_exec *node_exec, t_env *env_lst);
 void		free_command(t_command *command);
 
@@ -128,7 +136,7 @@ int			check_closing_parenthesis(t_token **tokens, int *subshell);
 
 // handle_input/parser/init_tokens.c
 int			init_tokens(t_token **tokens, t_env **env_lst,
-				unsigned char exit_status);
+				t_sub *sub);
 
 // handle_input/parser/free.c
 void		free_strs(char **strs, size_t size);
@@ -139,6 +147,7 @@ void		clear_token(t_token **tokens, t_token *target, void (*del)(void *));
 
 // handle_input/parser/free_all.c
 void		free_all(t_env *env_lst, t_exec *top);
+void		free_his(t_his *his);
 
 // handle_input/parser/counter.c
 size_t		get_len_command(t_token *tokens);
@@ -162,7 +171,6 @@ int			expand_specials(t_token **tokens, t_env *env_lst,
 int			expand_dollar(t_token **tokens, t_token **current, t_env *env_lst,
 				unsigned char exit_status);
 int			expand_tilde(t_token *current, t_env *env_lst);
-int			expand_wildcard(t_token **tokens, t_token *current);
 
 // handle_input/parser/expand_specials_utils.c
 char		*rm_extra_space(char *str);
@@ -173,12 +181,24 @@ int			handle_dbl_quoted_dollar(t_token **tokens, t_token **current,
 int			handle_others(t_token **tokens, t_token **current, t_env *env_lst,
 				unsigned char exit_status);
 
+// handle_input/parser/history_substitution.c
+int			check_history(t_token **tokens, t_his *his);
+
+// handle_input/parser/history_substitution_utils.c
+char		*trace_history(t_token *target, t_his *his);
+int			skip_his(t_token **tokens, t_token **current);
+int			his_no_event(t_token *current);
+int			replace_his_token(t_token **tokens, t_token **current, t_his *his);
+
 // handle_input/parser/replace_command.c
 int			replace_with_cmd_output(t_token **tokens, t_token **current,
 				t_env *env_lst);
 
 // handle_input/parser/replace_command.c
 void		free_cmd_replace(t_token **tokens, t_token **current);
+
+// handle_input/parser/wildcard/wildcard_expansion.c
+int			wildcard_expansion(t_token **tokens);
 
 // handle_input/parser/wildcard/wildcard_init.c
 int			init_wildcard(t_token **filter, t_token **token_dir, t_dir *dnames);

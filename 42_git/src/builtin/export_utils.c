@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 18:54:51 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 09:38:18 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 19:24:15 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ int	new_env_no_value(char *str, t_env **env_lst)
 	return (SUCCESS);
 }
 
-int	check_existence(t_env **target, t_env **env_lst, char *str, t_exec *top)
+int	check_existence(t_env **target, t_env **env_lst, char *str, t_exec *top,
+			t_his *his)
 {
 	char	**new_strs;
 
@@ -52,6 +53,7 @@ int	check_existence(t_env **target, t_env **env_lst, char *str, t_exec *top)
 		if (new_env_no_value(*new_strs, env_lst) == FAILURE)
 		{
 			free_all(*env_lst, top);
+			free_his(his);
 			exit(1);
 		}
 		free(new_strs);

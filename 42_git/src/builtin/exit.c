@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 20:41:00 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/29 08:02:58 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 19:23:07 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	exit_code(char **cmdset)
 	}
 }
 
-int	ft_exit(char **cmdset, t_env *env_lst, t_exec *top)
+int	ft_exit(char **cmdset, t_env *env_lst, t_exec *top, t_his *his)
 {
 	char	code;
 
@@ -81,5 +81,6 @@ int	ft_exit(char **cmdset, t_env *env_lst, t_exec *top)
 		code = exit_code(cmdset);
 	free_env_lst(env_lst);
 	free_node_exec(top);
+	free_his(his);
 	exit((int)code);
 }

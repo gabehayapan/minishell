@@ -19,6 +19,7 @@ SRCS =\
 	./src/builtin/exit.c\
 	./src/builtin/pwd.c\
 	./src/builtin/unset.c\
+	./src/builtin/history.c\
 	./src/builtin/terminal0142.c\
 	./src/builtin/init_terminal0142.c\
 	./src/builtin/exec_terminal0142.c\
@@ -47,8 +48,11 @@ SRCS =\
 	./src/handle_input/parser/print_redirection_error.c\
 	./src/handle_input/parser/expand_specials.c\
 	./src/handle_input/parser/expand_specials_utils.c\
+	./src/handle_input/parser/history_substitution.c\
+	./src/handle_input/parser/history_substitution_utils.c\
 	./src/handle_input/parser/replace_command.c\
 	./src/handle_input/parser/replace_command_utils.c\
+	./src/handle_input/parser/wildcard/wildcard_expansion.c\
 	./src/handle_input/parser/wildcard/wildcard_init.c\
 	./src/handle_input/parser/wildcard/wildcard_init_slash.c\
 	./src/handle_input/parser/wildcard/wildcard_init_dirname.c\
@@ -91,6 +95,7 @@ OBJS =\
 	./obj/exit.o\
 	./obj/pwd.o\
 	./obj/unset.o\
+	./obj/history.o\
 	./obj/terminal0142.o\
 	./obj/init_terminal0142.o\
 	./obj/exec_terminal0142.o\
@@ -119,8 +124,11 @@ OBJS =\
 	./obj/print_redirection_error.o\
 	./obj/expand_specials.o\
 	./obj/expand_specials_utils.o\
+	./obj/history_substitution.o\
+	./obj/history_substitution_utils.o\
 	./obj/replace_command.o\
 	./obj/replace_command_utils.o\
+	./obj/wildcard_expansion.o\
 	./obj/wildcard_init.o\
 	./obj/wildcard_init_slash.o\
 	./obj/wildcard_init_dirname.o\

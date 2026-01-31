@@ -1,32 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_all.c                                         :+:      :+:    :+:   */
+/*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/25 18:48:56 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 19:08:46 by hanakamu         ###   ########.fr       */
+/*   Created: 2026/01/31 19:31:44 by hanakamu          #+#    #+#             */
+/*   Updated: 2026/01/31 19:42:43 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "builtin.h"
 #include "parser.h"
 
-void	free_all(t_env *env_lst, t_exec *top)
+int	history(t_his *his)
 {
-	free_env_lst(env_lst);
-	free_node_exec(top);
-}
-
-void	free_his(t_his *his)
-{
-	t_his	*next;
-
+	while (his != NULL && his->next != NULL)
+		his = his->next;
 	while (his != NULL)
 	{
-		next = his->next;
-		free(his->line);
-		free(his);
-		his = next;
+		ft_printf("% 5d  %s\n", his->id, his->line);
+		his = his->prev;
 	}
+	return (SUCCESS);
 }

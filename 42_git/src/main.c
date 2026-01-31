@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 17:08:01 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 19:44:34 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,49 @@ int	display_minishell(void)
 	return (SUCCESS);
 }
 
+int	new_history_node(t_his **his, char *input)
+{
+	t_his	*new_his;
+
+	new_his = (t_his *)malloc(sizeof(t_his));
+	if (new_his == NULL)
+		return (FAILURE);
+	if (*his == NULL)
+		new_his->id = 1;
+	else
+		new_his->id = (*his)->id + 1;
+	new_his->line = ft_strdup(input);
+	if (new_his->line == NULL)
+	{
+		free(new_his);
+		return (FAILURE);
+	}
+	new_his->prev = NULL;
+	new_his->next = *his;
+	if (*his != NULL)
+		(*his)->prev = new_his;
+	*his = new_his;
+	return (SUCCESS);
+}
+
 int	execute_input_command(char **input, t_env **env_lst, int is_child)
 {
-	t_exec					*exec_tree;
-	int						ret;
-	static unsigned char	exit_status;
+	t_exec			*exec_tree;
+	int				ret;
+	static t_sub	sub;
 
-	ret = handle_input(input, env_lst, &exec_tree, exit_status);
+	ret = handle_input(input, env_lst, &exec_tree, &sub);
 	if (ret == FAILURE)
+		return (FAILURE);
+	if (new_history_node(&sub.his, *input) == FAILURE)
 		return (FAILURE);
 	if (ret == SUCCESS)
 	{
-		exit_status = execute_command(exec_tree, env_lst, exec_tree);
+		sub.exit_status = execute_command(exec_tree, env_lst, exec_tree,
+				sub.his);
 		free_node_exec(exec_tree);
 		if (is_child == 1)
-			return (exit_status);
+			return (sub.exit_status);
 	}
 	add_history(*input);
 	return (SUCCESS);
