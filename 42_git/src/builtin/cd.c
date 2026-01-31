@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 11:07:28 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/29 07:47:22 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 14:45:05 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ int	change_cwd_to_path(char *path)
 	ret = chdir(path);
 	if (ret == -1)
 	{
-		ft_dprintf(2, "-minishell: ");
-		perror("chdir");
+		ft_dprintf(2, "-minishell: cd: ");
+		perror(path);
 		return (FAILURE);
 	}
 	return (SUCCESS);
