@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:50:38 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/29 07:48:40 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 19:23:56 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	store_new_env_var(t_env **env_lst, char *new_env)
 	return (SUCCESS);
 }
 
-int	export(char **strs, t_env **env_lst, t_exec *top)
+int	export(char **strs, t_env **env_lst, t_exec *top, t_his *his)
 {
 	t_env	*target;
 	int		is_success;
@@ -105,7 +105,7 @@ int	export(char **strs, t_env **env_lst, t_exec *top)
 			ret = is_success;
 		if (is_success == SUCCESS)
 		{
-			is_success = check_existence(&target, env_lst, *strs, top);
+			is_success = check_existence(&target, env_lst, *strs, top, his);
 			if (target != NULL && is_success == SUCCESS)
 				is_success = update_env_value(target, *strs);
 			else if (is_success == SUCCESS)

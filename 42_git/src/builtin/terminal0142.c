@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 17:12:50 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 11:28:15 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 19:24:58 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	start_terminal0142(t_term *term, char **envp)
 	return (status);
 }
 
-int	terminal0142(t_env *env_lst, t_exec *top)
+int	terminal0142(t_env *env_lst, t_exec *top, t_his *his)
 {
 	t_term	term;
 	char	**envp;
@@ -42,6 +42,7 @@ int	terminal0142(t_env *env_lst, t_exec *top)
 	{
 		free_env_lst(env_lst);
 		free_node_exec(top);
+		free_his(his);
 		exit(EXIT_FAILURE);
 	}
 	status = start_terminal0142(&term, envp);

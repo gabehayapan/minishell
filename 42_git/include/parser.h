@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 18:41:19 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 19:09:07 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ void		clear_token(t_token **tokens, t_token *target, void (*del)(void *));
 
 // handle_input/parser/free_all.c
 void		free_all(t_env *env_lst, t_exec *top);
+void		free_his(t_his *his);
 
 // handle_input/parser/counter.c
 size_t		get_len_command(t_token *tokens);
@@ -180,8 +181,14 @@ int			handle_dbl_quoted_dollar(t_token **tokens, t_token **current,
 int			handle_others(t_token **tokens, t_token **current, t_env *env_lst,
 				unsigned char exit_status);
 
-// handle_input/parser/expand_specials.c
+// handle_input/parser/history_substitution.c
 int			check_history(t_token **tokens, t_his *his);
+
+// handle_input/parser/history_substitution_utils.c
+char		*trace_history(t_token *target, t_his *his);
+int			skip_his(t_token **tokens, t_token **current);
+int			his_no_event(t_token *current);
+int			replace_his_token(t_token **tokens, t_token **current, t_his *his);
 
 // handle_input/parser/replace_command.c
 int			replace_with_cmd_output(t_token **tokens, t_token **current,
