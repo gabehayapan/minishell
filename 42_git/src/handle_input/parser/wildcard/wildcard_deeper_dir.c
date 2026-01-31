@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/30 10:49:08 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 09:48:16 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 10:43:47 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	check_first_dirent(t_token **tokens, t_token **filter, t_token **head_dir,
 	int		ret;
 
 	*filter = (*filter)->next;
+	dnames->is_found = 0;
 	ret = check_dirent(tokens, *filter, head_dir, dnames);
 	free(dnames->dirname);
 	next = (*head_dir)->next;
@@ -27,7 +28,7 @@ int	check_first_dirent(t_token **tokens, t_token **filter, t_token **head_dir,
 		dnames->is_found = 1;
 	else if (ret == FAILURE)
 		return (FAILURE);
-	*head_dir= next;
+	*head_dir = next;
 	return (ret);
 }
 
@@ -35,13 +36,17 @@ int	check_remaining_dirent(t_token **tokens, t_token *filter,
 			t_token *curr_dir, t_dir *dnames)
 {
 	int	ret;
+	int	prev_found;
 
 	if (set_dnames(curr_dir, dnames) == FAILURE)
 		return (FAILURE);
+	prev_found = dnames->is_found;
 	ret = check_dirent(tokens, filter, &curr_dir, dnames);
 	free(dnames->dirname);
 	if (ret == FAILURE)
 		return (FAILURE);
+	else if (prev_found == 0 && ret == SUCCESS)
+		return (NEW_MATCH);
 	return (ret);
 }
 
@@ -51,13 +56,11 @@ int	get_matching_files_multidir(t_token **tokens, t_token **filter,
 	t_token	*curr_dir;
 	t_token	*next;
 	t_dir	dnames;
-	int		prev_found;
 	int		ret;
 
 	next = (*head_dir)->next;
 	if (set_dnames(*head_dir, &dnames) == FAILURE)
 		return (FAILURE);
-	dnames.is_found = 0;
 	ret = check_first_dirent(tokens, filter, head_dir, &dnames);
 	if (ret == FAILURE)
 		return (FAILURE);
@@ -65,14 +68,10 @@ int	get_matching_files_multidir(t_token **tokens, t_token **filter,
 	while (curr_dir != NULL && curr_dir != head_filter)
 	{
 		next = curr_dir->next;
-		prev_found = dnames.is_found;
 		ret = check_remaining_dirent(tokens, *filter, curr_dir, &dnames);
 		if (ret == FAILURE)
 			return (FAILURE);
-		else if (dnames.is_found == 0)
-			*head_dir = curr_dir->next;
-		else if (ret == SUCCESS && prev_found == 0)
-			*head_dir = (*head_dir)->next;
+		set_head_dir(head_dir, curr_dir, &dnames, ret);
 		clear_token(tokens, curr_dir, NULL);
 		curr_dir = next;
 	}
@@ -103,13 +102,7 @@ int	check_deeper_dir(t_token **tokens, t_token *head_filter, t_token **head_dir,
 			return (FAILURE);
 		}
 		else if (is_success == NOT_FOUND)
-		{
-			is_success = reset_wildcard_tokens(tokens, head_filter, NULL,
-				disname);
-			if (is_success == FAILURE)
-				return (FAILURE);
-			return (NOT_FOUND);
-		}
+			return (handle_not_found(tokens, head_filter, disname));
 		curr_filter = skip_one_filter_dir(curr_filter);
 	}
 	free(disname);

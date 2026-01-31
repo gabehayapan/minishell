@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/30 13:08:22 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/30 18:06:23 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 10:37:42 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,18 @@ int	reset_wildcard_tokens(t_token **tokens, t_token *filter,
 		token_dir = next;
 	}
 	if (disname != NULL && *disname == '\0')
-	{
-		free(disname);
 		return (SUCCESS);
-	}
-	new_token = new_file_token(filter->prev, disname);
-	if (new_token == NULL)
+	else
 	{
-		free(disname);
-		return (FAILURE);
+		new_token = new_file_token(filter->prev, disname);
+		if (new_token == NULL)
+		{
+			free(disname);
+			return (FAILURE);
+		}
+		if (*tokens == filter)
+			*tokens = new_token;
 	}
-	if (*tokens == filter)
-		*tokens = new_token;
 	return (SUCCESS);
 }
 

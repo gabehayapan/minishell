@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/30 17:04:24 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 10:43:29 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,10 @@
 # define NOT_FOUND 4
 # define NO_DIR 5
 # define NO_FILTER 6
-# define FORMAT_ERROR 7
-# define SIGNALED 8
-# define END 9
+# define NEW_MATCH 7
+# define FORMAT_ERROR 8
+# define SIGNALED 9
+# define END 10
 
 typedef enum s_rdt_type
 {
@@ -178,6 +179,12 @@ int			replace_with_cmd_output(t_token **tokens, t_token **current,
 
 // handle_input/parser/wildcard/wildcard_init.c
 int			init_wildcard(t_token **filter, t_token **token_dir, t_dir *dnames);
+int			replace_token_word(char **word, char *new_word);
+
+// handle_input/parser/wildcard/wildcard_init_slash.c
+int			new_separated_tokens(t_token **curr_filter, char **strs);
+int			add_head_slash(t_token **curr_filter, char *str);
+int			add_last_slash(t_token **curr_filter);
 
 // handle_input/parser/wildcard/wildcard_init_dirname.c
 char		*get_open_dir_name(t_token **head_dir, char *ptr_slash,
@@ -196,6 +203,12 @@ int			check_initial_dir(t_token **tokens, t_token *filter,
 // handle_input/parser/wildcard/wildcard_deeper_dir.c
 int			check_deeper_dir(t_token **tokens, t_token *head_filter,
 				t_token **head_dir, char *disname);
+
+// handle_input/parser/wildcard/wildcard_deeper_dir.c
+void		set_head_dir(t_token **head_dir, t_token *curr_dir, t_dir *dnames,
+				int ret);
+int			handle_not_found(t_token **tokens, t_token *head_filter,
+				char *disname);
 
 // handle_input/parser/wildcard/wildcard_get_dirent.c
 int			check_dirent(t_token **tokens, t_token *filter, t_token **head_dir,

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/21 10:17:51 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/30 19:42:50 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 10:19:27 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,100 +30,38 @@ char	*init_dnames(t_token **current, char **disname)
 	return (dirname);
 }
 
-t_token	*new_slash_token(t_token *curr_filter)
+int	replace_token_word(char **word, char *new_word)
 {
-	t_token	*new_slash;
-	t_token	*next;
-
-	next = curr_filter->next;
-	new_slash = new_token_str("/", curr_filter, WORD);
-	if (new_slash == NULL)
-		return (NULL);
-	new_slash->next = next;
-	if (next != NULL)
-		next->prev = new_slash;
-	return (new_slash);
-}
-
-t_token	*new_dir_token(t_token *curr_filter, char *str)
-{
-	t_token	*new_dir;
-	t_token	*next;
-
-	next = curr_filter->next;
-	new_dir = new_token_str(str, curr_filter, WORD);
-	if (new_dir == NULL)
-		return (NULL);
-	new_dir->next = next;
-	if (next != NULL)
-		next->prev = new_dir;
-	return (new_dir);
-}
-
-t_token	*new_separated_tokens(t_token *curr_filter, char *str)
-{
-	t_token	*new_slash;
-	t_token	*new_dir;
-	t_token	*next;
-
-	next = curr_filter->next;
-	new_slash = new_token_str("/", curr_filter, WORD);
-	if (new_slash == NULL)
-		return (NULL);
-	new_dir = new_token_str(str, new_slash, WORD);
-	if (new_dir == NULL)
-		return (NULL);
-	new_slash->next = new_dir;
-	new_dir->prev = new_slash;
-	new_dir->next = next;
-	if (next != NULL)
-		next->prev = new_dir;
-	return (new_dir);
+	free(*word);
+	*word = ft_strdup(new_word);
+	if (*word == NULL)
+		return (FAILURE);
+	return (SUCCESS);
 }
 
 int	separate_tokens(t_token **curr_filter, char **strs, size_t len)
 {
-	t_token	*new_dir;
-	t_token	*new_slash;
-	int		is_slash;
+	int		is_last_slash;
+	int		is_success;
 
-	is_slash = 0;
+	is_last_slash = 0;
 	if ((((*curr_filter)->word)[len - 1] == '/') && len > 1
 		&& ((*curr_filter)->word)[len - 2] != '/')
-		is_slash = 1;
+		is_last_slash = 1;
 	if (*((*curr_filter)->word) == '/')
-	{
-		free((*curr_filter)->word);
-		(*curr_filter)->word = ft_strdup("/");
-		if ((*curr_filter)->word == NULL)
-			return (FAILURE);
-		if (**strs != '\0')
-		{
-			new_dir = new_dir_token(*curr_filter, *strs);
-			if (new_dir == NULL)
-				return (FAILURE);
-			*curr_filter = new_dir;
-		}
-	}
+		is_success = add_head_slash(curr_filter, *strs);
 	else
+		is_success = replace_token_word(&(*curr_filter)->word, *strs);
+	if (is_success == FAILURE)
+		return (FAILURE);
+	is_success = new_separated_tokens(curr_filter, strs + 1);
+	if (is_success == FAILURE)
+		return (FAILURE);
+	if (is_last_slash == 1)
 	{
-		free((*curr_filter)->word);
-		(*curr_filter)->word = ft_strdup(*strs);
-		if ((*curr_filter)->word == NULL)
+		is_success = add_last_slash(curr_filter);
+		if (is_success == FAILURE)
 			return (FAILURE);
-	}
-	strs = strs + 1;
-	while (*strs != NULL)
-	{
-		*curr_filter = new_separated_tokens(*curr_filter, *strs);
-		strs++;
-	}
-	if (is_slash == 1)
-	{
-		new_slash = new_slash_token(*curr_filter);
-		if (new_slash == NULL)
-			return (FAILURE);
-		*curr_filter = new_slash;
 	}
 	return (SUCCESS);
 }
