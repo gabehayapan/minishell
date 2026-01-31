@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:59:55 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/27 10:57:53 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 17:07:31 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <readline/readline.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include "parser.h"
 #include "ftprintf.h"
 
 void	redisplay_prompt(int signum)
@@ -28,7 +29,7 @@ void	redisplay_prompt(int signum)
 	}
 }
 
-int	signal_in_loop(void)
+int	readline_signal(void)
 {
 	struct sigaction	sa_int;
 	struct sigaction	sa_quit;
@@ -36,16 +37,16 @@ int	signal_in_loop(void)
 	sa_int.sa_handler = redisplay_prompt;
 	sa_quit.sa_handler = SIG_IGN;
 	if (sigemptyset(&sa_int.sa_mask) == -1)
-		return (EXIT_FAILURE);
+		return (FAILURE);
 	if (sigemptyset(&sa_quit.sa_mask) == -1)
-		return (EXIT_FAILURE);
+		return (FAILURE);
 	sa_int.sa_flags = 0;
 	sa_quit.sa_flags = 0;
 	if (sigaction(SIGINT, &sa_int, NULL) == -1)
-		return (EXIT_FAILURE);
+		return (FAILURE);
 	if (sigaction(SIGQUIT, &sa_quit, NULL) == -1)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+		return (FAILURE);
+	return (SUCCESS);
 }
 
 int	ignore_signal(void)
@@ -54,13 +55,13 @@ int	ignore_signal(void)
 
 	sa.sa_handler = SIG_IGN;
 	if (sigemptyset(&sa.sa_mask) == -1)
-		return (EXIT_FAILURE);
+		return (FAILURE);
 	sa.sa_flags = 0;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
-		return (EXIT_FAILURE);
+		return (FAILURE);
 	if (sigaction(SIGQUIT, &sa, NULL) == -1)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+		return (FAILURE);
+	return (SUCCESS);
 }
 
 int	default_signal(void)
@@ -69,11 +70,11 @@ int	default_signal(void)
 
 	sa.sa_handler = SIG_DFL;
 	if (sigemptyset(&sa.sa_mask) == -1)
-		return (EXIT_FAILURE);
+		return (FAILURE);
 	sa.sa_flags = 0;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
-		return (EXIT_FAILURE);
+		return (FAILURE);
 	if (sigaction(SIGQUIT, &sa, NULL) == -1)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+		return (FAILURE);
+	return (SUCCESS);
 }

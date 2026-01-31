@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 19:22:07 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/26 17:58:10 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/28 10:44:42 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,34 +31,6 @@ void	add_new_command(t_command **head, t_command *new_command,
 	else
 		(*last)->next = new_command;
 	*last = new_command;
-}
-
-void	remove_tk_spaces(t_token **tokens)
-{
-	t_token	*current;
-	t_token	*next;
-	int		is_wildcard;
-
-	is_wildcard = 0;
-	current = *tokens;
-	while (current != NULL)
-	{
-		next = current->next;
-		if (current->tk_type == SPACES)
-		{
-			clear_token(tokens, current, free);
-			is_wildcard = 0;
-		}
-		else if (current->tk_type == WILDCARD)
-			is_wildcard = 1;
-		else if (current->next != NULL
-			&& (current->next)->tk_type != WILDCARD && is_wildcard == 0
-			&& (current->next)->tk_type != AND && (current->next)->tk_type != OR
-			&& (current->next)->tk_type != SEMI
-			&& (current->next)->tk_type != PIPE)
-			(current->next)->is_join = true;
-		current = next;
-	}
 }
 
 int	join_command(t_token **tokens, t_token *current, char **command,

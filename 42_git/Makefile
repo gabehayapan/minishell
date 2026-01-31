@@ -1,7 +1,5 @@
 NAME = minishell
 
-#ECHO = echo
-
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
@@ -21,6 +19,11 @@ SRCS =\
 	./src/builtin/exit.c\
 	./src/builtin/pwd.c\
 	./src/builtin/unset.c\
+	./src/builtin/history.c\
+	./src/builtin/terminal0142.c\
+	./src/builtin/init_terminal0142.c\
+	./src/builtin/exec_terminal0142.c\
+	./src/builtin/google.c\
 	./src/execution/execution.c\
 	./src/handle_input/handle_input.c\
 	./src/handle_input/tokenizer/tokenizer.c\
@@ -35,6 +38,8 @@ SRCS =\
 	./src/handle_input/parser/parser_utils.c\
 	./src/handle_input/parser/shell_var.c\
 	./src/handle_input/parser/init.c\
+	./src/handle_input/parser/init_utils.c\
+	./src/handle_input/parser/init_tokens.c\
 	./src/handle_input/parser/free.c\
 	./src/handle_input/parser/free_all.c\
 	./src/handle_input/parser/counter.c\
@@ -43,11 +48,22 @@ SRCS =\
 	./src/handle_input/parser/print_redirection_error.c\
 	./src/handle_input/parser/expand_specials.c\
 	./src/handle_input/parser/expand_specials_utils.c\
+	./src/handle_input/parser/history_substitution.c\
+	./src/handle_input/parser/history_substitution_utils.c\
 	./src/handle_input/parser/replace_command.c\
-	./src/handle_input/parser/init_wildcard.c\
-	./src/handle_input/parser/wildcard_retrieve.c\
-	./src/handle_input/parser/wildcard_retrieve_utils.c\
-	./src/handle_input/parser/handle_exit_status.c\
+	./src/handle_input/parser/replace_command_utils.c\
+	./src/handle_input/parser/wildcard/wildcard_expansion.c\
+	./src/handle_input/parser/wildcard/wildcard_init.c\
+	./src/handle_input/parser/wildcard/wildcard_init_slash.c\
+	./src/handle_input/parser/wildcard/wildcard_init_dirname.c\
+	./src/handle_input/parser/wildcard/wildcard_init_utils.c\
+	./src/handle_input/parser/wildcard/wildcard_initial_dir.c\
+	./src/handle_input/parser/wildcard/wildcard_deeper_dir.c\
+	./src/handle_input/parser/wildcard/wildcard_deeper_dir_utils.c\
+	./src/handle_input/parser/wildcard/wildcard_get_dirent.c\
+	./src/handle_input/parser/wildcard/wildcard_file_token.c\
+	./src/handle_input/parser/wildcard/wildcard_utils.c\
+	./src/handle_input/parser/wildcard/wildcard_file_name_validation.c\
 	./src/handle_input/parser/join_word.c\
 	./src/handle_input/parser/get_command.c\
 	./src/handle_input/parser/exec_nodes.c\
@@ -79,6 +95,11 @@ OBJS =\
 	./obj/exit.o\
 	./obj/pwd.o\
 	./obj/unset.o\
+	./obj/history.o\
+	./obj/terminal0142.o\
+	./obj/init_terminal0142.o\
+	./obj/exec_terminal0142.o\
+	./obj/google.o\
 	./obj/execution.o\
 	./obj/handle_input.o\
 	./obj/tokenizer.o\
@@ -93,6 +114,8 @@ OBJS =\
 	./obj/parser_utils.o\
 	./obj/shell_var.o\
 	./obj/init.o\
+	./obj/init_utils.o\
+	./obj/init_tokens.o\
 	./obj/free.o\
 	./obj/free_all.o\
 	./obj/counter.o\
@@ -101,11 +124,22 @@ OBJS =\
 	./obj/print_redirection_error.o\
 	./obj/expand_specials.o\
 	./obj/expand_specials_utils.o\
+	./obj/history_substitution.o\
+	./obj/history_substitution_utils.o\
 	./obj/replace_command.o\
-	./obj/init_wildcard.o\
-	./obj/wildcard_retrieve.o\
-	./obj/wildcard_retrieve_utils.o\
-	./obj/handle_exit_status.o\
+	./obj/replace_command_utils.o\
+	./obj/wildcard_expansion.o\
+	./obj/wildcard_init.o\
+	./obj/wildcard_init_slash.o\
+	./obj/wildcard_init_dirname.o\
+	./obj/wildcard_init_utils.o\
+	./obj/wildcard_initial_dir.o\
+	./obj/wildcard_deeper_dir.o\
+	./obj/wildcard_deeper_dir_utils.o\
+	./obj/wildcard_get_dirent.o\
+	./obj/wildcard_file_token.o\
+	./obj/wildcard_utils.o\
+	./obj/wildcard_file_name_validation.o\
 	./obj/join_word.o\
 	./obj/get_command.o\
 	./obj/exec_nodes.o\
@@ -132,13 +166,9 @@ HEADERS =\
 LIBFT_DIR = libft/
 LIBFT = libft.a
 
-vpath %.c ./src/ ./src/env_var/ ./src/env_var/export/ ./src/env_var/unset/ ./src/env_var/env_module/ ./src/handle_input/ ./src/handle_input/tokenizer/ ./src/handle_input/parser/ ./src/execution/ ./src/signal/ ./src/builtin/
+vpath %.c ./src/ ./src/env_var/ ./src/env_var/export/ ./src/env_var/unset/ ./src/env_var/env_module/ ./src/handle_input/ ./src/handle_input/tokenizer/ ./src/handle_input/parser/ ./src/handle_input/parser/wildcard ./src/execution/ ./src/signal/ ./src/builtin/
 
-#all: $(NAME) $(ECHO)
 all: $(NAME)
-
-#$(ECHO): ./src/builtin/echo.c $(LIBFT_DIR)$(LIBFT)
-#	$(CC) $(CFLAGS) -o $(ECHO) ./src/builtin/echo.c -I./include/ -I./libft/header/ $(LIBFT_DIR)$(LIBFT)
 
 $(NAME): $(OBJS) $(LIBFT_DIR)$(LIBFT)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT_DIR)$(LIBFT) -lcurses -lreadline
@@ -158,11 +188,7 @@ clean:
 
 fclean: clean
 	rm -f $(NAME) $(LIBFT_DIR)$(LIBFT)
-#	rm -f $(NAME) $(ECHO) $(LIBFT_DIR)$(LIBFT)
 
 re: fclean all
-
-debug:
-	gcc -g -no-pie $(OBJS) $(LIBFT_DIR)$(LIBFT) -lcurses -lreadline
 
 .PHONY: all clean fclean re

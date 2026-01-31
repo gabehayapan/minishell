@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 11:07:28 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/26 11:07:29 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 19:14:02 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	change_cwd_to_home(char **path, t_env *env_lst)
 	*path = env_value(env_lst, "HOME");
 	if (*path == NULL)
 	{
-		ft_dprintf(2, "minishell: cd: HOME not set\n");
+		ft_dprintf(2, "-minishell: cd: HOME not set\n");
 		return (FAILURE);
 	}
 	return (SUCCESS);
@@ -41,7 +41,7 @@ int	change_cwd_to_oldpwd(char **path, t_env *env_lst)
 	}
 	else
 	{
-		ft_dprintf(2, "minishell: cd: OLDPWD not set\n");
+		ft_dprintf(2, "-minishell: cd: OLDPWD not set\n");
 		return (FAILURE);
 	}
 	return (SUCCESS);
@@ -54,13 +54,14 @@ int	change_cwd_to_path(char *path)
 	ret = chdir(path);
 	if (ret == -1)
 	{
-		perror("chdir");
+		ft_dprintf(2, "-minishell: cd: ");
+		perror(path);
 		return (FAILURE);
 	}
 	return (SUCCESS);
 }
 
-void	update_env_pwd(t_env **env_lst, t_exec *top)
+void	update_env_pwd(t_env **env_lst, t_exec *top, t_his *his)
 {
 	t_env	*pwd;
 	t_env	*oldpwd;
@@ -76,11 +77,12 @@ void	update_env_pwd(t_env **env_lst, t_exec *top)
 	{
 		free_env_lst(*env_lst);
 		free_node_exec(top);
+		free_his(his);
 		exit(1);
 	}
 }
 
-int	cd(char **strs, t_env **env_lst, t_exec *top)
+int	cd(char **strs, t_env **env_lst, t_exec *top, t_his *his)
 {
 	int		ret;
 	char	*path;
@@ -102,8 +104,8 @@ int	cd(char **strs, t_env **env_lst, t_exec *top)
 			return (FAILURE);
 	}
 	ret = change_cwd_to_path(path);
-	if (ret == -1)
+	if (ret == FAILURE)
 		return (FAILURE);
-	update_env_pwd(env_lst, top);
+	update_env_pwd(env_lst, top, his);
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 11:49:28 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/26 09:56:48 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/29 07:47:03 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	validate_args(char **strs)
 	}
 	if (num_args > 2)
 	{
-		ft_dprintf(2, "minishell: cd: too many arguments\n");
+		ft_dprintf(2, "-minishell: cd: too many arguments\n");
 		return (FAILURE);
 	}
 	return (SUCCESS);

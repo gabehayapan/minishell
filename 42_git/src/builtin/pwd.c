@@ -6,24 +6,54 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 19:32:04 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/25 19:22:02 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/01/31 20:17:41 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include "env_var.h"
 #include "ft_dprintf.h"
+#include <unistd.h>
+#include <stdio.h>
+#include <sys/stat.h>
 
-#define PATHNAME_SIZE 512
+int	lstat(const char *pathname, struct stat *statbuf);
 
-int	pwd(void)
+int	is_symbolic_link(const char *pathname)
 {
-	char	pathname[PATHNAME_SIZE];
+	struct stat	sb;
 
-	ft_memset(pathname, '\0', PATHNAME_SIZE);
-	getcwd(pathname, PATHNAME_SIZE);
-	ft_dprintf(STDOUT_FILENO, "%s\n", pathname);
+	if (lstat(pathname, &sb) < 0)
+	{
+		perror("lstat");
+		return (0);
+	}
+	if (S_ISLNK(sb.st_mode))
+		return (1);
+	return (0);
+}
+
+
+int	pwd(t_env **env_lst)
+{
+	t_env	*pwd;
+	char	*cwd;
+
+	pwd = env_find(*env_lst, "PWD");
+	if (pwd != NULL)
+	{
+		if (is_symbolic_link(pwd->value))
+			ft_dprintf(STDOUT_FILENO, "symbolic link.\n");
+		ft_dprintf(STDOUT_FILENO, "%s\n", pwd->value);
+	}
+	else
+	{
+		cwd = getcwd(NULL, 0);
+		if (cwd == NULL)
+			return (EXIT_FAILURE);
+		if (is_symbolic_link(cwd))
+			ft_dprintf(STDOUT_FILENO, "symbolic link.\n");
+		ft_dprintf(STDOUT_FILENO, "%s\n", cwd);
+		free(cwd);
+	}
 	return (EXIT_SUCCESS);
 }

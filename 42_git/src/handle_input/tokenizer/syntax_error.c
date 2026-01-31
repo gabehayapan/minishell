@@ -6,30 +6,12 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:49:58 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/22 19:23:38 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 15:57:11 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
 #include "parser.h"
-
-char	get_missing_char(t_tk_type tk_type)
-{
-	if (tk_type == SGL_QTE)
-		return ('\'');
-	else if (tk_type == DBL_QTE)
-		return ('"');
-	else if (tk_type == C_PAREN)
-		return (')');
-	else
-		return ('\0');
-}
-
-void	*error_unexpected_eof(void)
-{
-	ft_dprintf(2, "Unexpected EOF\n");
-	return (NULL);
-}
 
 char	*get_new_input(char *input, char **new_input)
 {
@@ -73,7 +55,7 @@ char	*syntax_error(char **input, char *start, t_tk_type tk_type)
 	int				is_success;
 
 	syn_err.c = get_missing_char(tk_type);
-	ft_dprintf(2, "minishell: %c is missing\n", syn_err.c);
+	ft_dprintf(2, "-minishell: %c is missing\n", syn_err.c);
 	syn_err.input = NULL;
 	syn_err.new_input = NULL;
 	syn_err.input = get_new_input(syn_err.input, &syn_err.new_input);

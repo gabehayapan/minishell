@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/26 12:24:57 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 19:09:07 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,13 @@
 # include "../libft/header/ftprintf.h"
 
 # define NOT_FOUND 4
-# define FORMAT_ERROR 5
-# define END 6
+# define NO_DIR 5
+# define NO_FILTER 6
+# define NEW_MATCH 7
+# define NO_EVENT 8
+# define FORMAT_ERROR 9
+# define SIGNALED 10
+# define END 11
 
 typedef enum s_rdt_type
 {
@@ -37,6 +42,7 @@ typedef struct s_rdt
 {
 	char			*rdt;
 	t_rdt_type		type;
+	int				fd_rdt;
 	struct s_rdt	*next;
 }	t_rdt;
 
@@ -60,13 +66,51 @@ typedef struct s_exec
 	struct s_exec	*next;
 }	t_exec;
 
+typedef struct s_dir
+{
+	char	*dirname;
+	char	*disname;
+	DIR		*dir;
+	t_token	*tk_last;
+	int		is_found;
+}	t_dir;
+
+typedef struct s_d_info
+{
+	char	*d_name;
+	size_t	len_d_name;
+	size_t	len_str;
+}	t_d_info;
+
+typedef struct s_tk_ptr
+{
+	t_token	*head_filter;
+	t_token	*tk_filter;
+	t_token	*head_dir;
+	t_token	*tk_dir;
+}	t_tk_ptr;
+
+typedef struct s_his
+{
+	int				id;
+	char			*line;
+	struct s_his	*prev;
+	struct s_his	*next;
+}	t_his;
+
+typedef struct s_sub
+{
+	unsigned char	exit_status;
+	t_his			*his;
+}	t_sub;
+
 // handle_input/handle_input.c
 int			handle_input(char **input, t_env **env_lst, t_exec **exec_tree,
-				long exit_status);
+				t_sub *sub);
 
 // handle_input/parser/parser.c
 int			parser(t_token **tokens, t_env **env_lst, t_exec **exec_tree,
-				long exit_status);
+				t_sub *sub);
 char		**new_exec(t_token **tokens, t_exec *node_exec, t_env *env_lst);
 void		free_command(t_command *command);
 
@@ -74,7 +118,6 @@ void		free_command(t_command *command);
 void		get_remaining_tokens(t_token **tokens);
 void		add_new_command(t_command **head, t_command *new_command,
 				t_command **last);
-void		remove_tk_spaces(t_token **tokens);
 int			join_command(t_token **tokens, t_token *current, char **command,
 				t_token **next);
 
@@ -87,6 +130,14 @@ void		init_node_exec(t_exec *node_exec);
 int			initialize_command(t_token **tokens, t_command *current,
 				int *subshell);
 
+// handle_input/parser/init_utils.c
+int			check_opening_parenthesis(t_token **tokens, int *subshell);
+int			check_closing_parenthesis(t_token **tokens, int *subshell);
+
+// handle_input/parser/init_tokens.c
+int			init_tokens(t_token **tokens, t_env **env_lst,
+				t_sub *sub);
+
 // handle_input/parser/free.c
 void		free_strs(char **strs, size_t size);
 void		free_null_term_strs(char **strs);
@@ -96,6 +147,7 @@ void		clear_token(t_token **tokens, t_token *target, void (*del)(void *));
 
 // handle_input/parser/free_all.c
 void		free_all(t_env *env_lst, t_exec *top);
+void		free_his(t_his *his);
 
 // handle_input/parser/counter.c
 size_t		get_len_command(t_token *tokens);
@@ -114,41 +166,91 @@ void		no_rdt_file(t_token *token);
 void		get_command(char *exec, t_token *tokens);
 
 // handle_input/parser/expand_specials.c
-int			expand_specials(t_token **tokens, t_env *env_lst, long exit_status);
+int			expand_specials(t_token **tokens, t_env *env_lst,
+				unsigned char exit_status);
 int			expand_dollar(t_token **tokens, t_token **current, t_env *env_lst,
-				long exit_status);
+				unsigned char exit_status);
 int			expand_tilde(t_token *current, t_env *env_lst);
-int			expand_wildcard(t_token **tokens, t_token *current);
 
 // handle_input/parser/expand_specials_utils.c
 char		*rm_extra_space(char *str);
 int			expand_quoted_dollar(t_token **tokens, t_token **current,
-				t_env *env_lst, long exit_status);
+				t_env *env_lst, unsigned char exit_status);
 int			handle_dbl_quoted_dollar(t_token **tokens, t_token **current,
-				t_env *env_lst, long exit_status);
+				t_env *env_lst, unsigned char exit_status);
 int			handle_others(t_token **tokens, t_token **current, t_env *env_lst,
-				long exit_status);
+				unsigned char exit_status);
+
+// handle_input/parser/history_substitution.c
+int			check_history(t_token **tokens, t_his *his);
+
+// handle_input/parser/history_substitution_utils.c
+char		*trace_history(t_token *target, t_his *his);
+int			skip_his(t_token **tokens, t_token **current);
+int			his_no_event(t_token *current);
+int			replace_his_token(t_token **tokens, t_token **current, t_his *his);
 
 // handle_input/parser/replace_command.c
 int			replace_with_cmd_output(t_token **tokens, t_token **current,
 				t_env *env_lst);
 
-// handle_input/parser/init_wildcard.c
-char		*get_target_dir(t_token **current, char **disname);
+// handle_input/parser/replace_command.c
+void		free_cmd_replace(t_token **tokens, t_token **current);
 
-// handle_input/parser/wildcard_retrieve.c
-int			get_matching_files(t_token **tokens, t_token *head,
-				char *dirname, char *disname);
+// handle_input/parser/wildcard/wildcard_expansion.c
+int			wildcard_expansion(t_token **tokens);
 
-// handle_input/parser/wildcard_retrieve_utils.c
+// handle_input/parser/wildcard/wildcard_init.c
+int			init_wildcard(t_token **filter, t_token **token_dir, t_dir *dnames);
+int			replace_token_word(char **word, char *new_word);
+
+// handle_input/parser/wildcard/wildcard_init_slash.c
+int			new_separated_tokens(t_token **curr_filter, char **strs);
+int			add_head_slash(t_token **curr_filter, char *str);
+int			add_last_slash(t_token **curr_filter);
+
+// handle_input/parser/wildcard/wildcard_init_dirname.c
+char		*get_open_dir_name(t_token **head_dir, char *ptr_slash,
+				char **disname);
+char		*get_cwd_name(char **disname);
+
+// handle_input/parser/wildcard/wildcard_init_utils.c
+t_token		*get_head_dir_token(t_token *token);
+char		*is_slash(t_token *token_dir);
+void		clear_head_dir_token(t_token **head_dir);
+
+// handle_input/parser/wildcard/wildcard_initial_dir.c
+int			check_initial_dir(t_token **tokens, t_token *filter,
+				t_token **head_dir, t_dir *dnames);
+
+// handle_input/parser/wildcard/wildcard_deeper_dir.c
+int			check_deeper_dir(t_token **tokens, t_token *head_filter,
+				t_token **head_dir, char *disname);
+
+// handle_input/parser/wildcard/wildcard_deeper_dir.c
+void		set_head_dir(t_token **head_dir, t_token *curr_dir, t_dir *dnames,
+				int ret);
+int			handle_not_found(t_token **tokens, t_token *head_filter,
+				char *disname);
+
+// handle_input/parser/wildcard/wildcard_get_dirent.c
+int			check_dirent(t_token **tokens, t_token *filter, t_token **head_dir,
+				t_dir *dnames);
+
+// handle_input/parser/wildcard/wildcard_file_token.c
+t_token		*add_new_matched_file(t_token *last_dir, t_dir *dnames, char *name);
+
+// handle_input/parser/wildcard/wildcard_utils.c
 void		set_type_word(t_token *current);
-void		clear_filter_token(t_token **tokens, t_token *head);
-int			handle_return_value(t_token *head, DIR *dir, int ret);
+int			reset_wildcard_tokens(t_token **tokens, t_token *filter,
+				t_token *token_dir, char *disname);
+void		clear_filter_token(t_token **tokens, t_token *filter);
+t_token		*skip_one_filter_dir(t_token *filter);
+int			set_dnames(t_token *dir, t_dir *dnames);
+
+// handle_input/parser/wildcard/wildcard_expansion_utils.c
 int			check_file_name(t_token *head, struct dirent *ent);
 t_token		*new_file_token(t_token *head, char *name);
-
-// handle_input/parser/handle_exit_status.c
-char		*handle_exit_status(t_token **next, long exit_status);
 
 // handle_input/parser/join_word.c
 char		*join_word_with_space(char *str, char *word, size_t *len_str);

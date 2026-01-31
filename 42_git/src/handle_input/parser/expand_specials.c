@@ -6,14 +6,14 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/26 12:23:18 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 17:55:22 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
 int	expand_dollar(t_token **tokens, t_token **current, t_env *env_lst,
-			long exit_status)
+			unsigned char exit_status)
 {
 	t_token	*next;
 	char	*env_var;
@@ -25,8 +25,8 @@ int	expand_dollar(t_token **tokens, t_token **current, t_env *env_lst,
 	free((*current)->word);
 	if (env_var != NULL)
 		(*current)->word = rm_extra_space(env_var);
-	else if (next->word != NULL && ft_strncmp(next->word, "?", 1) == 0)
-		(*current)->word = handle_exit_status(&next, exit_status);
+	else if (next->word != NULL && *(next->word) == '?')
+		(*current)->word = ft_itoa(exit_status);
 	else
 		(*current)->word = ft_strdup("");
 	clear_token(tokens, next, free);
@@ -54,7 +54,7 @@ int	expand_tilde(t_token *current, t_env *env_lst)
 }
 
 int	expand_quote(t_token **tokens, t_token **current, t_env *env_lst,
-			long exit_status)
+			unsigned char exit_status)
 {
 	t_tk_type	tk_qte;
 	t_token		*next;
@@ -77,31 +77,8 @@ int	expand_quote(t_token **tokens, t_token **current, t_env *env_lst,
 	return (SUCCESS);
 }
 
-int	expand_wildcard(t_token **tokens, t_token *current)
-{
-	char	*dirname;
-	char	*disname;
-	int		is_success;
-
-	dirname = get_target_dir(&current, &disname);
-	if (dirname == NULL)
-		return (FAILURE);
-	errno = 0;
-	is_success = get_matching_files(tokens, current, dirname, disname);
-	if (is_success == FAILURE || errno != 0)
-	{
-		free(dirname);
-		free(disname);
-		if (errno != 0)
-			perror("readdir");
-		return (FAILURE);
-	}
-	free(dirname);
-	free(disname);
-	return (SUCCESS);
-}
-
-int	expand_specials(t_token **tokens, t_env *env_lst, long exit_status)
+int	keyword_replacement(t_token **tokens, t_env *env_lst,
+			unsigned char exit_status)
 {
 	t_token	*current;
 	int		is_success;
@@ -113,16 +90,32 @@ int	expand_specials(t_token **tokens, t_env *env_lst, long exit_status)
 		if (current->tk_type == SGL_QTE || current->tk_type == DBL_QTE)
 		{
 			is_success = expand_quote(tokens, &current, env_lst, exit_status);
-			if (is_success == FAILURE)
-				return (FAILURE);
+			if (is_success == FAILURE || is_success == SIGNALED)
+				return (is_success);
 			continue ;
 		}
-		is_success = handle_others(tokens, &current, env_lst, exit_status);
-		if (is_success == FAILURE)
-			return (FAILURE);
+		if (current->tk_type == DOLLAR)
+			is_success = expand_dollar(tokens, &current, env_lst, exit_status);
+		else if (current->tk_type == TILDE)
+			is_success = expand_tilde(current, env_lst);
+		if (is_success == FAILURE || is_success == SIGNALED)
+			return (is_success);
 		if (current == NULL)
 			break ;
 		current = current->next;
 	}
+	return (SUCCESS);
+}
+
+int	expand_specials(t_token **tokens, t_env *env_lst, unsigned char exit_status)
+{
+	int		is_success;
+
+	is_success = keyword_replacement(tokens, env_lst, exit_status);
+	if (is_success == FAILURE || is_success == SIGNALED)
+		return (is_success);
+	is_success = wildcard_expansion(tokens);
+	if (is_success == FAILURE)
+		return (FAILURE);
 	return (SUCCESS);
 }

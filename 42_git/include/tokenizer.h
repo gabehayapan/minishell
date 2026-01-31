@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:01:56 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/26 12:33:14 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 15:57:07 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ t_token		*tokenize_dollar(char **input, char *start, char **str,
 char		*syntax_error(char **input, char *start, t_tk_type tk_type);
 
 // handle_input/tokenizer/syntax_error.c
+void		*error_unexpected_eof(void);
+char		get_missing_char(t_tk_type tk_type);
 void		remove_last_new_line(char *input);
 
 // handle_input/tokenizer/ft_isspace.c

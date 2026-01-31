@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:50:38 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/26 10:15:34 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 19:23:56 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,44 @@
 #include "ft_dprintf.h"
 #include "builtin.h"
 
-void	export_no_args(t_env *env_lst)
+int	export_no_args(t_env *env_lst)
 {
 	while (env_lst != NULL)
 	{
-		ft_printf("declare -x %s=\"%s\"\n", env_lst->key, env_lst->value);
+		if (env_lst->is_env == EXPORT_VAR)
+			ft_printf("declare -x %s\n", env_lst->key);
+		else
+			ft_printf("declare -x %s=\"%s\"\n", env_lst->key, env_lst->value);
 		env_lst = env_lst->next;
 	}
+	return (SUCCESS);
+}
+
+int	check_invalid_identifier(char *str)
+{
+	char	*cp_str;
+	int		is_success;
+
+	cp_str = str;
+	is_success = SUCCESS;
+	if (ft_isalpha(*str) == 0)
+		is_success = FAILURE;
+	else
+	{
+		while (*str != '\0' && *str != '=')
+		{
+			if (ft_isalnum(*str) == 0)
+			{
+				is_success = FAILURE;
+				break ;
+			}
+			str++;
+		}
+	}
+	if (is_success == FAILURE)
+		ft_dprintf(2, "-minishell: export: '%s': not a valid identifier\n",
+			cp_str);
+	return (is_success);
 }
 
 int	update_env_value(t_env *target, char *new_env)
@@ -57,25 +88,24 @@ int	store_new_env_var(t_env **env_lst, char *new_env)
 	return (SUCCESS);
 }
 
-int	export(char **strs, t_env **env_lst, t_exec *top)
+int	export(char **strs, t_env **env_lst, t_exec *top, t_his *his)
 {
 	t_env	*target;
 	int		is_success;
+	int		ret;
 
 	strs = strs + 1;
 	if (*strs == NULL)
-		export_no_args(*env_lst);
+		return (export_no_args(*env_lst));
+	ret = SUCCESS;
 	while (*strs != NULL)
 	{
-		if (ft_isalpha(**strs) == 0)
+		is_success = check_invalid_identifier(*strs);
+		if (ret == SUCCESS)
+			ret = is_success;
+		if (is_success == SUCCESS)
 		{
-			ft_dprintf(2,
-				"minishell: export: '%s': not a valid identifier", *strs);
-			return (FAILURE);
-		}
-		else
-		{
-			is_success = check_existence(&target, *env_lst, *strs, top);
+			is_success = check_existence(&target, env_lst, *strs, top, his);
 			if (target != NULL && is_success == SUCCESS)
 				is_success = update_env_value(target, *strs);
 			else if (is_success == SUCCESS)
@@ -83,5 +113,5 @@ int	export(char **strs, t_env **env_lst, t_exec *top)
 		}
 		strs++;
 	}
-	return (is_success);
+	return (ret);
 }

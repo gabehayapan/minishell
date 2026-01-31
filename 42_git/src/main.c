@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/27 11:08:55 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 19:44:34 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,19 +39,49 @@ int	display_minishell(void)
 	return (SUCCESS);
 }
 
-int	execute_input_command(char **input, t_env **env_lst)
+int	new_history_node(t_his **his, char *input)
 {
-	t_exec		*exec_tree;
-	int			ret;
-	static long	exit_status;
+	t_his	*new_his;
 
-	ret = handle_input(input, env_lst, &exec_tree, exit_status);
+	new_his = (t_his *)malloc(sizeof(t_his));
+	if (new_his == NULL)
+		return (FAILURE);
+	if (*his == NULL)
+		new_his->id = 1;
+	else
+		new_his->id = (*his)->id + 1;
+	new_his->line = ft_strdup(input);
+	if (new_his->line == NULL)
+	{
+		free(new_his);
+		return (FAILURE);
+	}
+	new_his->prev = NULL;
+	new_his->next = *his;
+	if (*his != NULL)
+		(*his)->prev = new_his;
+	*his = new_his;
+	return (SUCCESS);
+}
+
+int	execute_input_command(char **input, t_env **env_lst, int is_child)
+{
+	t_exec			*exec_tree;
+	int				ret;
+	static t_sub	sub;
+
+	ret = handle_input(input, env_lst, &exec_tree, &sub);
 	if (ret == FAILURE)
+		return (FAILURE);
+	if (new_history_node(&sub.his, *input) == FAILURE)
 		return (FAILURE);
 	if (ret == SUCCESS)
 	{
-		exit_status = execute_command(exec_tree, env_lst, exec_tree);
+		sub.exit_status = execute_command(exec_tree, env_lst, exec_tree,
+				sub.his);
 		free_node_exec(exec_tree);
+		if (is_child == 1)
+			return (sub.exit_status);
 	}
 	add_history(*input);
 	return (SUCCESS);
@@ -65,7 +95,7 @@ int	read_and_execute(t_env **env_lst)
 	input = NULL;
 	while (1)
 	{
-		if (signal_in_loop() == FAILURE)
+		if (readline_signal() == FAILURE)
 			return (FAILURE);
 		input = readline("minishell> ");
 		if (input == NULL)
@@ -74,7 +104,7 @@ int	read_and_execute(t_env **env_lst)
 		{
 			if (ignore_signal() == FAILURE)
 				return (FAILURE);
-			is_success = execute_input_command(&input, env_lst);
+			is_success = execute_input_command(&input, env_lst, 0);
 			free(input);
 			if (is_success == FAILURE)
 				return (FAILURE);
@@ -103,7 +133,6 @@ int	main(int argc, char **argv, char **envp)
 	free_env_lst(env_lst);
 	if (is_success == FAILURE)
 		return (EXIT_FAILURE);
-	if (isatty(STDOUT_FILENO))
-		ft_dprintf(2, "exit\n");
+	ft_dprintf(2, "exit\n");
 	return (EXIT_SUCCESS);
 }

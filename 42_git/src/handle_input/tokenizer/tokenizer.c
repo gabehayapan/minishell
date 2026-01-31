@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 11:54:45 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/26 12:36:47 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 15:24:57 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,23 @@ t_token	*create_new_token(char **str, t_token *current, t_tk_type tk_type)
 	new_token->is_join = false;
 	new_token->prev = current;
 	new_token->next = NULL;
-	current->next = new_token;
+	if (current != NULL)
+		current->next = new_token;
 	return (new_token);
 }
 
 t_token	*new_token(char **input, char **str,
-			t_token *current, t_tk_type tk_type)
+			t_token **current, t_tk_type tk_type)
 {
-	if (tk_type == O_PAREN)
-		return (tokenize_parenthesis(input, str, current));
+	if (tk_type == DOLLAR)
+		*current = tokenize_dollar(input, *str, str, *current);
+	else if (tk_type == SGL_QTE || tk_type == DBL_QTE)
+		*current = tokenize_quote(input, str, *current, tk_type);
 	else
-		return (create_new_token(str, current, tk_type));
+		*current = create_new_token(str, *current, tk_type);
+	if (*current == NULL)
+		return (NULL);
+	return (*current);
 }
 
 t_token	*tokenizer(char **input)
@@ -83,16 +89,15 @@ t_token	*tokenizer(char **input)
 	while (*str != '\0')
 	{
 		tk_type = get_token_type(str);
-		current = new_token(input, &str, current, tk_type);
+		current = new_token(input, &str, &current, tk_type);
 		if (current == NULL)
-			return (free_token(head.next));
-		if (tk_type == SGL_QTE || tk_type == DBL_QTE)
 		{
-			current = tokenize_quote(input, &str, current, tk_type);
-			if (current == NULL)
-				return (free_token(head.next));
+			free(cp_str);
+			return (free_token(head.next));
 		}
 	}
 	free(cp_str);
+	if (head.next != NULL)
+		(head.next)->prev = NULL;
 	return (head.next);
 }
