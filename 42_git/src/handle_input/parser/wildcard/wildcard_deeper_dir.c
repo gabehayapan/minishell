@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/30 10:49:08 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 08:45:29 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 09:44:02 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@ int	check_remaining_dirent(t_token **tokens, t_token *filter,
 		return (FAILURE);
 	ret = check_dirent(tokens, filter, &curr_dir, dnames);
 	free(dnames->dirname);
-	if (ret == SUCCESS && dnames->is_found == 0)
-		dnames->is_found = 1;
-	else if (ret == FAILURE)
+	if (ret == FAILURE)
 		return (FAILURE);
 	return (ret);
 }
@@ -53,6 +51,7 @@ int	get_matching_files_multidir(t_token **tokens, t_token **filter,
 	t_token	*curr_dir;
 	t_token	*next;
 	t_dir	dnames;
+	int		prev_found;
 	int		ret;
 
 	next = (*head_dir)->next;
@@ -66,11 +65,14 @@ int	get_matching_files_multidir(t_token **tokens, t_token **filter,
 	while (curr_dir != NULL && curr_dir != head_filter)
 	{
 		next = curr_dir->next;
+		prev_found = dnames.is_found;
 		ret = check_remaining_dirent(tokens, *filter, curr_dir, &dnames);
 		if (ret == FAILURE)
 			return (FAILURE);
 		else if (dnames.is_found == 0)
 			*head_dir = curr_dir->next;
+		else if (ret == SUCCESS && prev_found == 0)
+			*head_dir = (*head_dir)->next;
 		clear_token(tokens, curr_dir, NULL);
 		curr_dir = next;
 	}
