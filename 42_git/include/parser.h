@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 17:51:54 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 18:41:19 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@
 # define NO_DIR 5
 # define NO_FILTER 6
 # define NEW_MATCH 7
-# define FORMAT_ERROR 8
-# define SIGNALED 9
-# define END 10
+# define NO_EVENT 8
+# define FORMAT_ERROR 9
+# define SIGNALED 10
+# define END 11
 
 typedef enum s_rdt_type
 {
@@ -93,6 +94,7 @@ typedef struct s_his
 {
 	int				id;
 	char			*line;
+	struct s_his	*prev;
 	struct s_his	*next;
 }	t_his;
 
@@ -177,6 +179,9 @@ int			handle_dbl_quoted_dollar(t_token **tokens, t_token **current,
 				t_env *env_lst, unsigned char exit_status);
 int			handle_others(t_token **tokens, t_token **current, t_env *env_lst,
 				unsigned char exit_status);
+
+// handle_input/parser/expand_specials.c
+int			check_history(t_token **tokens, t_his *his);
 
 // handle_input/parser/replace_command.c
 int			replace_with_cmd_output(t_token **tokens, t_token **current,

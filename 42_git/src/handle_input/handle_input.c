@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 18:40:19 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 17:22:32 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 18:40:41 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	handle_input(char **input, t_env **env_lst, t_exec **exec_tree,
 	ret = parser(&tokens, env_lst, exec_tree, sub);
 	free_token(tokens);
 	if (ret == FAILURE || ret == NO_COMMAND
-		|| ret == FORMAT_ERROR || ret == SIGNALED)
+		|| ret == FORMAT_ERROR || ret == SIGNALED || ret == NO_EVENT)
 		return (ret);
 	return (SUCCESS);
 }
