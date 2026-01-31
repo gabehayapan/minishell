@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/30 16:02:17 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/30 16:03:50 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 10:49:06 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 t_token	*get_head_dir_token(t_token *token)
 {
-	while (token->prev != NULL && (token->prev)->tk_type != SPACES)
+	while (token != NULL && token->prev != NULL
+		&& (token->prev)->tk_type != SPACES)
 		token = token->prev;
 	return (token);
 }
