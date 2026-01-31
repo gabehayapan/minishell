@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 19:32:04 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/31 09:52:14 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 09:54:40 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	pwd(t_env **env_lst)
 		if (cwd == NULL)
 			return (EXIT_FAILURE);
 		ft_dprintf(STDOUT_FILENO, "%s\n", cwd);
+		free(cwd);
 	}
 	return (EXIT_SUCCESS);
 }
