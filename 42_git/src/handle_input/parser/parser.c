@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 11:27:24 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 17:27:35 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,18 +106,15 @@ int	new_exec_tree(t_token **tokens, t_exec **head, t_env *env_lst)
 }
 
 int	parser(t_token **tokens, t_env **env_lst, t_exec **exec_tree,
-			unsigned char exit_status)
+			t_sub *sub)
 {
 	t_exec	*head;
 	int		is_success;
 
-	while (*tokens != NULL && (*tokens)->tk_type == SPACES)
-		clear_token(tokens, *tokens, free);
-	if (*tokens == NULL)
-		return (NO_COMMAND);
 	head = NULL;
-	is_success = init_tokens(tokens, env_lst, exit_status);
-	if (is_success == FAILURE || is_success == SIGNALED)
+	is_success = init_tokens(tokens, env_lst, sub);
+	if (is_success == FAILURE
+		|| is_success == NO_COMMAND || is_success == SIGNALED)
 		return (is_success);
 	while (*tokens != NULL)
 	{

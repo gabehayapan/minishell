@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 15:49:55 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 17:55:22 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,30 +77,8 @@ int	expand_quote(t_token **tokens, t_token **current, t_env *env_lst,
 	return (SUCCESS);
 }
 
-int	expand_wildcard(t_token **tokens, t_token *filter)
-{
-	t_token	*token_dir;
-	t_dir	dnames;
-	int		is_success;
-
-	is_success = init_wildcard(&filter, &token_dir, &dnames);
-	if (is_success == FAILURE)
-		return (FAILURE);
-	is_success = check_initial_dir(tokens, filter, &token_dir, &dnames);
-	if (is_success == FAILURE)
-		return (FAILURE);
-	else if (is_success == NOT_FOUND || is_success == NO_DIR)
-		return (reset_wildcard_tokens(tokens, filter, token_dir,
-				dnames.disname));
-	is_success = check_deeper_dir(tokens, filter, &token_dir, dnames.disname);
-	if (is_success == SUCCESS)
-		clear_filter_token(tokens, filter);
-	else if (is_success == FAILURE)
-		return (FAILURE);
-	return (SUCCESS);
-}
-
-int	expand_specials(t_token **tokens, t_env *env_lst, unsigned char exit_status)
+int	keyword_replacement(t_token **tokens, t_env *env_lst,
+			unsigned char exit_status)
 {
 	t_token	*current;
 	int		is_success;
@@ -116,12 +94,28 @@ int	expand_specials(t_token **tokens, t_env *env_lst, unsigned char exit_status)
 				return (is_success);
 			continue ;
 		}
-		is_success = handle_others(tokens, &current, env_lst, exit_status);
+		if (current->tk_type == DOLLAR)
+			is_success = expand_dollar(tokens, &current, env_lst, exit_status);
+		else if (current->tk_type == TILDE)
+			is_success = expand_tilde(current, env_lst);
 		if (is_success == FAILURE || is_success == SIGNALED)
 			return (is_success);
 		if (current == NULL)
 			break ;
 		current = current->next;
 	}
+	return (SUCCESS);
+}
+
+int	expand_specials(t_token **tokens, t_env *env_lst, unsigned char exit_status)
+{
+	int		is_success;
+
+	is_success = keyword_replacement(tokens, env_lst, exit_status);
+	if (is_success == FAILURE || is_success == SIGNALED)
+		return (is_success);
+	is_success = wildcard_expansion(tokens);
+	if (is_success == FAILURE)
+		return (FAILURE);
 	return (SUCCESS);
 }

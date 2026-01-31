@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 09:57:15 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 14:58:10 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/01/31 17:32:51 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,14 +82,21 @@ int	rm_space_and_join_tokens(t_token **tokens)
 	return (is_success);
 }
 
-int	init_tokens(t_token **tokens, t_env **env_lst, unsigned char exit_status)
+int	init_tokens(t_token **tokens, t_env **env_lst, t_sub *sub)
 {
 	int	is_success;
 
+	while (*tokens != NULL && (*tokens)->tk_type == SPACES)
+		clear_token(tokens, *tokens, free);
+	if (*tokens == NULL)
+		return (NO_COMMAND);
 	is_success = check_assignment(tokens, env_lst);
 	if (is_success == FAILURE)
 		return (FAILURE);
-	is_success = expand_specials(tokens, *env_lst, exit_status);
+//	is_success = check_history(tokens, sub->history);
+//	if (is_success == FAILURE)
+//		return (FAILURE);
+	is_success = expand_specials(tokens, *env_lst, sub->exit_status);
 	if (is_success == FAILURE || is_success == SIGNALED)
 		return (is_success);
 	is_success = rm_space_and_join_tokens(tokens);
