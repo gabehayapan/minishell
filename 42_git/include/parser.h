@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/01 08:43:48 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/01 09:33:38 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,20 @@
 # include <dirent.h>
 # include <stdbool.h>
 # include <errno.h>
+
 # include "tokenizer.h"
 # include "env_var.h"
 # include "../libft/header/libft.h"
 # include "../libft/header/ftprintf.h"
 
-# define NOT_FOUND 4
-# define NO_DIR 5
-# define NO_FILTER 6
-# define NEW_MATCH 7
-# define NO_EVENT 8
-# define FORMAT_ERROR 9
-# define SIGNALED 10
-# define END 11
+# define NOT_FOUND		4
+# define NO_DIR			5
+# define NO_FILTER		6
+# define NEW_MATCH		7
+# define NO_EVENT		8
+# define FORMAT_ERROR	9
+# define SIGNALED		10
+# define END			11
 
 typedef enum s_rdt_type
 {

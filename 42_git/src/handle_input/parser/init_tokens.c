@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 09:57:15 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/01 08:39:17 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/01 09:48:55 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,19 @@ int	rm_space_and_join_tokens(t_token **tokens)
 	return (is_success);
 }
 
+int	check_format_error(t_token **tokens)
+{
+	if (*tokens != NULL
+		&& ((*tokens)->tk_type == AND || (*tokens)->tk_type == OR
+			|| (*tokens)->tk_type == PIPE || (*tokens)->tk_type == SEMI))
+	{
+		ft_dprintf(2, "-minishell: syntax error near unexpected token `%s;\n",
+			(*tokens)->word);
+		return (FORMAT_ERROR);
+	}
+	return (SUCCESS);
+}
+
 int	init_tokens(t_token **tokens, t_env **env_lst, t_sub *sub)
 {
 	int	is_success;
@@ -90,6 +103,9 @@ int	init_tokens(t_token **tokens, t_env **env_lst, t_sub *sub)
 		clear_token(tokens, *tokens, free);
 	if (*tokens == NULL)
 		return (NO_COMMAND);
+	is_success = check_format_error(tokens);
+	if (is_success == FORMAT_ERROR)
+		return (FORMAT_ERROR);
 	is_success = expand_specials(tokens, *env_lst, sub);
 	if (is_success == FAILURE || is_success == SIGNALED)
 		return (is_success);

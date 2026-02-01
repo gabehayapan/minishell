@@ -6,11 +6,37 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 16:12:09 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/29 07:50:02 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/01 10:03:41 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+int	check_if_exist(char *new_shell, t_env *env_lst, t_env **target)
+{
+	char	**new_strs;
+
+	new_strs = ft_split(new_shell, '=');
+	if (new_strs == NULL)
+		return (FAILURE);
+	*target = env_find(env_lst, *new_strs);
+	if (*target == NULL)
+		return (free_null_term_strs(new_strs), NOT_FOUND);
+	return (SUCCESS);
+}
+
+int	update_old_shell_var(char *new_shell, t_env *target)
+{
+	while (*new_shell != '\0' && *new_shell != '=')
+		new_shell++;
+	if (*new_shell == '\0')
+		target->value = ft_strdup("");
+	else
+		target->value = ft_strdup(new_shell + 1);
+	if (target->value == NULL)
+		return (FAILURE);
+	return (SUCCESS);
+}
 
 int	add_shell_var(char *new_shell, t_env **env_lst)
 {
@@ -38,25 +64,36 @@ int	add_shell_var(char *new_shell, t_env **env_lst)
 
 int	check_assignment(t_token **tokens, t_env **env_lst)
 {
-	int	is_success;
+	int		is_success;
+	t_env	*target;
+	t_env	*last;
 
-	if (*tokens != NULL
-		&& ((*tokens)->tk_type == AND || (*tokens)->tk_type == OR
-			|| (*tokens)->tk_type == PIPE || (*tokens)->tk_type == SEMI))
-	{
-		ft_dprintf(2, "-minishell: syntax error near unexpected token `%s'\n",
-			(*tokens)->word);
-		return (FORMAT_ERROR);
-	}
 	while (*tokens != NULL && (*tokens)->tk_type == SPACES)
 		clear_token(tokens, *tokens, free);
 	if (*tokens == NULL || (*tokens)->tk_type != WORD
 		|| ft_isalpha(*((*tokens)->word)) == 0
 		|| ft_strchr((*tokens)->word, '=') == NULL)
 		return (SUCCESS);
-	is_success = add_shell_var((*tokens)->word, env_lst);
+	is_success = check_if_exist((*tokens)->word, *env_lst, &target);
+	if (is_success == FAILURE)
+		return (FAILURE);
+	if (is_success == SUCCESS)
+		is_success = update_old_shell_var((*tokens)->word, target);
+	else
+		is_success = add_shell_var((*tokens)->word, env_lst);
 	if (is_success == FAILURE)
 		return (FAILURE);
 	clear_token(tokens, *tokens, free);
+	if (target == NULL)
+		last = get_last_env(*env_lst);
+	else
+		last = target;
+	while (*tokens != NULL && (*tokens)->tk_type != SPACES)
+	{
+		last->value = join_word_no_space(last->value, (*tokens)->word);
+		if (last->value == NULL)
+			return (FAILURE);
+		clear_token(tokens, *tokens, free);
+	}
 	return (check_assignment(tokens, env_lst));
 }
