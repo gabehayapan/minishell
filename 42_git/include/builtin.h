@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 10:37:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 19:38:31 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/01 16:34:07 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int			check_existence(t_env **target, t_env **env_lst, char *str,
 				t_exec *top, t_his *his);
 
 int			pwd(t_env **env_lst);
+int			is_symbolic_link(const char *path);
 int			unset(t_env **env_lst, char **strs);
 
 int			history(t_his *his);

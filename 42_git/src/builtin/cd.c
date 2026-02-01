@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 11:07:28 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 19:14:02 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/01 16:36:00 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ int	cd(char **strs, t_env **env_lst, t_exec *top, t_his *his)
 		if (ret == FAILURE)
 			return (FAILURE);
 	}
+	else if (is_symbolic_link(path))
+		ft_dprintf(1, "symbolic link.\n");
 	ret = change_cwd_to_path(path);
 	if (ret == FAILURE)
 		return (FAILURE);

@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 19:32:04 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/31 20:17:41 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/02/01 16:41:28 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,41 @@
 
 int	lstat(const char *pathname, struct stat *statbuf);
 
-int	is_symbolic_link(const char *pathname)
+char	*get_pathname(const char *path)
 {
+	char	*cwd;
+	char	*pathname;
+	size_t	i;
+
+	cwd = getcwd(NULL, 0);
+	if (cwd == NULL)
+		return (NULL);
+	pathname = (char *)malloc((ft_strlen(cwd) + ft_strlen(path) + 1) * sizeof(char));
+	if (pathname == NULL)
+		return (NULL);
+	i = 0;
+	while (*cwd)
+		pathname[i++] = *cwd++;
+	pathname[i++] = '/';
+	while (*path)
+	{
+		if (*path == '/')
+			break ;
+		pathname[i++] = *path++;
+	}
+	pathname[i] = '\0';
+	return (pathname);
+}
+
+int	is_symbolic_link(const char *path)
+{
+	char	*pathname;
 	struct stat	sb;
 
+	pathname = get_pathname(path);
+	if (pathname == NULL)
+		return (0);
+	ft_printf("pathname: %s\n", pathname);
 	if (lstat(pathname, &sb) < 0)
 	{
 		perror("lstat");
