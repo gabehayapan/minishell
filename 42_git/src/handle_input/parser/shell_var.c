@@ -6,13 +6,13 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 16:12:09 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/01 10:03:41 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/01 18:38:17 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-int	check_if_exist(char *new_shell, t_env *env_lst, t_env **target)
+static int	check_if_exist(char *new_shell, t_env *env_lst, t_env **target)
 {
 	char	**new_strs;
 
@@ -25,7 +25,7 @@ int	check_if_exist(char *new_shell, t_env *env_lst, t_env **target)
 	return (SUCCESS);
 }
 
-int	update_old_shell_var(char *new_shell, t_env *target)
+static int	update_old_shell_var(char *new_shell, t_env *target)
 {
 	while (*new_shell != '\0' && *new_shell != '=')
 		new_shell++;
@@ -62,11 +62,28 @@ int	add_shell_var(char *new_shell, t_env **env_lst)
 	return (SUCCESS);
 }
 
+int	join_remaining_word(t_token **tokens, t_env *target, t_env *env_lst)
+{
+	t_env	*last;
+
+	if (target == NULL)
+		last = get_last_env(env_lst);
+	else
+		last = target;
+	while (*tokens != NULL && (*tokens)->tk_type != SPACES)
+	{
+		last->value = join_word_no_space(last->value, (*tokens)->word);
+		if (last->value == NULL)
+			return (FAILURE);
+		clear_token(tokens, *tokens, free);
+	}
+	return (SUCCESS);
+}
+
 int	check_assignment(t_token **tokens, t_env **env_lst)
 {
 	int		is_success;
 	t_env	*target;
-	t_env	*last;
 
 	while (*tokens != NULL && (*tokens)->tk_type == SPACES)
 		clear_token(tokens, *tokens, free);
@@ -84,16 +101,7 @@ int	check_assignment(t_token **tokens, t_env **env_lst)
 	if (is_success == FAILURE)
 		return (FAILURE);
 	clear_token(tokens, *tokens, free);
-	if (target == NULL)
-		last = get_last_env(*env_lst);
-	else
-		last = target;
-	while (*tokens != NULL && (*tokens)->tk_type != SPACES)
-	{
-		last->value = join_word_no_space(last->value, (*tokens)->word);
-		if (last->value == NULL)
-			return (FAILURE);
-		clear_token(tokens, *tokens, free);
-	}
+	if (join_remaining_word(tokens, target, *env_lst) == FAILURE)
+		return (SUCCESS);
 	return (check_assignment(tokens, env_lst));
 }

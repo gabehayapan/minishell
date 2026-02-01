@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/01 09:33:38 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/01 18:04:46 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,10 @@ int			check_closing_parenthesis(t_token **tokens, int *subshell);
 // handle_input/parser/init_tokens.c
 int			init_tokens(t_token **tokens, t_env **env_lst,
 				t_sub *sub);
+
+// handle_input/parser/init_tokens.c
+int			rm_space_and_join_tokens(t_token **tokens);
+int			check_format_error(t_token **tokens);
 
 // handle_input/parser/free.c
 void		free_strs(char **strs, size_t size);
