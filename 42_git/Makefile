@@ -42,6 +42,7 @@ SRCS =\
 	./src/handle_input/parser/init_utils.c\
 	./src/handle_input/parser/init_tokens.c\
 	./src/handle_input/parser/init_tokens_utils.c\
+	./src/handle_input/parser/check_format_error.c\
 	./src/handle_input/parser/free.c\
 	./src/handle_input/parser/free_all.c\
 	./src/handle_input/parser/counter.c\
@@ -121,6 +122,7 @@ OBJS =\
 	./obj/init_utils.o\
 	./obj/init_tokens.o\
 	./obj/init_tokens_utils.o\
+	./obj/check_format_error.o\
 	./obj/free.o\
 	./obj/free_all.o\
 	./obj/counter.o\

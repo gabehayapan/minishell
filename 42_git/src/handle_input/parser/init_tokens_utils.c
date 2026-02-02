@@ -6,13 +6,13 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/01 17:46:09 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/02 10:57:53 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 11:04:50 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-static int	is_separator(t_token *token)
+int	is_separator(t_token *token)
 {
 	if (token != NULL
 		&& (token->tk_type == AND || token->tk_type == OR
@@ -80,36 +80,4 @@ int	rm_space_and_join_tokens(t_token **tokens)
 	remove_tk_spaces(tokens);
 	is_success = join_token_word(tokens);
 	return (is_success);
-}
-
-int	check_format_error(t_token **tokens)
-{
-	t_token	*current;
-	int		is_sep;
-
-	if (is_separator(*tokens) == 1)
-	{
-		ft_dprintf(2, "-minishell: syntax error near unexpected token `%s;\n",
-			(*tokens)->word);
-		return (FORMAT_ERROR);
-	}
-	current = *tokens;
-	is_sep = 0;
-	while (current != NULL)
-	{
-		if (is_separator(current) == 1)
-		{
-			if (is_sep == 1)
-			{
-				ft_dprintf(2, "-minishell: syntax error near unexpected token "
-				"`%s'\n", current->word);
-				return (FORMAT_ERROR);
-			}
-			is_sep = 1;
-		}
-		else if (current->tk_type != SPACES)
-			is_sep = 0;
-		current = current->next;
-	}
-	return (SUCCESS);
 }
