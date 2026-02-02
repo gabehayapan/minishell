@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 01:08:17 by keitotak          #+#    #+#             */
-/*   Updated: 2026/02/02 10:10:02 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 10:22:20 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int	setfd_infile(t_command *command)
 			{
 				ft_dprintf(2, "-minishell: ");
 				perror(command->inrdt->rdt);
+				close(newfd_stdin);
 				return (FAILURE);
 			}
 		}
@@ -63,6 +64,7 @@ int	setfd_infile(t_command *command)
 		dup2(command->infd, command->inrdt->fd_rdt);
 		command->inrdt = command->inrdt->next;
 	}
+	close(newfd_stdin);
 	return (SUCCESS);
 }
 
