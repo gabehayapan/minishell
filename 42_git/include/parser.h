@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/01 18:04:46 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 10:15:54 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,7 @@ int			expand_quoted_dollar(t_token **tokens, t_token **current,
 				t_env *env_lst, t_sub *sub);
 int			handle_dbl_quoted_dollar(t_token **tokens, t_token **current,
 				t_env *env_lst, t_sub *sub);
+int			tokenize_expanded_word(t_token **tokens);
 
 // handle_input/parser/history_substitution.c
 int			check_history(t_token **tokens, t_his *his);

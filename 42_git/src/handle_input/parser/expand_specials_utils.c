@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 11:57:32 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/01 08:43:29 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 10:15:23 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,31 @@ int	handle_dbl_quoted_dollar(t_token **tokens, t_token **current,
 		if (ret == FAILURE || ret == SIGNALED)
 			return (ret);
 	}
+	return (SUCCESS);
+}
+
+int	tokenize_expanded_word(t_token **tokens)
+{
+	char	*word;
+	t_token	*current;
+	t_token	*new_token_set;
+
+	word = ft_strdup("");
+	if (word == NULL)
+		return (FAILURE);
+	current = *tokens;
+	while (current != NULL)
+	{
+		word = join_word_no_space(word, current->word);
+		if (word == NULL)
+			return (FAILURE);
+		current = current->next;
+	}
+	new_token_set = tokenizer(&word);
+	free(word);
+	if (new_token_set == NULL)
+		return (FAILURE);
+	free_token(*tokens);
+	*tokens = new_token_set;
 	return (SUCCESS);
 }
