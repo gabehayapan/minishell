@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 14:56:57 by keitotak          #+#    #+#             */
-/*   Updated: 2026/02/01 08:22:04 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 12:49:06 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,6 @@
 #include "builtin.h"
 
 int	default_signal(void);
-
-int	count_proc(t_command *command)
-{
-	int	count;
-
-	count = 0;
-	while (command)
-	{
-		count++;
-		command = command->next;
-	}
-	return (count);
-}
 
 int	nopipe_builtin(t_command *command, t_env **env_lst, t_to_free *to_free)
 {
@@ -67,17 +54,4 @@ int	nopipe_execute(t_command *command, t_env **env_lst, t_to_free *to_free)
 		exec_command(command, env_lst, to_free);
 	}
 	return (wait_for_children(&pid, 1));
-}
-
-int	execute(t_command *command, t_env **env_lst, t_to_free *to_free)
-{
-	int		proc_count;
-	int		ret;
-
-	proc_count = count_proc(command);
-	if (proc_count == 1)
-		ret = nopipe_execute(command, env_lst, to_free);
-	else
-		ret = pipeline(command, env_lst, proc_count, to_free);
-	return (ret);
 }

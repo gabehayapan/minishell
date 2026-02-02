@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 11:06:32 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/01 08:20:31 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 12:48:12 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,32 @@
 
 unsigned char	execute_command(t_exec *exec_node, t_env **env_lst,
 					t_to_free *to_free);
+
+int	count_proc(t_command *command)
+{
+	int	count;
+
+	count = 0;
+	while (command)
+	{
+		count++;
+		command = command->next;
+	}
+	return (count);
+}
+
+int	execute(t_command *command, t_env **env_lst, t_to_free *to_free)
+{
+	int		proc_count;
+	int		ret;
+
+	proc_count = count_proc(command);
+	if (proc_count == 1)
+		ret = nopipe_execute(command, env_lst, to_free);
+	else
+		ret = pipeline(command, env_lst, proc_count, to_free);
+	return (ret);
+}
 
 unsigned char	handle_ctrl_op(t_exec *exec_node, t_env **env_lst,
 					t_to_free *to_free)

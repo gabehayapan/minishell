@@ -72,7 +72,7 @@ SRCS =\
 	./src/handle_input/parser/exec_nodes.c\
 	./src/handle_input/parser/exec_ast.c\
 	./src/handle_input/parser/add_path.c\
-	./src/execution/execute.c\
+	./src/execution/nopipe.c\
 	./src/execution/redirect.c\
 	./src/execution/pipe.c\
 	./src/execution/exec.c\
@@ -151,7 +151,7 @@ OBJS =\
 	./obj/exec_nodes.o\
 	./obj/exec_ast.o\
 	./obj/add_path.o\
-	./obj/execute.o\
+	./obj/nopipe.o\
 	./obj/redirect.o\
 	./obj/pipe.o\
 	./obj/exec.o\

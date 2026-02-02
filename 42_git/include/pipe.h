@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:16:22 by keitotak          #+#    #+#             */
-/*   Updated: 2026/02/01 08:25:12 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 12:53:29 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ typedef struct s_pipe
 	t_to_free	*to_free;
 }	t_pipe;
 
-// main.c
-int		execute(t_command *command, t_env **env_lst, t_to_free *to_free);
+// nopipe.c
+int		nopipe_execute(t_command *command, t_env **env_lst, t_to_free *to_free);
 
 // redirect.c
 int		redirect_fd(t_command *command);
