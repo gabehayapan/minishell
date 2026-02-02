@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/01 08:46:13 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 09:10:10 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,16 @@
 
 int	display_minishell(void)
 {
-	char	*bp;
-	int		result;
-	int		cols;
+	char		*bp;
+	const char	*term;
+	int			result;
+	int			cols;
 
-	bp = (char *)malloc(2048);
+	bp = (char *)malloc(sizeof(*bp));
 	if (bp == NULL)
 		return (FAILURE);
-	result = tgetent(bp, "xterm");
+	term = getenv("TERM");
+	result = tgetent(bp, term);
 	if (result == 1)
 	{
 		cols = tgetnum("co");
