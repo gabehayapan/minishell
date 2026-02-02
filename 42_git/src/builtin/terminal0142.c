@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 17:12:50 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/02 09:21:24 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 09:26:54 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include "parser.h"
 #include "env_var.h"
 #include <sys/wait.h>
-//#include <curses.h>
-//#include <term.h>
 #include <termcap.h>
 
 void	free_term(t_term *term)
@@ -27,12 +25,15 @@ void	free_term(t_term *term)
 
 static void	clear_screen(void)
 {
-	char	buf[1024];
-	char	*str;
+	char		buf[1024];
+	const char	*term;
+	char		*str;
 
-	tgetent(buf, getenv("TERM"));
+	term = getenv("TERM");
+	tgetent(buf, term);
 	str = tgetstr("cl", NULL);
-	ft_printf("%s", str);
+	if (str != NULL)
+		ft_printf("%s", str);
 }
 
 static int	start_terminal0142(t_term *term, char **envp)
