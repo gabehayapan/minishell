@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:01:56 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 15:57:07 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 10:26:17 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,9 @@ void		*free_token(t_token *token);
 t_tk_type	get_token_type(char *str);
 t_token		*new_token_str(const char *str, t_token *current,
 				t_tk_type tk_type);
+
+// handle_input/tokenizer/tokenizer_utils.c
+t_token		*create_new_token(char **str, t_token *current, t_tk_type tk_type);
 
 // handle_input/tokenizer/tokenize_quote.c
 t_token		*tokenize_quote(char **input, char **str,

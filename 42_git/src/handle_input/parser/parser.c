@@ -6,14 +6,14 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 18:40:30 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 10:41:04 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include <stdbool.h>
 
-char	**get_execution(t_token **tokens)
+static char	**get_execution(t_token **tokens)
 {
 	size_t	size_cmd;
 	char	**command;
@@ -42,7 +42,7 @@ char	**get_execution(t_token **tokens)
 	return (ret);
 }
 
-int	new_command(t_token **tokens, t_command *command, t_env *env_lst)
+static int	new_command(t_token **tokens, t_command *command, t_env *env_lst)
 {
 	int			is_success;
 
@@ -58,7 +58,8 @@ int	new_command(t_token **tokens, t_command *command, t_env *env_lst)
 	return (SUCCESS);
 }
 
-int	get_piped_command(t_token **tokens, t_command **command, t_env *env_lst)
+static int	get_piped_command(t_token **tokens, t_command **command,
+			t_env *env_lst)
 {
 	t_command	*current;
 	t_command	*last;
@@ -86,7 +87,7 @@ int	get_piped_command(t_token **tokens, t_command **command, t_env *env_lst)
 	return (SUCCESS);
 }
 
-int	new_exec_tree(t_token **tokens, t_exec **head, t_env *env_lst)
+static int	new_exec_tree(t_token **tokens, t_exec **head, t_env *env_lst)
 {
 	t_exec	*node_exec;
 	int		ret;

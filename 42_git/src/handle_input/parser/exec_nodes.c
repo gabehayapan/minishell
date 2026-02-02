@@ -6,13 +6,13 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 08:24:51 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/26 17:48:45 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 10:42:53 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-void	add_back_node(t_exec **head, t_exec *node_exec)
+static void	add_back_node(t_exec **head, t_exec *node_exec)
 {
 	t_exec	*last;
 
@@ -27,7 +27,7 @@ void	add_back_node(t_exec **head, t_exec *node_exec)
 	}
 }
 
-t_exec	*new_ctrl_node(t_token *token)
+static t_exec	*new_ctrl_node(t_token *token)
 {
 	t_exec	*ctrl_node;
 

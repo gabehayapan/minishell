@@ -6,13 +6,13 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 17:37:05 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/29 08:55:23 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 10:43:28 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-int	is_numeric_word(char *str)
+static int	is_numeric_word(char *str)
 {
 	while (*str != '\0')
 	{
@@ -23,7 +23,7 @@ int	is_numeric_word(char *str)
 	return (SUCCESS);
 }
 
-int	get_fd_rdt(t_token **tokens, t_token *current, t_rdt_type rdt_type)
+static int	get_fd_rdt(t_token **tokens, t_token *current, t_rdt_type rdt_type)
 {
 	int	fd;
 
@@ -40,7 +40,7 @@ int	get_fd_rdt(t_token **tokens, t_token *current, t_rdt_type rdt_type)
 	return (fd);
 }
 
-int	new_rdt_node(t_token **tokens, t_token *current, t_rdt **head)
+static int	new_rdt_node(t_token **tokens, t_token *current, t_rdt **head)
 {
 	t_rdt	*new_rdt;
 
@@ -63,7 +63,7 @@ int	new_rdt_node(t_token **tokens, t_token *current, t_rdt **head)
 	return (SUCCESS);
 }
 
-int	set_rdt_node(t_token **tokens, t_token *current, t_rdt **head)
+static int	set_rdt_node(t_token **tokens, t_token *current, t_rdt **head)
 {
 	int	is_success;
 

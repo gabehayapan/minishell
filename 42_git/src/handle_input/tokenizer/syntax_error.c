@@ -6,14 +6,14 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:49:58 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 15:57:11 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 10:27:50 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
 #include "parser.h"
 
-char	*get_new_input(char *input, char **new_input)
+static char	*get_new_input(char *input, char **new_input)
 {
 	size_t	total_len;
 
@@ -38,7 +38,7 @@ char	*get_new_input(char *input, char **new_input)
 	return (input);
 }
 
-int	join_new_input(char **input, char *start, t_syntax_err *syn_err)
+static int	join_new_input(char **input, char *start, t_syntax_err *syn_err)
 {
 	*input = join_word_no_space(*input, (*syn_err).input);
 	if (*input == NULL)

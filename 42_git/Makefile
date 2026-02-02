@@ -28,6 +28,7 @@ SRCS =\
 	./src/handle_input/handle_input.c\
 	./src/handle_input/tokenizer/tokenizer.c\
 	./src/handle_input/tokenizer/tokenizer_utils.c\
+	./src/handle_input/tokenizer/new_token.c\
 	./src/handle_input/tokenizer/tokenize_keywords.c\
 	./src/handle_input/tokenizer/tokenize_quote.c\
 	./src/handle_input/tokenizer/syntax_error.c\
@@ -106,6 +107,7 @@ OBJS =\
 	./obj/handle_input.o\
 	./obj/tokenizer.o\
 	./obj/tokenizer_utils.o\
+	./obj/new_token.o\
 	./obj/tokenize_keywords.o\
 	./obj/tokenize_quote.o\
 	./obj/syntax_error.o\

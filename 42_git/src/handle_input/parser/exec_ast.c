@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 08:20:41 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 17:05:10 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 10:42:24 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_exec	*add_exec_tree_branch(t_exec **top, t_exec *current, t_exec **target,
 			int subshell);
 
-t_exec	*exec_tree_term(t_exec *top, t_exec *term, t_exec **target)
+static t_exec	*exec_tree_term(t_exec *top, t_exec *term, t_exec **target)
 {
 	*target = NULL;
 	if (term == NULL)
@@ -24,7 +24,7 @@ t_exec	*exec_tree_term(t_exec *top, t_exec *term, t_exec **target)
 		return (term);
 }
 
-void	handle_same_layer(t_exec **top, t_exec *current, t_exec **target,
+static void	handle_same_layer(t_exec **top, t_exec *current, t_exec **target,
 			int subshell)
 {
 	current->left = *top;
@@ -37,8 +37,8 @@ void	handle_same_layer(t_exec **top, t_exec *current, t_exec **target,
 			(((*target)->next)->command)->is_subshell);
 }
 
-t_exec	*add_exec_tree_branch(t_exec **top, t_exec *current, t_exec **target,
-			int subshell)
+t_exec	*add_exec_tree_branch(t_exec **top, t_exec *current,
+			t_exec **target, int subshell)
 {
 	t_exec	*top_sub;
 
