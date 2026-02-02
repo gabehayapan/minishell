@@ -6,13 +6,13 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/01 17:46:09 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/01 18:04:29 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 11:04:50 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-static int	is_separator(t_token *token)
+int	is_separator(t_token *token)
 {
 	if (token != NULL
 		&& (token->tk_type == AND || token->tk_type == OR
@@ -80,17 +80,4 @@ int	rm_space_and_join_tokens(t_token **tokens)
 	remove_tk_spaces(tokens);
 	is_success = join_token_word(tokens);
 	return (is_success);
-}
-
-int	check_format_error(t_token **tokens)
-{
-	if (*tokens != NULL
-		&& ((*tokens)->tk_type == AND || (*tokens)->tk_type == OR
-			|| (*tokens)->tk_type == PIPE || (*tokens)->tk_type == SEMI))
-	{
-		ft_dprintf(2, "-minishell: syntax error near unexpected token `%s;\n",
-			(*tokens)->word);
-		return (FORMAT_ERROR);
-	}
-	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/02 10:15:54 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 11:05:28 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include "../libft/header/libft.h"
 # include "../libft/header/ftprintf.h"
 
+# define NO_COMMAND		3
 # define NOT_FOUND		4
 # define NO_DIR			5
 # define NO_FILTER		6
@@ -140,7 +141,11 @@ int			init_tokens(t_token **tokens, t_env **env_lst,
 				t_sub *sub);
 
 // handle_input/parser/init_tokens.c
+int			is_separator(t_token *token);
 int			rm_space_and_join_tokens(t_token **tokens);
+int			check_format_error(t_token **tokens);
+
+// handle_input/parser/init_tokens.c
 int			check_format_error(t_token **tokens);
 
 // handle_input/parser/free.c
