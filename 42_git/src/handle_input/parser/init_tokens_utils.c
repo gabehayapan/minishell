@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/01 17:46:09 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/01 18:04:29 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 10:57:53 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,32 @@ int	rm_space_and_join_tokens(t_token **tokens)
 
 int	check_format_error(t_token **tokens)
 {
-	if (*tokens != NULL
-		&& ((*tokens)->tk_type == AND || (*tokens)->tk_type == OR
-			|| (*tokens)->tk_type == PIPE || (*tokens)->tk_type == SEMI))
+	t_token	*current;
+	int		is_sep;
+
+	if (is_separator(*tokens) == 1)
 	{
 		ft_dprintf(2, "-minishell: syntax error near unexpected token `%s;\n",
 			(*tokens)->word);
 		return (FORMAT_ERROR);
+	}
+	current = *tokens;
+	is_sep = 0;
+	while (current != NULL)
+	{
+		if (is_separator(current) == 1)
+		{
+			if (is_sep == 1)
+			{
+				ft_dprintf(2, "-minishell: syntax error near unexpected token "
+				"`%s'\n", current->word);
+				return (FORMAT_ERROR);
+			}
+			is_sep = 1;
+		}
+		else if (current->tk_type != SPACES)
+			is_sep = 0;
+		current = current->next;
 	}
 	return (SUCCESS);
 }

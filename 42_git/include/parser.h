@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/02 10:15:54 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 11:00:06 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include "../libft/header/libft.h"
 # include "../libft/header/ftprintf.h"
 
+# define NO_COMMAND		3
 # define NOT_FOUND		4
 # define NO_DIR			5
 # define NO_FILTER		6

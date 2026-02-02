@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:01:56 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/02 10:26:17 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 10:59:54 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # define SUCCESS 0
 # define FAILURE 1
-# define NO_COMMAND 2
 
 # include <stdlib.h>
 # include <readline/readline.h>

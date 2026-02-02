@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/02 10:41:04 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 11:00:24 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,8 @@ int	parser(t_token **tokens, t_env **env_lst, t_exec **exec_tree,
 	head = NULL;
 	is_success = init_tokens(tokens, env_lst, sub);
 	if (is_success == FAILURE || is_success == NO_COMMAND
-		|| is_success == SIGNALED || is_success == NO_EVENT)
+		|| is_success == SIGNALED || is_success == NO_EVENT
+		|| is_success == FORMAT_ERROR)
 		return (is_success);
 	while (*tokens != NULL)
 	{
