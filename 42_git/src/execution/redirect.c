@@ -6,14 +6,14 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 01:08:17 by keitotak          #+#    #+#             */
-/*   Updated: 2026/01/29 08:50:40 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/02 10:10:02 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipe.h"
 #include "get_next_line.h"
 
-int	heredoc(char *doc)
+int	heredoc(char *doc, int newfd_stdin)
 {
 	char	*marker;
 	int		fd[2];
@@ -25,7 +25,7 @@ int	heredoc(char *doc)
 	while (1)
 	{
 		ft_dprintf(STDOUT_FILENO, "> ");
-		line = get_next_line(STDIN_FILENO);
+		line = get_next_line(newfd_stdin);
 		if (line == NULL)
 			return (-1);
 		if (ft_strcmp(marker, line) == 0)
@@ -43,6 +43,9 @@ int	heredoc(char *doc)
 
 int	setfd_infile(t_command *command)
 {
+	int	newfd_stdin;
+
+	newfd_stdin = dup(STDIN_FILENO);
 	while (command->inrdt != NULL)
 	{
 		if (command->inrdt->type == INFILE)
@@ -56,7 +59,7 @@ int	setfd_infile(t_command *command)
 			}
 		}
 		if (command->inrdt->type == HEREDOC)
-			command->infd = heredoc(command->inrdt->rdt);
+			command->infd = heredoc(command->inrdt->rdt, newfd_stdin);
 		dup2(command->infd, command->inrdt->fd_rdt);
 		command->inrdt = command->inrdt->next;
 	}
