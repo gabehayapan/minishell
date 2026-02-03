@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 11:07:28 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/01 08:31:28 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 11:47:58 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "ft_dprintf.h"
 #include "builtin.h"
 
-int	change_cwd_to_home(char **path, t_env *env_lst)
+static int	change_cwd_to_home(char **path, t_env *env_lst)
 {
 	*path = env_value(env_lst, "HOME");
 	if (*path == NULL)
@@ -28,7 +28,7 @@ int	change_cwd_to_home(char **path, t_env *env_lst)
 	return (SUCCESS);
 }
 
-int	change_cwd_to_oldpwd(char **path, t_env *env_lst)
+static int	change_cwd_to_oldpwd(char **path, t_env *env_lst)
 {
 	t_env	*oldpwd;
 
@@ -46,7 +46,7 @@ int	change_cwd_to_oldpwd(char **path, t_env *env_lst)
 	return (SUCCESS);
 }
 
-int	change_cwd_to_path(char *path)
+static int	change_cwd_to_path(char *path)
 {
 	int	ret;
 
@@ -60,7 +60,7 @@ int	change_cwd_to_path(char *path)
 	return (SUCCESS);
 }
 
-void	update_env_pwd(t_env **env_lst, t_to_free *to_free)
+static void	update_env_pwd(t_env **env_lst, t_to_free *to_free)
 {
 	t_env	*pwd;
 	t_env	*oldpwd;

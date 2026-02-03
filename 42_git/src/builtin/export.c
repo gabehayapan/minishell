@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:50:38 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/01 08:26:32 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 11:50:02 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "ft_dprintf.h"
 #include "builtin.h"
 
-int	export_no_args(t_env *env_lst)
+static int	export_no_args(t_env *env_lst)
 {
 	while (env_lst != NULL)
 	{
@@ -28,7 +28,7 @@ int	export_no_args(t_env *env_lst)
 	return (SUCCESS);
 }
 
-int	check_invalid_identifier(char *str)
+static int	check_invalid_identifier(char *str)
 {
 	char	*cp_str;
 	int		is_success;
@@ -55,7 +55,7 @@ int	check_invalid_identifier(char *str)
 	return (is_success);
 }
 
-int	update_env_value(t_env *target, char *new_env)
+static int	update_env_value(t_env *target, char *new_env)
 {
 	free(target->value);
 	target->value = get_env_value(new_env);
@@ -64,7 +64,7 @@ int	update_env_value(t_env *target, char *new_env)
 	return (SUCCESS);
 }
 
-int	store_new_env_var(t_env **env_lst, char *new_env)
+static int	store_new_env_var(t_env **env_lst, char *new_env)
 {
 	t_env	*new_env_ptr;
 	t_env	*last_env;

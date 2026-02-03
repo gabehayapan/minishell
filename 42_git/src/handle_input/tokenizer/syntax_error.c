@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:49:58 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/02 10:27:50 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 10:25:08 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,41 +38,43 @@ static char	*get_new_input(char *input, char **new_input)
 	return (input);
 }
 
-static int	join_new_input(char **input, char *start, t_syntax_err *syn_err)
+static int	join_new_input(char **user_input, char *start,
+			char *input, char **new_str)
 {
-	*input = join_word_no_space(*input, (*syn_err).input);
-	if (*input == NULL)
+	*user_input = join_word_no_space(*user_input, input);
+	if (*user_input == NULL)
 		return (FAILURE);
-	(*syn_err).new_str = ft_strjoin(start, (*syn_err).input);
-	if ((*syn_err).new_str == NULL)
+	*new_str = ft_strjoin(start, input);
+	if (*new_str == NULL)
 		return (FAILURE);
 	return (SUCCESS);
 }
 
-char	*syntax_error(char **input, char *start, t_tk_type tk_type)
+char	*syntax_error(char **user_input, char *start, t_tk_type tk_type)
 {
-	t_syntax_err	syn_err;
-	int				is_success;
+	char	c;
+	char	*input;
+	char	*new_input;
+	char	*new_str;
+	int		is_success;
 
-	syn_err.c = get_missing_char(tk_type);
-	ft_dprintf(2, "-minishell: %c is missing\n", syn_err.c);
-	syn_err.input = NULL;
-	syn_err.new_input = NULL;
-	syn_err.input = get_new_input(syn_err.input, &syn_err.new_input);
-	if (syn_err.input == NULL)
+	c = get_missing_char(tk_type);
+	init_syntax_error(&input, &new_input);
+	input = get_new_input(input, &new_input);
+	if (input == NULL)
 		return (NULL);
-	while (ft_strchr(syn_err.new_input, syn_err.c) == NULL)
+	while (ft_strchr(new_input, c) == NULL)
 	{
-		free(syn_err.new_input);
-		syn_err.input = get_new_input(syn_err.input, &syn_err.new_input);
-		if (syn_err.input == NULL)
+		free(new_input);
+		input = get_new_input(input, &new_input);
+		if (input == NULL)
 			return (NULL);
 	}
-	remove_last_new_line(syn_err.input);
-	is_success = join_new_input(input, start, &syn_err);
-	free(syn_err.input);
-	free(syn_err.new_input);
+	remove_last_new_line(input);
+	is_success = join_new_input(user_input, start, input, &new_str);
+	free(input);
+	free(new_input);
 	if (is_success == FAILURE)
 		return (NULL);
-	return (syn_err.new_str);
+	return (new_str);
 }

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/29 09:20:42 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/01 08:32:17 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 11:51:53 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "env_var.h"
 #include <sys/wait.h>
 
-void	free_google(char **cmd, t_env *env_lst, t_to_free *to_free)
+static void	free_google(char **cmd, t_env *env_lst, t_to_free *to_free)
 {
 	free(cmd);
 	free_env_lst(env_lst);
@@ -23,7 +23,7 @@ void	free_google(char **cmd, t_env *env_lst, t_to_free *to_free)
 	exit(EXIT_FAILURE);
 }
 
-char	**init_google_command(void)
+static char	**init_google_command(void)
 {
 	char	**cmd;
 
@@ -41,7 +41,7 @@ char	**init_google_command(void)
 	return (cmd);
 }
 
-int	append_search_word(char **strs, char **cmd)
+static int	append_search_word(char **strs, char **cmd)
 {
 	while (*strs != NULL && *(strs + 1) != NULL)
 	{
@@ -62,7 +62,7 @@ int	append_search_word(char **strs, char **cmd)
 	return (SUCCESS);
 }
 
-int	google_search(char **cmd, t_env *env_lst)
+static int	google_search(char **cmd, t_env *env_lst)
 {
 	char	**envp;
 	int		status;

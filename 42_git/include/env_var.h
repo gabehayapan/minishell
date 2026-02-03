@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 10:46:39 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/26 11:08:31 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 11:46:46 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,6 @@ typedef struct s_envp_len
 	size_t	len_value;
 }	t_envp_len;
 
-typedef struct s_init_env
-{
-	t_env	head;
-	t_env	*current;
-	t_env	*last;
-}	t_init_env;
-
 // env_var/env_var.c
 int		new_env_var(t_env *current, char *env);
 char	*get_env_value(char *env);
@@ -63,12 +56,8 @@ t_env	*init_env_list(char **envp);
 t_env	*env_find(t_env *env_lst, const char *target);
 char	*env_key(t_env *env_lst, const char *target);
 char	*env_value(t_env *env_lst, const char *target);
-int		ft_strcmp(const char *s1, const char *s2);
 
 // env_var/convert_to_envp.c
 char	**convert_to_envp(t_env *env_lst);
-
-// env_var/unset/unset.c
-int		unset(t_env **env_lst, char **strs);
 
 #endif

@@ -6,34 +6,12 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:45:43 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 15:35:52 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 11:36:23 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
 #include <stdbool.h>
-
-t_token	*new_token_quoted_str(char *start, char *end, t_token *current)
-{
-	t_token	*new_token;
-
-	new_token = (t_token *)malloc(sizeof(t_token));
-	if (new_token == NULL)
-		return (NULL);
-	new_token->tk_type = WORD;
-	new_token->is_join = false;
-	new_token->prev = current;
-	new_token->next = NULL;
-	new_token->word = ft_substr(start, 0, end - start);
-	if (new_token->word == NULL)
-	{
-		free(new_token);
-		return (NULL);
-	}
-	current->next = new_token;
-	current = new_token;
-	return (new_token);
-}
 
 t_token	*tokenize_single_quote(char **input, char **str, t_token *current)
 {

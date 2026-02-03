@@ -6,13 +6,13 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 21:56:26 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/23 14:58:38 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/02/03 11:51:20 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_var.h"
 
-void	remove_env_var(t_env **env_lst, t_env *rm_env)
+static void	remove_env_var(t_env **env_lst, t_env *rm_env)
 {
 	t_env	*pre_rm_env;
 

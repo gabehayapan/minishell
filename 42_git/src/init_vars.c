@@ -1,18 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_redirection_error.c                          :+:      :+:    :+:   */
+/*   init_vars.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/29 14:18:03 by hanakamu          #+#    #+#             */
-/*   Updated: 2025/12/29 14:18:37 by hanakamu         ###   ########.fr       */
+/*   Created: 2026/02/03 09:27:07 by hanakamu          #+#    #+#             */
+/*   Updated: 2026/02/03 09:31:07 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "minishell.h"
 
-void	syntax_error_redirection(void)
+void	init_input_and_sub(char **input, t_sub *sub)
 {
-	ft_putstr_fd("syntax error for redirection\n", 2);
+	*input = NULL;
+	sub->his = NULL;
+	sub->exit_status = 0;
+}
+
+void	init_to_free(t_to_free *to_free, t_exec *top, t_his *his)
+{
+	to_free->top = top;
+	to_free->his = his;
 }

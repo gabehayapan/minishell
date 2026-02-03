@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:01:56 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/02 10:59:54 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 11:39:17 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,33 +59,23 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_syntax_err
-{
-	char	c;
-	char	*input;
-	char	*new_input;
-	char	*new_str;
-}	t_syntax_err;
-
 // handle_input/tokenizer/tokenizer.c
 t_token		*tokenizer(char **input);
-t_token		*create_new_token(char **str, t_token *current, t_tk_type tk_type);
 
 // handle_input/tokenizer/tokenizer_utils.c
 int			init_token_vars(t_token *head, t_token **current,
 				char **input, char **str);
-void		*free_token(t_token *token);
 t_tk_type	get_token_type(char *str);
+
+// handle_input/tokenizer/new_token.c
+t_token		*create_new_token(char **str, t_token *current, t_tk_type tk_type);
 t_token		*new_token_str(const char *str, t_token *current,
 				t_tk_type tk_type);
-
-// handle_input/tokenizer/tokenizer_utils.c
-t_token		*create_new_token(char **str, t_token *current, t_tk_type tk_type);
+t_token		*new_token_quoted_str(char *start, char *end, t_token *current);
 
 // handle_input/tokenizer/tokenize_quote.c
 t_token		*tokenize_quote(char **input, char **str,
 				t_token *current, t_tk_type tk_type);
-t_token		*new_token_quoted_str(char *start, char *end, t_token *current);
 
 // handle_input/tokenizer/tokenize_keywords.c
 t_token		*tokenize_parenthesis(char **input, char **str, t_token *current);
@@ -93,18 +83,17 @@ t_token		*tokenize_env_var(char **str, t_token *current);
 t_token		*tokenize_dollar(char **input, char *start, char **str,
 				t_token *current);
 
+// handle_input/tokenizer/free_token.c
+void		*free_token(t_token *token);
+void		clear_token(t_token **tokens, t_token *target, void (*del)(void *));
+
 // handle_input/tokenizer/syntax_error.c
 char		*syntax_error(char **input, char *start, t_tk_type tk_type);
 
 // handle_input/tokenizer/syntax_error.c
+void		init_syntax_error(char **input, char **new_input);
 void		*error_unexpected_eof(void);
 char		get_missing_char(t_tk_type tk_type);
 void		remove_last_new_line(char *input);
-
-// handle_input/tokenizer/ft_isspace.c
-int			ft_isspace(int c);
-
-// handle_input/tokenizer/ft_realloc.c
-void		*ft_realloc(void *ptr, size_t size);
 
 #endif

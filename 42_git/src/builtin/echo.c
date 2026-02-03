@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 20:21:48 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/25 18:08:58 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 11:52:27 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "ft_dprintf.h"
 #include <stdbool.h>
 
-int	is_valid_option(char *str)
+static int	is_valid_option(char *str)
 {
 	while (*str != '\0')
 	{
@@ -25,7 +25,7 @@ int	is_valid_option(char *str)
 	return (true);
 }
 
-int	check_option(char ***strs)
+static int	check_option(char ***strs)
 {
 	int		is_option;
 	int		is_valid;

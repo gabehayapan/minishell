@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libftall.h                                         :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/19 14:32:12 by hanakamu          #+#    #+#             */
-/*   Updated: 2025/12/19 14:50:04 by hanakamu         ###   ########.fr       */
+/*   Created: 2026/02/03 09:46:56 by hanakamu          #+#    #+#             */
+/*   Updated: 2026/02/03 09:48:03 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFTALL_H
-# define LIBFTALL_H
+#include "libft.h"
 
-# include "libft.h"
-# include "ftprintf.h"
-# include "get_next_line.h"
-//# include "ft_dprintf.h"
-
-#endif
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	while ((unsigned char)*s1 == (unsigned char)*s2 && *s1 != '\0')
+	{
+		s1++;
+		s2++;
+	}
+	return ((unsigned char)*s1 - (unsigned char)*s2);
+}

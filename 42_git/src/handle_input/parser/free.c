@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 19:08:02 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/21 10:08:19 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 11:42:08 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,28 +65,15 @@ void	free_node_exec(t_exec *node_exec)
 	free(node_exec);
 }
 
-void	clear_token(t_token **tokens, t_token *target, void (*del)(void *))
+void	free_his(t_his *his)
 {
-	t_token	*tmp;
+	t_his	*next;
 
-	if (tokens == NULL || *tokens == NULL || target == NULL)
-		return ;
-	if (*tokens == target)
+	while (his != NULL)
 	{
-		*tokens = target->next;
-		if (*tokens != NULL)
-			(*tokens)->prev = NULL;
+		next = his->next;
+		free(his->line);
+		free(his);
+		his = next;
 	}
-	else
-	{
-		tmp = *tokens;
-		while (tmp != NULL && tmp->next != target && tmp != target)
-			tmp = tmp->next;
-		tmp->next = target->next;
-		if (target->next != NULL)
-			(target->next)->prev = tmp;
-	}
-	if (del != NULL)
-		(*del)(target->word);
-	free(target);
 }

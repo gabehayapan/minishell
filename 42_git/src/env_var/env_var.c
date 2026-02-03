@@ -6,14 +6,14 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 10:48:00 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/14 09:23:28 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 11:46:53 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_var.h"
 #include "ftprintf.h"
 
-char	*get_env_key(char **env)
+static char	*get_env_key(char **env)
 {
 	char	*start;
 	char	*env_key;
