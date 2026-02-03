@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 13:57:47 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/03 09:24:07 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 11:45:36 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_env	*init_env_list(char **envp)
 	t_env	head;
 	t_env	*current;
 	t_env	*last;
-	int			is_success;
+	int		is_success;
 
 	head.next = NULL;
 	last = NULL;

@@ -11,6 +11,7 @@ SRCS =\
 	./src/env_var/env_module/env_lookup.c\
 	./src/env_var/init_env_list.c\
 	./src/env_var/convert_to_envp.c\
+	./src/builtin/is_builtin.c\
 	./src/builtin/cd.c\
 	./src/builtin/cd_utils.c\
 	./src/builtin/echo.c\
@@ -21,9 +22,9 @@ SRCS =\
 	./src/builtin/pwd.c\
 	./src/builtin/unset.c\
 	./src/builtin/history.c\
-	./src/builtin/terminal0142.c\
-	./src/builtin/init_terminal0142.c\
-	./src/builtin/exec_terminal0142.c\
+	./src/builtin/terminal0142/terminal0142.c\
+	./src/builtin/terminal0142/init_terminal0142.c\
+	./src/builtin/terminal0142/exec_terminal0142.c\
 	./src/builtin/google.c\
 	./src/execution/execution.c\
 	./src/handle_input/handle_input.c\
@@ -32,13 +33,14 @@ SRCS =\
 	./src/handle_input/tokenizer/new_token.c\
 	./src/handle_input/tokenizer/tokenize_keywords.c\
 	./src/handle_input/tokenizer/tokenize_quote.c\
+	./src/handle_input/tokenizer/free_token.c\
 	./src/handle_input/tokenizer/syntax_error.c\
 	./src/handle_input/tokenizer/syntax_error_utils.c\
 	./src/handle_input/parser/parser.c\
 	./src/handle_input/parser/parser_utils.c\
 	./src/handle_input/parser/shell_var.c\
-	./src/handle_input/parser/init.c\
-	./src/handle_input/parser/init_utils.c\
+	./src/handle_input/parser/init_exec.c\
+	./src/handle_input/parser/init_exec_utils.c\
 	./src/handle_input/parser/init_tokens.c\
 	./src/handle_input/parser/init_tokens_utils.c\
 	./src/handle_input/parser/check_format_error.c\
@@ -47,26 +49,25 @@ SRCS =\
 	./src/handle_input/parser/counter.c\
 	./src/handle_input/parser/get_redirect_file.c\
 	./src/handle_input/parser/get_redirect_file_utils.c\
-	./src/handle_input/parser/print_redirection_error.c\
-	./src/handle_input/parser/expand_specials.c\
-	./src/handle_input/parser/expand_specials_utils.c\
-	./src/handle_input/parser/history_substitution.c\
-	./src/handle_input/parser/history_utils.c\
-	./src/handle_input/parser/history_single.c\
-	./src/handle_input/parser/replace_command.c\
-	./src/handle_input/parser/replace_command_utils.c\
-	./src/handle_input/parser/wildcard/wildcard_expansion.c\
-	./src/handle_input/parser/wildcard/wildcard_init.c\
-	./src/handle_input/parser/wildcard/wildcard_init_slash.c\
-	./src/handle_input/parser/wildcard/wildcard_init_dirname.c\
-	./src/handle_input/parser/wildcard/wildcard_init_utils.c\
-	./src/handle_input/parser/wildcard/wildcard_initial_dir.c\
-	./src/handle_input/parser/wildcard/wildcard_deeper_dir.c\
-	./src/handle_input/parser/wildcard/wildcard_deeper_dir_utils.c\
-	./src/handle_input/parser/wildcard/wildcard_get_dirent.c\
-	./src/handle_input/parser/wildcard/wildcard_file_token.c\
-	./src/handle_input/parser/wildcard/wildcard_utils.c\
-	./src/handle_input/parser/wildcard/wildcard_file_name_validation.c\
+	./src/handle_input/parser/expansion/expand_specials.c\
+	./src/handle_input/parser/expansion/expand_specials_utils.c\
+	./src/handle_input/parser/expansion/history/history_substitution.c\
+	./src/handle_input/parser/expansion/history/history_utils.c\
+	./src/handle_input/parser/expansion/history/history_single.c\
+	./src/handle_input/parser/expansion/replace_command.c\
+	./src/handle_input/parser/expansion/replace_command_utils.c\
+	./src/handle_input/parser/expansion/wildcard/wildcard_expansion.c\
+	./src/handle_input/parser/expansion/wildcard/wildcard_init.c\
+	./src/handle_input/parser/expansion/wildcard/wildcard_init_slash.c\
+	./src/handle_input/parser/expansion/wildcard/wildcard_init_dirname.c\
+	./src/handle_input/parser/expansion/wildcard/wildcard_init_utils.c\
+	./src/handle_input/parser/expansion/wildcard/wildcard_initial_dir.c\
+	./src/handle_input/parser/expansion/wildcard/wildcard_deeper_dir.c\
+	./src/handle_input/parser/expansion/wildcard/wildcard_deeper_dir_utils.c\
+	./src/handle_input/parser/expansion/wildcard/wildcard_get_dirent.c\
+	./src/handle_input/parser/expansion/wildcard/wildcard_file_token.c\
+	./src/handle_input/parser/expansion/wildcard/wildcard_utils.c\
+	./src/handle_input/parser/expansion/wildcard/wildcard_validate_file_name.c\
 	./src/handle_input/parser/join_word.c\
 	./src/handle_input/parser/get_command.c\
 	./src/handle_input/parser/exec_nodes.c\
@@ -90,6 +91,7 @@ OBJS =\
 	./obj/env_lookup.o\
 	./obj/init_env_list.o\
 	./obj/convert_to_envp.o\
+	./obj/is_builtin.o\
 	./obj/cd.o\
 	./obj/cd_utils.o\
 	./obj/echo.o\
@@ -111,13 +113,14 @@ OBJS =\
 	./obj/new_token.o\
 	./obj/tokenize_keywords.o\
 	./obj/tokenize_quote.o\
+	./obj/free_token.o\
 	./obj/syntax_error.o\
 	./obj/syntax_error_utils.o\
 	./obj/parser.o\
 	./obj/parser_utils.o\
 	./obj/shell_var.o\
-	./obj/init.o\
-	./obj/init_utils.o\
+	./obj/init_exec.o\
+	./obj/init_exec_utils.o\
 	./obj/init_tokens.o\
 	./obj/init_tokens_utils.o\
 	./obj/check_format_error.o\
@@ -126,7 +129,6 @@ OBJS =\
 	./obj/counter.o\
 	./obj/get_redirect_file.o\
 	./obj/get_redirect_file_utils.o\
-	./obj/print_redirection_error.o\
 	./obj/expand_specials.o\
 	./obj/expand_specials_utils.o\
 	./obj/history_substitution.o\
@@ -145,7 +147,7 @@ OBJS =\
 	./obj/wildcard_get_dirent.o\
 	./obj/wildcard_file_token.o\
 	./obj/wildcard_utils.o\
-	./obj/wildcard_file_name_validation.o\
+	./obj/wildcard_validate_file_name.o\
 	./obj/join_word.o\
 	./obj/get_command.o\
 	./obj/exec_nodes.o\
@@ -172,7 +174,21 @@ HEADERS =\
 LIBFT_DIR = libft/
 LIBFT = libft.a
 
-vpath %.c ./src/ ./src/env_var/ ./src/env_var/export/ ./src/env_var/unset/ ./src/env_var/env_module/ ./src/handle_input/ ./src/handle_input/tokenizer/ ./src/handle_input/parser/ ./src/handle_input/parser/wildcard ./src/execution/ ./src/signal/ ./src/builtin/
+vpath %.c ./src/\
+	./src/env_var/\
+	./src/env_var/export/\
+	./src/env_var/unset/\
+	./src/env_var/env_module/\
+	./src/handle_input/\
+	./src/handle_input/tokenizer/\
+	./src/handle_input/parser/\
+	./src/handle_input/parser/expansion/\
+	./src/handle_input/parser/expansion/wildcard\
+	./src/handle_input/parser/expansion/history\
+	./src/execution/\
+	./src/signal/\
+	./src/builtin/\
+	./src/builtin/terminal0142/\
 
 all: $(NAME)
 

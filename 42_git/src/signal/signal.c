@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:59:55 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/02 10:47:16 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 11:45:05 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include "parser.h"
-#include "ftprintf.h"
 
 static void	redisplay_prompt(int signum)
 {

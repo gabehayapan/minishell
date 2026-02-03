@@ -6,20 +6,20 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 20:59:41 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/03 09:54:18 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 11:45:59 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-void	set_envp_info(t_env *env_lst, t_envp_len *envp_info)
+static void	set_envp_info(t_env *env_lst, t_envp_len *envp_info)
 {
 	envp_info->len_key = ft_strlen(env_lst->key);
 	envp_info->len_value = ft_strlen(env_lst->value);
 	envp_info->size_len = envp_info->len_key + envp_info->len_value + 1;
 }
 
-void	fill_envp_str(char *envp, t_env *env_lst, t_envp_len envp_info)
+static void	fill_envp_str(char *envp, t_env *env_lst, t_envp_len envp_info)
 {
 	ft_strlcat(envp, env_lst->key, envp_info.len_key + 1);
 	ft_strlcat(envp + envp_info.len_key, "=", 2);
@@ -27,7 +27,7 @@ void	fill_envp_str(char *envp, t_env *env_lst, t_envp_len envp_info)
 		envp_info.len_value + 1);
 }
 
-int	set_env_ptr(t_env *env_lst, char **envp, char **head)
+static int	set_env_ptr(t_env *env_lst, char **envp, char **head)
 {
 	t_envp_len	envp_info;
 

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:57:43 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/03 09:41:14 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 11:38:25 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,6 @@ int	init_token_vars(t_token *head, t_token **current, char **input, char **str)
 	if (*str == NULL)
 		return (FAILURE);
 	return (SUCCESS);
-}
-
-void	*free_token(t_token *token)
-{
-	t_token	*tmp;
-
-	while (token != NULL)
-	{
-		tmp = token->next;
-		free(token->word);
-		free(token);
-		token = tmp;
-	}
-	return (NULL);
 }
 
 static t_tk_type	get_token_type_util(char *str)
@@ -89,23 +75,4 @@ t_tk_type	get_token_type(char *str)
 	if (*str == '|')
 		return (PIPE);
 	return (get_token_type_util(str));
-}
-
-t_token	*new_token_str(const char *str, t_token *current, t_tk_type tk_type)
-{
-	t_token	*new_token;
-
-	new_token = (t_token *)malloc(sizeof(t_token));
-	if (new_token == NULL)
-		return (NULL);
-	new_token->word = ft_strdup(str);
-	if (new_token->word == NULL)
-		return (NULL);
-	new_token->tk_type = tk_type;
-	new_token->is_join = false;
-	new_token->prev = current;
-	new_token->next = NULL;
-	if (current != NULL)
-		current->next = new_token;
-	return (new_token);
 }

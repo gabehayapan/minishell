@@ -6,19 +6,19 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 14:25:58 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/12 12:54:09 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 11:42:45 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-void	add_space(char *exec, size_t *len_exec)
+static void	add_space(char *exec, size_t *len_exec)
 {
 	ft_strlcat(exec + *len_exec, " ", 2);
 	*len_exec = *len_exec + 1;
 }
 
-void	get_quoted_command(char *exec, t_token **token, size_t *len_exec,
+static void	get_quoted_command(char *exec, t_token **token, size_t *len_exec,
 			int is_space)
 {
 	size_t	len_word;
