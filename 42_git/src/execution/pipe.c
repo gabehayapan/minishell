@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:14:01 by keitotak          #+#    #+#             */
-/*   Updated: 2026/02/01 08:24:14 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 10:54:42 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int	*init_pipefd(int count)
 
 int	init_pipe(t_pipe *p, int count, t_env **env_lst, t_to_free *to_free)
 {
+	p->proccnt = count;
 	p->procid = init_procid(count);
 	if (p->procid == NULL)
 		return (FAILURE);
@@ -70,20 +71,19 @@ int	pipeline(t_command *command, t_env **env_lst, int proc_count,
 	if (init_pipe(&p, proc_count, env_lst, to_free) == FAILURE)
 		return (FAILURE);
 	i = 0;
-	while (i < proc_count)
+	while (i < p.proccnt)
 	{
 		p.procid[i] = fork_process(&p, command, i);
 		if (p.procid[i] == EXIT_FAILURE)
 		{
-			close_pipes(p.pipefd, proc_count - 1);
-			free_pipe(&p);
+			cleanup_pipe(&p);
 			return (EXIT_FAILURE);
 		}
 		command = command->next;
 		i++;
 	}
-	close_pipes(p.pipefd, proc_count - 1);
-	exit_code = wait_for_children(p.procid, proc_count);
+	close_pipes(p.pipefd, p.proccnt - 1);
+	exit_code = wait_for_children(p.procid, p.proccnt);
 	free_pipe(&p);
 	return (exit_code);
 }

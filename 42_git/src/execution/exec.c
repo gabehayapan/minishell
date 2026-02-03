@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 23:11:26 by keitotak          #+#    #+#             */
-/*   Updated: 2026/02/01 08:32:37 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 12:07:17 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipe.h"
 #include "builtin.h"
 
-char	*free_arrs_ret_s(char **arrs, char *s)
+void	free_arrs(char **arrs)
 {
 	char	**tmp;
 
@@ -21,14 +21,13 @@ char	*free_arrs_ret_s(char **arrs, char *s)
 	while (*arrs)
 		free(*arrs++);
 	free(tmp);
-	return (s);
 }
 
 int	handle_noexist_cmd(char **cmdset)
 {
 	ft_putstr_fd(cmdset[0], 2);
 	ft_putendl_fd(": command not found", 2);
-	free_arrs_ret_s(cmdset, NULL);
+	free_arrs(cmdset);
 	return (127);
 }
 
@@ -75,15 +74,16 @@ int	exec_command(t_command *command, t_env **env_lst, t_to_free *to_free)
 		exit(pass_to_builtin(command, env_lst, to_free));
 	envp = convert_to_envp(*env_lst);
 	if (envp == NULL)
-		exit(EXIT_FAILURE);
-	else if (execve(cmdset[0], cmdset, envp) == -1)
 	{
-		if (errno == ENOENT)
-			exit(handle_noexist_cmd(cmdset));
-		perror(cmdset[0]);
-		free(envp);
-		free_arrs_ret_s(cmdset, NULL);
+		free_vars(env_lst, to_free);
 		exit(EXIT_FAILURE);
 	}
+	execve(cmdset[0], cmdset, envp);
+	if (errno == ENOENT)
+		exit(handle_noexist_cmd(cmdset));
+	perror(cmdset[0]);
+	free_arrs(envp);
+	free_vars(env_lst, to_free);
+	exit(EXIT_FAILURE);
 	return (EXIT_FAILURE);
 }

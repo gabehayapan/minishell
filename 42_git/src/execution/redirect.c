@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keitotak <keitotak@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 01:08:17 by keitotak          #+#    #+#             */
-/*   Updated: 2026/02/02 10:22:20 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 11:52:42 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	heredoc(char *doc, int newfd_stdin)
 	char	*line;
 
 	marker = ft_strjoin(doc, "\n");
-	if (pipe(fd) < -1)
+	if (pipe(fd) < 0)
 		return (-1);
 	while (1)
 	{

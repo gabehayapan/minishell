@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fork.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
+/*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 16:20:31 by keitotak          #+#    #+#             */
-/*   Updated: 2026/02/01 08:24:28 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 11:53:43 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ int	redirect_pipe(t_pipe *p, t_command *command, int p_nbr)
 	return (EXIT_SUCCESS);
 }
 
+void	exit_cleanup(t_pipe *p)
+{
+	cleanup_pipe(p);
+	free_vars(p->env_lst, p->to_free);
+	exit(EXIT_FAILURE);
+}
+
 int	fork_process(t_pipe *p, t_command *command, int p_nbr)
 {
 	pid_t	pid;
@@ -49,12 +56,12 @@ int	fork_process(t_pipe *p, t_command *command, int p_nbr)
 	if (pid == 0)
 	{
 		if (default_signal() == EXIT_FAILURE)
-			exit(EXIT_FAILURE);
-		if (redirect_pipe(p, command, p_nbr) == EXIT_FAILURE)
-			exit(EXIT_FAILURE);
+			exit_cleanup(p);
 		if (redirect_fd(command) == EXIT_FAILURE)
-			exit(EXIT_FAILURE);
-		close_pipes(p->pipefd, p_nbr);
+			exit_cleanup(p);
+		if (redirect_pipe(p, command, p_nbr) == EXIT_FAILURE)
+			exit_cleanup(p);
+		cleanup_pipe(p);
 		exec_command(command, p->env_lst, p->to_free);
 	}
 	return (pid);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
+/*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:16:22 by keitotak          #+#    #+#             */
-/*   Updated: 2026/02/02 12:53:29 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/02/03 11:27:01 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_to_free
 
 typedef struct s_pipe
 {
+	int			proccnt;
 	int			*procid;
 	int			*pipefd;
 	t_env		**env_lst;
@@ -69,7 +70,6 @@ int		exec_command(t_command *command, t_env **env_lst, t_to_free *to_free);
 int		pass_to_builtin(t_command *command, t_env **env_lst,
 			t_to_free *to_free);
 int		handle_noexist_cmd(char **cmdset);
-char	*free_arrs_ret_s(char **arrs, char *s);
 
 //wait.c
 int		wait_for_children(int *procid, int proc_count);
@@ -78,5 +78,7 @@ int		status_code(int status);
 //helper.c
 void	close_pipes(int	*pipefd, int count);
 void	free_pipe(t_pipe *p);
+void	cleanup_pipe(t_pipe *p);
+void	free_vars(t_env **env_lst, t_to_free *to_free);
 
 #endif
