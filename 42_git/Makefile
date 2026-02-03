@@ -5,6 +5,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 SRCS =\
 	./src/main.c\
+	./src/init_vars.c\
 	./src/env_var/env_var.c\
 	./src/env_var/env_var_utils.c\
 	./src/env_var/env_module/env_lookup.c\
@@ -33,8 +34,6 @@ SRCS =\
 	./src/handle_input/tokenizer/tokenize_quote.c\
 	./src/handle_input/tokenizer/syntax_error.c\
 	./src/handle_input/tokenizer/syntax_error_utils.c\
-	./src/handle_input/tokenizer/ft_isspace.c\
-	./src/handle_input/tokenizer/ft_realloc.c\
 	./src/handle_input/parser/parser.c\
 	./src/handle_input/parser/parser_utils.c\
 	./src/handle_input/parser/shell_var.c\
@@ -85,6 +84,7 @@ SRCS =\
 OBJ_DIR = obj/
 OBJS =\
 	./obj/main.o\
+	./obj/init_vars.o\
 	./obj/env_var.o\
 	./obj/env_var_utils.o\
 	./obj/env_lookup.o\
@@ -113,8 +113,6 @@ OBJS =\
 	./obj/tokenize_quote.o\
 	./obj/syntax_error.o\
 	./obj/syntax_error_utils.o\
-	./obj/ft_isspace.o\
-	./obj/ft_realloc.o\
 	./obj/parser.o\
 	./obj/parser_utils.o\
 	./obj/shell_var.o\

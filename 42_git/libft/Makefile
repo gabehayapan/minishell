@@ -38,6 +38,9 @@ LIBFT_SRCS =\
 	ft_putstr_fd.c\
 	ft_putendl_fd.c\
 	ft_putnbr_fd.c\
+	ft_isspace.c\
+	ft_realloc.c\
+	ft_strcmp.c\
 
 LIST_SRCS =\
 	ft_lstnew_bonus.c\

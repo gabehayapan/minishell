@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:57:43 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 18:58:52 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 09:41:14 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ void	*free_token(t_token *token)
 	return (NULL);
 }
 
-t_tk_type	get_token_type_util(char *str)
+static t_tk_type	get_token_type_util(char *str)
 {
 	if (*str == '\'')
 		return (SGL_QTE);
 	if (*str == '"')
 		return (DBL_QTE);
 	if (*str == '$' && (ft_isalnum(*(str + 1)) == 1 || *(str + 1) == '?'
-			|| *(str + 1) == '('))
+			|| *(str + 1) == '(' || *(str + 1) == '_'))
 		return (DOLLAR);
 	if (*str == '-' && (ft_isspace(*(str + 1)) == 1 || *(str + 1) == '\0'))
 		return (HYPHEN);

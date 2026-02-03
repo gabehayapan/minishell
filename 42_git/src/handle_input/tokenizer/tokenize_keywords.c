@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:53:06 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 15:53:44 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 09:15:42 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_token	*tokenize_env_var(char **str, t_token *current)
 		*str = *str + 1;
 	else
 	{
-		while (*str != NULL && ft_isalnum(**str) == 1)
+		while (*str != NULL && (ft_isalnum(**str) == 1 || **str == '_'))
 			(*str)++;
 	}
 	current = new_token_quoted_str(tmp, *str, current);

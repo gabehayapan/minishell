@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_input.c                                     :+:      :+:    :+:   */
+/*   init_vars.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/08 18:40:19 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/03 09:37:25 by hanakamu         ###   ########.fr       */
+/*   Created: 2026/02/03 09:27:07 by hanakamu          #+#    #+#             */
+/*   Updated: 2026/02/03 09:31:07 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "minishell.h"
 
-int	handle_input(char **input, t_env **env_lst, t_exec **exec_tree,
-			t_sub *sub)
+void	init_input_and_sub(char **input, t_sub *sub)
 {
-	t_token	*tokens;
-	int		ret;
+	*input = NULL;
+	sub->his = NULL;
+	sub->exit_status = 0;
+}
 
-	tokens = tokenizer(input);
-	if (tokens == NULL)
-		return (FAILURE);
-	ret = parser(&tokens, env_lst, exec_tree, sub);
-	free_token(tokens);
-	return (ret);
+void	init_to_free(t_to_free *to_free, t_exec *top, t_his *his)
+{
+	to_free->top = top;
+	to_free->his = his;
 }

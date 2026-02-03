@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 20:59:41 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 09:36:03 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 09:54:18 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,14 @@ char	**convert_to_envp(t_env *env_lst)
 	ret = envp;
 	while (env_lst != NULL)
 	{
-		if (env_lst->is_env != ENV_VAR)
+		if (env_lst->is_env == ENV_VAR)
 		{
-			env_lst = env_lst->next;
-			continue ;
+			is_success = set_env_ptr(env_lst, envp, ret);
+			if (is_success == FAILURE)
+				return (NULL);
+			envp++;
 		}
-		is_success = set_env_ptr(env_lst, envp, ret);
-		if (is_success == FAILURE)
-			return (NULL);
 		env_lst = env_lst->next;
-		envp++;
 	}
 	*envp = NULL;
 	return (ret);

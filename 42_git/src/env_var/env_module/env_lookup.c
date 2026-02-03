@@ -6,21 +6,11 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/30 13:54:46 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/24 11:16:22 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 09:49:08 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env_var.h"
-
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	while ((unsigned char)*s1 == (unsigned char)*s2 && *s1 != '\0')
-	{
-		s1++;
-		s2++;
-	}
-	return ((unsigned char)*s1 - (unsigned char)*s2);
-}
 
 t_env	*env_find(t_env *env_lst, const char *target)
 {

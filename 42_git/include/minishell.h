@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:47:12 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 17:09:03 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 09:31:04 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,12 @@
 # include "ft_dprintf.h"
 # include "execution.h"
 
-int	readline_signal(void);
-int	ignore_signal(void);
+// init_vars.c
+void	init_input_and_sub(char **input, t_sub *sub);
+void	init_to_free(t_to_free *to_free, t_exec *top, t_his *his);
+
+// signal/signal.c
+int		readline_signal(void);
+int		ignore_signal(void);
 
 #endif

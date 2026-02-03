@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:01:56 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/02 10:59:54 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 09:44:58 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,11 +100,5 @@ char		*syntax_error(char **input, char *start, t_tk_type tk_type);
 void		*error_unexpected_eof(void);
 char		get_missing_char(t_tk_type tk_type);
 void		remove_last_new_line(char *input);
-
-// handle_input/tokenizer/ft_isspace.c
-int			ft_isspace(int c);
-
-// handle_input/tokenizer/ft_realloc.c
-void		*ft_realloc(void *ptr, size_t size);
 
 #endif

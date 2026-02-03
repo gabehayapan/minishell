@@ -6,13 +6,13 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/02 09:10:10 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 09:40:06 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	display_minishell(void)
+static int	display_minishell(void)
 {
 	char		*bp;
 	const char	*term;
@@ -41,7 +41,7 @@ int	display_minishell(void)
 	return (SUCCESS);
 }
 
-int	new_history_node(t_his **his, char *input)
+static int	new_history(t_his **his, char *input)
 {
 	t_his	*new_his;
 
@@ -69,22 +69,21 @@ int	new_history_node(t_his **his, char *input)
 int	execute_input_command(char **input, t_env **env_lst, t_sub *sub,
 			int is_child)
 {
-	t_exec			*exec_tree;
-	int				ret;
-	t_to_free		to_free;
+	t_exec		*exec_tree;
+	t_to_free	to_free;
+	int			is_success;
 
-	ret = handle_input(input, env_lst, &exec_tree, sub);
-	if (ret == FAILURE)
+	is_success = handle_input(input, env_lst, &exec_tree, sub);
+	if (is_success == FAILURE)
 		return (FAILURE);
 	if (is_child == 0)
 	{
-		if (new_history_node(&sub->his, *input) == FAILURE)
+		if (new_history(&sub->his, *input) == FAILURE)
 			return (FAILURE);
 	}
-	if (ret == SUCCESS)
+	if (is_success == SUCCESS)
 	{
-		to_free.top = exec_tree;
-		to_free.his = sub->his;
+		init_to_free(&to_free, exec_tree, sub->his);
 		sub->exit_status = execute_command(exec_tree, env_lst, &to_free);
 		free_node_exec(exec_tree);
 		if (is_child == 1)
@@ -94,15 +93,13 @@ int	execute_input_command(char **input, t_env **env_lst, t_sub *sub,
 	return (SUCCESS);
 }
 
-int	read_and_execute(t_env **env_lst)
+static int	read_and_execute(t_env **env_lst)
 {
 	char	*input;
 	int		is_success;
 	t_sub	sub;
 
-	input = NULL;
-	sub.his = NULL;
-	sub.exit_status = 0;
+	init_input_and_sub(&input, &sub);
 	while (1)
 	{
 		if (readline_signal() == FAILURE)
