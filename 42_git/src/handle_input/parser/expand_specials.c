@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/02 10:15:21 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 10:43:21 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,9 +113,6 @@ int	expand_specials(t_token **tokens, t_env *env_lst, t_sub *sub)
 	is_success = keyword_replacement(tokens, env_lst, sub);
 	if (is_success == FAILURE || is_success == SIGNALED)
 		return (is_success);
-	is_success = tokenize_expanded_word(tokens);
-	if (is_success == FAILURE)
-		return (FAILURE);
 	is_success = wildcard_expansion(tokens);
 	if (is_success == FAILURE)
 		return (FAILURE);

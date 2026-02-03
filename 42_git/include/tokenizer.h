@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:01:56 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/03 09:44:58 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/03 10:17:23 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,6 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_syntax_err
-{
-	char	c;
-	char	*input;
-	char	*new_input;
-	char	*new_str;
-}	t_syntax_err;
-
 // handle_input/tokenizer/tokenizer.c
 t_token		*tokenizer(char **input);
 t_token		*create_new_token(char **str, t_token *current, t_tk_type tk_type);
@@ -97,6 +89,7 @@ t_token		*tokenize_dollar(char **input, char *start, char **str,
 char		*syntax_error(char **input, char *start, t_tk_type tk_type);
 
 // handle_input/tokenizer/syntax_error.c
+void		init_syntax_error(char **input, char **new_input);
 void		*error_unexpected_eof(void);
 char		get_missing_char(t_tk_type tk_type);
 void		remove_last_new_line(char *input);
