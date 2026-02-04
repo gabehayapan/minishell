@@ -6,11 +6,12 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 20:41:00 by keitotak          #+#    #+#             */
-/*   Updated: 2026/02/03 11:17:52 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/02/04 10:44:33 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipe.h"
+#include "builtin.h"
 #include <limits.h>
 
 int	check_long_overflow(char *str, int sign)
@@ -79,8 +80,6 @@ int	ft_exit(char **cmdset, t_env *env_lst, t_to_free *to_free)
 		code = 0;
 	else
 		code = exit_code(cmdset);
-	free_env_lst(env_lst);
-	free_node_exec(to_free->top);
-	free_his(to_free->his);
+	free_all(env_lst, to_free);
 	exit((int)code);
 }

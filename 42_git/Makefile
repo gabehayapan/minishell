@@ -45,7 +45,7 @@ SRCS =\
 	./src/handle_input/parser/init_tokens_utils.c\
 	./src/handle_input/parser/check_format_error.c\
 	./src/handle_input/parser/free.c\
-	./src/handle_input/parser/free_all.c\
+	./src/builtin/free_all.c\
 	./src/handle_input/parser/counter.c\
 	./src/handle_input/parser/get_redirect_file.c\
 	./src/handle_input/parser/get_redirect_file_utils.c\

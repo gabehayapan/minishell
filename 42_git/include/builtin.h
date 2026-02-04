@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 10:37:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/02 09:21:18 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/04 10:42:59 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ int			env(t_env *env_lst);
 int			ft_exit(char **cmdset, t_env *env_lst, t_to_free *to_free);
 
 int			export(char **strs, t_env **env_lst, t_to_free *to_free);
-int			check_existence(t_env **target, t_env **env_lst, char *str,
-				t_to_free *to_free);
+int			export_no_args(t_env *env_lst);
+int			check_invalid_identifier(char *str);
+int			set_env_key_and_value(t_env *env, char *key, char *value);
 
 int			pwd(t_env **env_lst);
 int			unset(t_env **env_lst, char **strs);
@@ -68,5 +69,7 @@ int			exec_remove_term0142(t_term *term, char **envp);
 void		free_term(t_term *term);
 
 int			google(char **strs, t_env *env_lst, t_to_free *to_free);
+
+void		free_all(t_env *env_lst, t_to_free *to_free);
 
 #endif

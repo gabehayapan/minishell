@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:50:38 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/03 11:50:02 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/04 10:48:10 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,66 +15,49 @@
 #include "ft_dprintf.h"
 #include "builtin.h"
 
-static int	export_no_args(t_env *env_lst)
+static int	new_env_no_value(char *str, t_env **env_lst)
 {
-	while (env_lst != NULL)
+	t_env	*new_env;
+	t_env	*last;
+
+	new_env = (t_env *)malloc(sizeof(t_env));
+	if (new_env == NULL)
+		return (FAILURE);
+	new_env->key = ft_strdup(str);
+	if (new_env->key == NULL)
 	{
-		if (env_lst->is_env == EXPORT_VAR)
-			ft_printf("declare -x %s\n", env_lst->key);
-		else
-			ft_printf("declare -x %s=\"%s\"\n", env_lst->key, env_lst->value);
-		env_lst = env_lst->next;
+		free(new_env);
+		return (FAILURE);
 	}
-	return (SUCCESS);
-}
-
-static int	check_invalid_identifier(char *str)
-{
-	char	*cp_str;
-	int		is_success;
-
-	cp_str = str;
-	is_success = SUCCESS;
-	if (ft_isalpha(*str) == 0)
-		is_success = FAILURE;
+	new_env->value = NULL;
+	new_env->is_env = EXPORT_VAR;
+	new_env->next = NULL;
+	last = get_last_env(*env_lst);
+	if (last == NULL)
+		*env_lst = new_env;
 	else
-	{
-		while (*str != '\0' && *str != '=')
-		{
-			if (ft_isalnum(*str) == 0)
-			{
-				is_success = FAILURE;
-				break ;
-			}
-			str++;
-		}
-	}
-	if (is_success == FAILURE)
-		ft_dprintf(2, "-minishell: export: '%s': not a valid identifier\n",
-			cp_str);
-	return (is_success);
+		last->next = new_env;
+	return (SUCCESS);
 }
 
 static int	update_env_value(t_env *target, char *new_env)
 {
 	free(target->value);
-	target->value = get_env_value(new_env);
+	target->value = ft_strdup(new_env);
 	if (target->value == NULL)
 		return (FAILURE);
 	return (SUCCESS);
 }
 
-static int	store_new_env_var(t_env **env_lst, char *new_env)
+static int	store_new_env_var(t_env **env_lst, char *env_key, char *env_value)
 {
 	t_env	*new_env_ptr;
 	t_env	*last_env;
-	int		is_success;
 
 	new_env_ptr = (t_env *)malloc(sizeof(t_env));
 	if (new_env_ptr == NULL)
 		return (FAILURE);
-	is_success = new_env_var(new_env_ptr, new_env);
-	if (is_success == FAILURE)
+	if (set_env_key_and_value(new_env_ptr, env_key, env_value) == FAILURE)
 	{
 		free(new_env_ptr);
 		return (FAILURE);
@@ -88,9 +71,33 @@ static int	store_new_env_var(t_env **env_lst, char *new_env)
 	return (SUCCESS);
 }
 
+static void	export_env_var(t_env **env_lst, char *str, t_to_free *to_free)
+{
+	char	*equal_ptr;
+	t_env	*target;
+	int		is_success;
+
+	equal_ptr = ft_strnstr(str, "=", ft_strlen(str));
+	if (equal_ptr != NULL)
+		*equal_ptr = '\0';
+	target = env_find(*env_lst, str);
+	if (equal_ptr == NULL && target != NULL)
+		return ;
+	else if (equal_ptr == NULL && target == NULL)
+		is_success = new_env_no_value(str, env_lst);
+	else if (equal_ptr != NULL && target != NULL)
+		is_success = update_env_value(target, equal_ptr + 1);
+	else
+		is_success = store_new_env_var(env_lst, str, equal_ptr + 1);
+	if (is_success == FAILURE)
+	{
+		free_all(*env_lst, to_free);
+		exit(EXIT_FAILURE);
+	}
+}
+
 int	export(char **strs, t_env **env_lst, t_to_free *to_free)
 {
-	t_env	*target;
 	int		is_success;
 	int		ret;
 
@@ -104,13 +111,7 @@ int	export(char **strs, t_env **env_lst, t_to_free *to_free)
 		if (ret == SUCCESS)
 			ret = is_success;
 		if (is_success == SUCCESS)
-		{
-			is_success = check_existence(&target, env_lst, *strs, to_free);
-			if (target != NULL && is_success == SUCCESS)
-				is_success = update_env_value(target, *strs);
-			else if (is_success == SUCCESS)
-				is_success = store_new_env_var(env_lst, *strs);
-		}
+			export_env_var(env_lst, *strs, to_free);
 		strs++;
 	}
 	return (ret);

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 17:12:50 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/02 09:26:54 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/04 10:45:04 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,7 @@ int	terminal0142(t_env *env_lst, t_to_free *to_free)
 
 	if (init_term_var(env_lst, &term, &envp) == FAILURE)
 	{
-		free_env_lst(env_lst);
-		free_node_exec(to_free->top);
-		free_his(to_free->his);
+		free_all(env_lst, to_free);
 		exit(EXIT_FAILURE);
 	}
 	clear_screen();

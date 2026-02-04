@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 11:07:28 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/03 11:47:58 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/04 10:45:25 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,7 @@ static void	update_env_pwd(t_env **env_lst, t_to_free *to_free)
 		is_success = update_to_new_oldpwd(pwd, oldpwd, env_lst);
 	if (is_success == FAILURE)
 	{
-		free_env_lst(*env_lst);
-		free_node_exec(to_free->top);
-		free_his(to_free->his);
+		free_all(*env_lst, to_free);
 		exit(1);
 	}
 }

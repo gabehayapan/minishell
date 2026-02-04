@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/03 11:41:59 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/04 10:42:41 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,9 +154,6 @@ void		free_null_term_strs(char **strs);
 void		free_command(t_command *command);
 void		free_node_exec(t_exec *node_exec);
 void		free_his(t_his *his);
-
-// handle_input/parser/free_all.c
-void		free_all(t_env *env_lst, t_exec *top);
 
 // handle_input/parser/counter.c
 size_t		get_len_command(t_token *tokens);
