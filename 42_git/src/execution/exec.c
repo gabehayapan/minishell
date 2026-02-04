@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 23:11:26 by keitotak          #+#    #+#             */
-/*   Updated: 2026/02/03 12:07:17 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/02/04 10:58:38 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	free_arrs(char **arrs)
 
 int	handle_noexist_cmd(char **cmdset)
 {
+	ft_dprintf(2, "-minishell: ");
 	ft_putstr_fd(cmdset[0], 2);
 	ft_putendl_fd(": command not found", 2);
 	free_arrs(cmdset);
@@ -81,6 +82,7 @@ int	exec_command(t_command *command, t_env **env_lst, t_to_free *to_free)
 	execve(cmdset[0], cmdset, envp);
 	if (errno == ENOENT)
 		exit(handle_noexist_cmd(cmdset));
+	ft_dprintf(2, "-minishell: ");
 	perror(cmdset[0]);
 	free_arrs(envp);
 	free_vars(env_lst, to_free);
