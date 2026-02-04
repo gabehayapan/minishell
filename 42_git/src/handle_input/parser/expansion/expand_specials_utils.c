@@ -6,12 +6,28 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 11:57:32 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/04 13:13:07 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/04 13:27:38 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include <stdbool.h>
+
+int	no_env_var(t_token **tokens, t_token **current)
+{
+	t_token	*next;
+	t_token	*tmp;
+
+	tmp = (*current)->next;
+	if (tmp != NULL)
+		next = tmp->next;
+	else
+		next = NULL;
+	clear_token(tokens, tmp, free);
+	clear_token(tokens, *current, NULL);
+	*current = next;
+	return (SUCCESS);
+}
 
 char	*rm_extra_space(char *str)
 {
