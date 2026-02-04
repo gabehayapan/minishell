@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 16:12:09 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/03 10:49:15 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/04 19:32:57 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	add_shell_var(char *new_shell, t_env **env_lst)
 	return (SUCCESS);
 }
 
-int	join_remaining_word(t_token **tokens, t_env *target, t_env *env_lst)
+static int	join_remaining_word(t_token **tokens, t_env *target, t_env *env_lst)
 {
 	t_env	*last;
 

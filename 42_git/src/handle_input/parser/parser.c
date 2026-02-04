@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/04 13:35:00 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/04 19:38:27 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,15 +117,14 @@ int	parser(t_token **tokens, t_env **env_lst, t_exec **exec_tree,
 
 	head = NULL;
 	ret = init_tokens(tokens, env_lst, sub);
-	if (ret == FAILURE || ret == ONLY_SPACES
-		|| ret < 0 || ret == NO_EVENT
+	if (ret == FAILURE || ret == ONLY_SPACES || ret < 0 || ret == NO_EVENT
 		|| ret == FORMAT_ERROR)
 		return (ret);
 	while (*tokens != NULL)
 	{
 		ret = new_exec_tree(tokens, &head, *env_lst);
-		if (ret == FAILURE || ret == FORMAT_ERROR
-			|| ret == NO_COMMAND || ret == IS_DIR)
+		if (ret == FAILURE || ret == FORMAT_ERROR || ret == NO_COMMAND
+			|| ret == IS_DIR)
 			return (ret);
 	}
 	*exec_tree = create_exec_ast(head);
