@@ -6,40 +6,40 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/04 13:18:23 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/04 13:29:31 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//static int	display_minishell(void)
-//{
-//	char		*bp;
-//	const char	*term;
-//	int			result;
-//	int			cols;
-//
-//	bp = (char *)malloc(sizeof(*bp));
-//	if (bp == NULL)
-//		return (FAILURE);
-//	term = getenv("TERM");
-//	result = tgetent(bp, term);
-//	if (result == 1)
-//	{
-//		cols = tgetnum("co");
-//		if (cols >= 40)
-//		{
-//			ft_printf(\
-//			"           _       _     _          _ _ \n"\
-//			"\033[36m _ __ ___ (_)_ __ (_)___| |__   ___| | |\033[0m\n"\
-//			"| '_ ` _ \\| | '_ \\| / __| '_ \\ / _ \\ | |\n"\
-//			"\033[36m| | | | | | | | | | \\__ \\ | | |  __/ | |\033[0m\n"\
-//			"|_| |_| |_|_|_| |_|_|___/_| |_|\\___|_|_|\n");
-//		}
-//	}
-//	free(bp);
-//	return (SUCCESS);
-//}
+static int	display_minishell(void)
+{
+	char		*bp;
+	const char	*term;
+	int			result;
+	int			cols;
+
+	bp = (char *)malloc(sizeof(*bp));
+	if (bp == NULL)
+		return (FAILURE);
+	term = getenv("TERM");
+	result = tgetent(bp, term);
+	if (result == 1)
+	{
+		cols = tgetnum("co");
+		if (cols >= 40)
+		{
+			ft_printf(\
+			"           _       _     _          _ _ \n"\
+			"\033[36m _ __ ___ (_)_ __ (_)___| |__   ___| | |\033[0m\n"\
+			"| '_ ` _ \\| | '_ \\| / __| '_ \\ / _ \\ | |\n"\
+			"\033[36m| | | | | | | | | | \\__ \\ | | |  __/ | |\033[0m\n"\
+			"|_| |_| |_|_|_| |_|_|___/_| |_|\\___|_|_|\n");
+		}
+	}
+	free(bp);
+	return (SUCCESS);
+}
 
 static int	new_history(t_his **his, char *input)
 {
@@ -133,8 +133,8 @@ int	main(int argc, char **argv, char **envp)
 		ft_putstr_fd("Usage: ./minishell\n", 2);
 		return (EXIT_FAILURE);
 	}
-//	if (display_minishell() == FAILURE)
-//		return (EXIT_FAILURE);
+	if (display_minishell() == FAILURE)
+		return (EXIT_FAILURE);
 	env_lst = init_env_list(envp);
 	if (env_lst == NULL)
 		return (EXIT_FAILURE);
