@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/02 11:00:24 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/04 13:13:25 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,15 @@ static char	**get_execution(t_token **tokens)
 
 static int	new_command(t_token **tokens, t_command *command, t_env *env_lst)
 {
-	int			is_success;
+	int			ret;
 
-	is_success = get_in_out_rdt(tokens, command);
-	if (is_success == FAILURE)
+	ret = get_in_out_rdt(tokens, command);
+	if (ret == FAILURE)
 		return (FAILURE);
-	is_success = add_path_to_command(*tokens, env_lst);
-	if (is_success == FAILURE)
-		return (FAILURE);
+	ret = add_path_to_command(*tokens, env_lst);
+	if (ret == FAILURE || ret == NO_COMMAND
+		|| ret == IS_DIR)
+		return (ret);
 	command->command = get_execution(tokens);
 	if (command->command == NULL)
 		return (FAILURE);
@@ -64,21 +65,22 @@ static int	get_piped_command(t_token **tokens, t_command **command,
 	t_command	*current;
 	t_command	*last;
 	static int	subshell;
+	int			ret;
 
 	last = NULL;
 	while (*tokens != NULL
 		&& (*tokens)->tk_type != AND && (*tokens)->tk_type != OR
 		&& (*tokens)->tk_type != SEMI)
 	{
-		current = (t_command *)malloc(sizeof(t_command));
-		if (current == NULL)
-			return (FAILURE);
-		if (initialize_command(tokens, current, &subshell) == FAILURE)
-			return (FORMAT_ERROR);
-		if (new_command(tokens, current, env_lst) == FAILURE)
+		ret = initialize_command(tokens, &current, &subshell);
+		if (ret == FAILURE || ret == FORMAT_ERROR)
+			return (ret);
+		ret = new_command(tokens, current, env_lst);
+		if (ret == FAILURE || ret == NO_COMMAND || ret == IS_DIR)
 		{
+			free(current);
 			free_command(*command);
-			return (FAILURE);
+			return (ret);
 		}
 		add_new_command(command, current, &last);
 		if (*tokens != NULL && (*tokens)->tk_type == PIPE)
@@ -97,7 +99,8 @@ static int	new_exec_tree(t_token **tokens, t_exec **head, t_env *env_lst)
 		return (FAILURE);
 	init_node_exec(node_exec);
 	ret = get_piped_command(tokens, &node_exec->command, env_lst);
-	if (ret == FAILURE || ret == FORMAT_ERROR)
+	if (ret == FAILURE || ret == FORMAT_ERROR || ret == NO_COMMAND
+		|| ret == IS_DIR)
 	{
 		free(node_exec);
 		return (ret);
@@ -110,19 +113,20 @@ int	parser(t_token **tokens, t_env **env_lst, t_exec **exec_tree,
 			t_sub *sub)
 {
 	t_exec	*head;
-	int		is_success;
+	int		ret;
 
 	head = NULL;
-	is_success = init_tokens(tokens, env_lst, sub);
-	if (is_success == FAILURE || is_success == NO_COMMAND
-		|| is_success == SIGNALED || is_success == NO_EVENT
-		|| is_success == FORMAT_ERROR)
-		return (is_success);
+	ret = init_tokens(tokens, env_lst, sub);
+	if (ret == FAILURE || ret == NO_COMMAND
+		|| ret < 0 || ret == NO_EVENT
+		|| ret == FORMAT_ERROR)
+		return (ret);
 	while (*tokens != NULL)
 	{
-		is_success = new_exec_tree(tokens, &head, *env_lst);
-		if (is_success == FAILURE || is_success == FORMAT_ERROR)
-			return (is_success);
+		ret = new_exec_tree(tokens, &head, *env_lst);
+		if (ret == FAILURE || ret == FORMAT_ERROR
+			|| ret == NO_COMMAND || ret == IS_DIR)
+			return (ret);
 	}
 	*exec_tree = create_exec_ast(head);
 	return (SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:00:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/03 10:43:21 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/04 13:12:51 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,25 +80,25 @@ int	expand_quote(t_token **tokens, t_token **current, t_env *env_lst,
 int	keyword_replacement(t_token **tokens, t_env *env_lst, t_sub *sub)
 {
 	t_token	*current;
-	int		is_success;
+	int		ret;
 
 	current = *tokens;
-	is_success = SUCCESS;
+	ret = SUCCESS;
 	while (current != NULL)
 	{
 		if (current->tk_type == SGL_QTE || current->tk_type == DBL_QTE)
 		{
-			is_success = expand_quote(tokens, &current, env_lst, sub);
-			if (is_success == FAILURE || is_success == SIGNALED)
-				return (is_success);
+			ret = expand_quote(tokens, &current, env_lst, sub);
+			if (ret == FAILURE || ret < 0)
+				return (ret);
 			continue ;
 		}
 		if (current->tk_type == DOLLAR)
-			is_success = expand_dollar(tokens, &current, env_lst, sub);
+			ret = expand_dollar(tokens, &current, env_lst, sub);
 		else if (current->tk_type == TILDE)
-			is_success = expand_tilde(current, env_lst);
-		if (is_success == FAILURE || is_success == SIGNALED)
-			return (is_success);
+			ret = expand_tilde(current, env_lst);
+		if (ret == FAILURE || ret < 0)
+			return (ret);
 		if (current == NULL)
 			break ;
 		current = current->next;
@@ -108,13 +108,13 @@ int	keyword_replacement(t_token **tokens, t_env *env_lst, t_sub *sub)
 
 int	expand_specials(t_token **tokens, t_env *env_lst, t_sub *sub)
 {
-	int		is_success;
+	int		ret;
 
-	is_success = keyword_replacement(tokens, env_lst, sub);
-	if (is_success == FAILURE || is_success == SIGNALED)
-		return (is_success);
-	is_success = wildcard_expansion(tokens);
-	if (is_success == FAILURE)
+	ret = keyword_replacement(tokens, env_lst, sub);
+	if (ret == FAILURE || ret < 0)
+		return (ret);
+	ret = wildcard_expansion(tokens);
+	if (ret == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
 }

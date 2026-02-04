@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 19:50:38 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/04 10:48:10 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/04 12:24:00 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static void	export_env_var(t_env **env_lst, char *str, t_to_free *to_free)
 	t_env	*target;
 	int		is_success;
 
-	equal_ptr = ft_strnstr(str, "=", ft_strlen(str));
+	equal_ptr = ft_strchr(str, '=');
 	if (equal_ptr != NULL)
 		*equal_ptr = '\0';
 	target = env_find(*env_lst, str);

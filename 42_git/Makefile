@@ -6,6 +6,7 @@ CFLAGS = -Wall -Wextra -Werror
 SRCS =\
 	./src/main.c\
 	./src/init_vars.c\
+	./src/exit_status.c\
 	./src/env_var/env_var.c\
 	./src/env_var/env_var_utils.c\
 	./src/env_var/env_module/env_lookup.c\
@@ -73,6 +74,7 @@ SRCS =\
 	./src/handle_input/parser/exec_nodes.c\
 	./src/handle_input/parser/exec_ast.c\
 	./src/handle_input/parser/add_path.c\
+	./src/handle_input/parser/add_path_utils.c\
 	./src/execution/nopipe.c\
 	./src/execution/redirect.c\
 	./src/execution/pipe.c\
@@ -86,6 +88,7 @@ OBJ_DIR = obj/
 OBJS =\
 	./obj/main.o\
 	./obj/init_vars.o\
+	./obj/exit_status.o\
 	./obj/env_var.o\
 	./obj/env_var_utils.o\
 	./obj/env_lookup.o\
@@ -153,6 +156,7 @@ OBJS =\
 	./obj/exec_nodes.o\
 	./obj/exec_ast.o\
 	./obj/add_path.o\
+	./obj/add_path_utils.o\
 	./obj/nopipe.o\
 	./obj/redirect.o\
 	./obj/pipe.o\

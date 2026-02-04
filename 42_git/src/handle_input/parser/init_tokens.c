@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 09:57:15 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/03 10:34:01 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/04 13:11:53 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,26 @@
 
 int	init_tokens(t_token **tokens, t_env **env_lst, t_sub *sub)
 {
-	int	is_success;
+	int	ret;
 
 	while (*tokens != NULL && (*tokens)->tk_type == SPACES)
 		clear_token(tokens, *tokens, free);
 	if (*tokens == NULL)
 		return (NO_COMMAND);
-	is_success = check_format_error(tokens);
-	if (is_success == FORMAT_ERROR)
+	ret = check_format_error(tokens);
+	if (ret == FORMAT_ERROR)
 		return (FORMAT_ERROR);
-	is_success = expand_specials(tokens, *env_lst, sub);
-	if (is_success == FAILURE || is_success == SIGNALED)
-		return (is_success);
-	is_success = check_history(tokens, sub->his);
-	if (is_success == FAILURE || is_success == NO_EVENT)
-		return (is_success);
-	is_success = check_assignment(tokens, env_lst);
-	if (is_success == FAILURE)
+	ret = expand_specials(tokens, *env_lst, sub);
+	if (ret == FAILURE || ret < 0)
+		return (ret);
+	ret = check_history(tokens, sub->his);
+	if (ret == FAILURE || ret == NO_EVENT)
+		return (ret);
+	ret = check_assignment(tokens, env_lst);
+	if (ret == FAILURE)
 		return (FAILURE);
-	is_success = rm_space_and_join_tokens(tokens);
-	if (is_success == FAILURE)
+	ret = rm_space_and_join_tokens(tokens);
+	if (ret == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
 }

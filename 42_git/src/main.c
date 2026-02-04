@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/03 09:40:06 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/04 13:17:08 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,24 +71,26 @@ int	execute_input_command(char **input, t_env **env_lst, t_sub *sub,
 {
 	t_exec		*exec_tree;
 	t_to_free	to_free;
-	int			is_success;
+	int			ret;
 
-	is_success = handle_input(input, env_lst, &exec_tree, sub);
-	if (is_success == FAILURE)
+	ret = handle_input(input, env_lst, &exec_tree, sub);
+	if (ret == FAILURE)
 		return (FAILURE);
 	if (is_child == 0)
 	{
 		if (new_history(&sub->his, *input) == FAILURE)
 			return (FAILURE);
 	}
-	if (is_success == SUCCESS)
+	if (ret == SUCCESS)
 	{
 		init_to_free(&to_free, exec_tree, sub->his);
 		sub->exit_status = execute_command(exec_tree, env_lst, &to_free);
 		free_node_exec(exec_tree);
-		if (is_child == 1)
-			return (sub->exit_status);
 	}
+	else
+		sub->exit_status = set_exit_status(ret);
+	if (is_child == 1)
+		return (sub->exit_status);
 	add_history(*input);
 	return (SUCCESS);
 }

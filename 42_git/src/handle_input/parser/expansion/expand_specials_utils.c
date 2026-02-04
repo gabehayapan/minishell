@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/17 11:57:32 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/02 10:15:23 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/04 13:13:07 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	handle_dbl_quoted_dollar(t_token **tokens, t_token **current,
 	if ((*current)->tk_type == DOLLAR)
 	{
 		ret = expand_quoted_dollar(tokens, current, env_lst, sub);
-		if (ret == FAILURE || ret == SIGNALED)
+		if (ret == FAILURE || ret < 0)
 			return (ret);
 	}
 	return (SUCCESS);

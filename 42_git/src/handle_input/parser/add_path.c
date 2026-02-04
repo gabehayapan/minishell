@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 08:44:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/03 11:43:17 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/04 12:56:46 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,10 @@ int	add_path_to_command(t_token *tokens, t_env *env_lst)
 	char	**ptr_pathset;
 	int		status;
 
-	if (tokens == NULL || is_builtin(tokens->word) != ELSE
-		|| access(tokens->word, X_OK) == SUCCESS)
+	if (tokens == NULL || is_builtin(tokens->word) != ELSE)
 		return (SUCCESS);
+	if (check_file_type(tokens->word) == NO_COMMAND)
+		return (IS_DIR);
 	pathset = NULL;
 	if (get_pathset(env_lst, &pathset) == FAILURE)
 		return (FAILURE);
@@ -83,5 +84,5 @@ int	add_path_to_command(t_token *tokens, t_env *env_lst)
 		pathset++;
 	}
 	free_null_term_strs(ptr_pathset);
-	return (SUCCESS);
+	return (check_execute_permission(tokens->word));
 }

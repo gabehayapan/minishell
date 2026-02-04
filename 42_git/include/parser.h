@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/04 10:42:41 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/04 13:09:04 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@
 # define NO_COMMAND		3
 # define NOT_FOUND		4
 # define NO_DIR			5
-# define NO_FILTER		6
-# define NEW_MATCH		7
-# define NO_EVENT		8
-# define FORMAT_ERROR	9
-# define SIGNALED		10
-# define END			11
+# define IS_DIR			6
+# define NO_FILTER		7
+# define NEW_MATCH		8
+# define NO_EVENT		9
+# define FORMAT_ERROR	10
+# define END			12
 
 typedef enum s_rdt_type
 {
@@ -129,7 +129,7 @@ int			add_shell_var(char *new_shell, t_env **env_lst);
 
 // handle_input/parser/init_exec.c
 void		init_node_exec(t_exec *node_exec);
-int			initialize_command(t_token **tokens, t_command *current,
+int			initialize_command(t_token **tokens, t_command **current,
 				int *subshell);
 
 // handle_input/parser/init_exec_utils.c
@@ -271,5 +271,9 @@ t_exec		*create_exec_ast(t_exec *head);
 
 // handle_input/parser/add_path.c
 int			add_path_to_command(t_token *tokens, t_env *env_lst);
+
+// handle_input/parser/add_path_utils.c
+int			check_file_type(char *cmd);
+int			check_execute_permission(char *cmd);
 
 #endif

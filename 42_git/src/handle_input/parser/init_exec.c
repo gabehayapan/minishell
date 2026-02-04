@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   init_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 14:23:21 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 13:39:36 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/04 12:50:03 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,25 @@ void	init_command(t_command *command, int subshell)
 	command->next = NULL;
 }
 
-int	initialize_command(t_token **tokens, t_command *current, int *subshell)
+int	initialize_command(t_token **tokens, t_command **current, int *subshell)
 {
 	int	is_success;
 
+	*current = (t_command *)malloc(sizeof(t_command));
+	if (*current == NULL)
+		return (FAILURE);
 	is_success = check_opening_parenthesis(tokens, subshell);
 	if (is_success == FAILURE)
-		return (FAILURE);
-	init_command(current, *subshell);
+	{
+		free(*current);
+		return (FORMAT_ERROR);
+	}
+	init_command(*current, *subshell);
 	is_success = check_closing_parenthesis(tokens, subshell);
 	if (is_success == FAILURE)
-		return (FAILURE);
+	{
+		free(*current);
+		return (FORMAT_ERROR);
+	}
 	return (SUCCESS);
 }

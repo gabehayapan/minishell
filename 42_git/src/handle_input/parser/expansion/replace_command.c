@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/25 08:52:30 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/01 08:42:05 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/04 13:11:07 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	wait_for_child(int *pipefd)
 		write(1, "\n", 1);
 		close(pipefd[0]);
 		close(pipefd[1]);
-		return (SIGNALED);
+		return (-WTERMSIG(status));
 	}
 	return (status);
 }
@@ -141,7 +141,7 @@ int	replace_with_cmd_output(t_token **tokens, t_token **current,
 	else if (pid == 0)
 		get_cmd_output(pipefd, *current, env_lst, sub);
 	ret = wait_for_child(pipefd);
-	if (ret == FAILURE || ret == SIGNALED)
+	if (ret == FAILURE || ret < 0)
 		return (ret);
 	return (set_cmd_output(tokens, current, pipefd, ret));
 }
