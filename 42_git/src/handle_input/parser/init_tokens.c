@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/28 09:57:15 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/04 13:11:53 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/04 13:34:07 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	init_tokens(t_token **tokens, t_env **env_lst, t_sub *sub)
 	while (*tokens != NULL && (*tokens)->tk_type == SPACES)
 		clear_token(tokens, *tokens, free);
 	if (*tokens == NULL)
-		return (NO_COMMAND);
+		return (ONLY_SPACES);
 	ret = check_format_error(tokens);
 	if (ret == FORMAT_ERROR)
 		return (FORMAT_ERROR);
