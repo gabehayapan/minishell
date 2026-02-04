@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 12:45:43 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/03 11:36:23 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/04 12:12:12 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_token	*tokenize_double_quote(char **input, char **str, t_token *current)
 	while (**str != '\"')
 	{
 		tmp = *str;
-		while (**str != '\0' && **str != '$' && **str != '\"')
+		while (**str != '\0' && **str != '\"' && get_token_type(*str) != DOLLAR)
 			(*str)++;
 		if (**str == '\0')
 			*str = syntax_error(input, tmp, DBL_QTE);
