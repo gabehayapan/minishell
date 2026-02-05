@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 10:42:06 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/31 10:43:46 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/05 12:59:08 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ int	handle_not_found(t_token **tokens, t_token *head_filter, char *disname)
 			disname);
 	if (is_success == FAILURE)
 		return (FAILURE);
+	free(disname);
 	return (NOT_FOUND);
 }
