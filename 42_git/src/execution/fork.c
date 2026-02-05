@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 16:20:31 by keitotak          #+#    #+#             */
-/*   Updated: 2026/02/03 11:53:43 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/02/05 14:42:18 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ int	fork_process(t_pipe *p, t_command *command, int p_nbr)
 	{
 		if (default_signal() == EXIT_FAILURE)
 			exit_cleanup(p);
-		if (redirect_fd(command) == EXIT_FAILURE)
-			exit_cleanup(p);
 		if (redirect_pipe(p, command, p_nbr) == EXIT_FAILURE)
+			exit_cleanup(p);
+		if (redirect_fd(command) == EXIT_FAILURE)
 			exit_cleanup(p);
 		cleanup_pipe(p);
 		exec_command(command, p->env_lst, p->to_free);

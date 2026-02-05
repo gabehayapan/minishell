@@ -6,26 +6,26 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 01:08:17 by keitotak          #+#    #+#             */
-/*   Updated: 2026/02/03 11:52:42 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/02/05 14:42:01 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipe.h"
 #include "get_next_line.h"
 
-int	heredoc(char *doc, int newfd_stdin)
+int	heredoc(t_command *command)
 {
 	char	*marker;
 	int		fd[2];
 	char	*line;
 
-	marker = ft_strjoin(doc, "\n");
+	marker = ft_strjoin(command->inrdt->rdt, "\n");
 	if (pipe(fd) < 0)
 		return (-1);
 	while (1)
 	{
-		ft_dprintf(STDOUT_FILENO, "> ");
-		line = get_next_line(newfd_stdin);
+		ft_dprintf(command->stdfd[1], "> ");
+		line = get_next_line(command->stdfd[0]);
 		if (line == NULL)
 			return (-1);
 		if (ft_strcmp(marker, line) == 0)
@@ -43,9 +43,9 @@ int	heredoc(char *doc, int newfd_stdin)
 
 int	setfd_infile(t_command *command)
 {
-	int	newfd_stdin;
+//	int	newfd_stdin;
 
-	newfd_stdin = dup(STDIN_FILENO);
+//	newfd_stdin = dup(STDIN_FILENO);
 	while (command->inrdt != NULL)
 	{
 		if (command->inrdt->type == INFILE)
@@ -55,16 +55,16 @@ int	setfd_infile(t_command *command)
 			{
 				ft_dprintf(2, "-minishell: ");
 				perror(command->inrdt->rdt);
-				close(newfd_stdin);
+//				close(newfd_stdin);
 				return (FAILURE);
 			}
 		}
 		if (command->inrdt->type == HEREDOC)
-			command->infd = heredoc(command->inrdt->rdt, newfd_stdin);
+			command->infd = heredoc(command);
 		dup2(command->infd, command->inrdt->fd_rdt);
 		command->inrdt = command->inrdt->next;
 	}
-	close(newfd_stdin);
+//	close(newfd_stdin);
 	return (SUCCESS);
 }
 

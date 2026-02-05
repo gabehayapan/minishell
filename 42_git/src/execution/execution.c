@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 11:06:32 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/02 12:48:12 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/02/05 14:41:31 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,15 @@ int	execute(t_command *command, t_env **env_lst, t_to_free *to_free)
 	int		proc_count;
 	int		ret;
 
+	command->stdfd[0] = dup(STDIN_FILENO);
+	command->stdfd[1] = dup(STDOUT_FILENO);
 	proc_count = count_proc(command);
 	if (proc_count == 1)
 		ret = nopipe_execute(command, env_lst, to_free);
 	else
 		ret = pipeline(command, env_lst, proc_count, to_free);
+	close(command->stdfd[0]);
+	close(command->stdfd[1]);
 	return (ret);
 }
 

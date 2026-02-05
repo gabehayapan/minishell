@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:14:01 by keitotak          #+#    #+#             */
-/*   Updated: 2026/02/03 10:54:42 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/02/05 14:29:46 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int	init_pipe(t_pipe *p, int count, t_env **env_lst, t_to_free *to_free)
 	p->pipefd = init_pipefd(count - 1);
 	if (p->pipefd == NULL)
 		return (free(p->procid), FAILURE);
+	p->stdin_fd = dup(STDIN_FILENO);
+	p->stdout_fd = dup(STDOUT_FILENO);
 	p->env_lst = env_lst;
 	p->to_free = to_free;
 	return (SUCCESS);
@@ -85,5 +87,7 @@ int	pipeline(t_command *command, t_env **env_lst, int proc_count,
 	close_pipes(p.pipefd, p.proccnt - 1);
 	exit_code = wait_for_children(p.procid, p.proccnt);
 	free_pipe(&p);
+	close(p.stdin_fd);
+	close(p.stdout_fd);
 	return (exit_code);
 }

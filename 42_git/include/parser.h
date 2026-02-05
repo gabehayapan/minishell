@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/05 12:51:17 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/05 14:35:06 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_command
 	t_rdt				*outrdt;
 	int					infd;
 	int					outfd;
+	int					stdfd[2];
 	int					is_subshell;
 	struct s_command	*next;
 }	t_command;

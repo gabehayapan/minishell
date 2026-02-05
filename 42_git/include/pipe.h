@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:16:22 by keitotak          #+#    #+#             */
-/*   Updated: 2026/02/03 11:27:01 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/02/05 14:39:22 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ typedef struct s_pipe
 	int			proccnt;
 	int			*procid;
 	int			*pipefd;
+	int			stdin_fd;
+	int			stdout_fd;
 	t_env		**env_lst;
 	t_to_free	*to_free;
 }	t_pipe;
@@ -56,7 +58,7 @@ typedef struct s_pipe
 int		nopipe_execute(t_command *command, t_env **env_lst, t_to_free *to_free);
 
 // redirect.c
-int		redirect_fd(t_command *command);
+int	redirect_fd(t_command *command);
 
 // pipe.c
 int		pipeline(t_command *command, t_env **env_lst, int count,
