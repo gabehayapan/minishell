@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/04 13:29:31 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/05 14:41:22 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,12 +112,12 @@ static int	read_and_execute(t_env **env_lst)
 		if (*input != '\0')
 		{
 			if (ignore_signal() == FAILURE)
-				return (free_his(sub.his), FAILURE);
+				return (free_input_his(input, &sub));
 			is_success = execute_input_command(&input, env_lst, &sub, 0);
-			free(input);
 			if (is_success == FAILURE)
-				return (free_his(sub.his), FAILURE);
+				return (free_input_his(input, &sub));
 		}
+		free(input);
 	}
 	return (free_his(sub.his), SUCCESS);
 }
