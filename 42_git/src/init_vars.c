@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 09:27:07 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/03 09:31:07 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/05 14:41:33 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,11 @@ void	init_to_free(t_to_free *to_free, t_exec *top, t_his *his)
 {
 	to_free->top = top;
 	to_free->his = his;
+}
+
+int	free_input_his(char *input, t_sub *sub)
+{
+	free(input);
+	free_his(sub->his);
+	return (FAILURE);
 }

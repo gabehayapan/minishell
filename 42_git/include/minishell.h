@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:47:12 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/04 13:16:50 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/05 14:39:10 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 // init_vars.c
 void			init_input_and_sub(char **input, t_sub *sub);
 void			init_to_free(t_to_free *to_free, t_exec *top, t_his *his);
+int				free_input_his(char *input, t_sub *sub);
 
 // exit_status.c
 unsigned char	set_exit_status(int ret);

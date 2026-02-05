@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 17:37:05 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/02 10:43:28 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/05 14:16:43 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,23 @@ static int	new_rdt_node(t_token **tokens, t_token *current, t_rdt **head)
 	return (SUCCESS);
 }
 
-static int	set_rdt_node(t_token **tokens, t_token *current, t_rdt **head)
+static int	set_rdt_node(t_token **tokens, t_token **current, t_rdt **head)
 {
-	int	is_success;
+	t_token	*next;
+	int		is_success;
 
-	is_success = new_rdt_node(tokens, current, head);
+	is_success = new_rdt_node(tokens, *current, head);
 	if (is_success == FAILURE)
 	{
 		free_rdt(*head);
 		return (FAILURE);
 	}
-	clear_token(tokens, current->next, NULL);
-	clear_token(tokens, current, free);
+	next = (*current)->next;
+	if (next != NULL)
+		next = next->next;
+	clear_token(tokens, (*current)->next, NULL);
+	clear_token(tokens, *current, free);
+	*current = next;
 	return (SUCCESS);
 }
 
@@ -93,12 +98,14 @@ int	get_in_out_rdt(t_token **tokens, t_command *command)
 		&& current->tk_type != SEMI && current->tk_type != PIPE)
 	{
 		if (current->tk_type == SGL_INRDT || current->tk_type == DBL_INRDT)
-			is_success = set_rdt_node(tokens, current, &head_in);
-		if (current->tk_type == SGL_OUTRDT || current->tk_type == DBL_OUTRDT)
-			is_success = set_rdt_node(tokens, current, &head_out);
+			is_success = set_rdt_node(tokens, &current, &head_in);
+		else if (current->tk_type == SGL_OUTRDT
+			|| current->tk_type == DBL_OUTRDT)
+			is_success = set_rdt_node(tokens, &current, &head_out);
+		else
+			current = current->next;
 		if (is_success == FAILURE)
 			return (FAILURE);
-		current = current->next;
 	}
 	command->inrdt = head_in;
 	command->outrdt = head_out;
