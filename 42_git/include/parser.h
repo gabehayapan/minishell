@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/05 15:18:27 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/05 15:57:50 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,12 @@
 # define NOT_FOUND		4
 # define NO_DIR			5
 # define IS_DIR			6
-# define NO_FILTER		7
-# define NEW_MATCH		8
-# define NO_EVENT		9
-# define FORMAT_ERROR	10
-# define END			11
+# define EXECUTABLE		7
+# define NO_FILTER		8
+# define NEW_MATCH		9
+# define NO_EVENT		10
+# define FORMAT_ERROR	11
+# define END			12
 
 typedef enum s_rdt_type
 {
