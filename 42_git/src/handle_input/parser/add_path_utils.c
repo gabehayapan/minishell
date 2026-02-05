@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:42:47 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/05 15:57:19 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/05 16:11:37 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	check_file_type(char *cmd)
 	if (file_type(cmd) == DIRECTORY)
 	{
 		ft_dprintf(2, "-minishell: %s: Is a directory\n", cmd);
-		return (NO_COMMAND);
+		return (IS_DIR);
 	}
 	else if (access(cmd, X_OK) == SUCCESS)
 		return (EXECUTABLE);
