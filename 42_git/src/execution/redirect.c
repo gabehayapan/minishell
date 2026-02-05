@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 01:08:17 by keitotak          #+#    #+#             */
-/*   Updated: 2026/02/05 14:42:01 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/02/05 14:48:28 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,6 @@ int	heredoc(t_command *command)
 
 int	setfd_infile(t_command *command)
 {
-//	int	newfd_stdin;
-
-//	newfd_stdin = dup(STDIN_FILENO);
 	while (command->inrdt != NULL)
 	{
 		if (command->inrdt->type == INFILE)
@@ -55,7 +52,6 @@ int	setfd_infile(t_command *command)
 			{
 				ft_dprintf(2, "-minishell: ");
 				perror(command->inrdt->rdt);
-//				close(newfd_stdin);
 				return (FAILURE);
 			}
 		}
@@ -64,7 +60,6 @@ int	setfd_infile(t_command *command)
 		dup2(command->infd, command->inrdt->fd_rdt);
 		command->inrdt = command->inrdt->next;
 	}
-//	close(newfd_stdin);
 	return (SUCCESS);
 }
 
