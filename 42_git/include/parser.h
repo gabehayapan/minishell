@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/05 14:35:06 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/02/05 15:18:27 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,6 +249,7 @@ int			check_dirent(t_token **tokens, t_token *filter, t_token **head_dir,
 
 // handle_input/parser/expansion/wildcard/wildcard_file_token.c
 t_token		*add_new_matched_file(t_token *last_dir, t_dir *dnames, char *name);
+t_token		*get_file_token(t_token *last, char *disname, char *name);
 
 // handle_input/parser/expansion/wildcard/wildcard_utils.c
 void		set_type_word(t_token *current);
