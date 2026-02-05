@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/04 19:38:27 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/05 12:51:33 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ static int	new_command(t_token **tokens, t_command *command, t_env *env_lst)
 	if (ret == FAILURE)
 		return (FAILURE);
 	ret = add_path_to_command(*tokens, env_lst);
-	if (ret == FAILURE || ret == NO_COMMAND
-		|| ret == IS_DIR)
+	if (ret == FAILURE || ret == NO_COMMAND || ret == IS_DIR)
 		return (ret);
 	command->command = get_execution(tokens);
 	if (command->command == NULL)

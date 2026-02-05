@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/04 13:34:53 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/05 12:51:17 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define NEW_MATCH		8
 # define NO_EVENT		9
 # define FORMAT_ERROR	10
-# define END			12
+# define END			11
 
 typedef enum s_rdt_type
 {
