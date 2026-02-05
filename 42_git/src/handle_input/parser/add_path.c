@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 08:44:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/05 15:58:51 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/05 16:11:48 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	add_path_to_command(t_token *tokens, t_env *env_lst)
 	if (tokens == NULL || is_builtin(tokens->word) != ELSE)
 		return (SUCCESS);
 	ret = check_file_type(tokens->word);
-	if (ret == NO_COMMAND || ret == EXECUTABLE)
+	if (ret == IS_DIR || ret == EXECUTABLE)
 		return (ret);
 	pathset = NULL;
 	if (get_pathset(env_lst, &pathset) == FAILURE)
