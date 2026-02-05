@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:42:47 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/05 12:50:27 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/05 14:31:33 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 static int	file_type(char *name)
 {
 	struct stat	sb;
-	int		is_success;
+	int			is_success;
 
 	is_success = stat(name, &sb);
 	if (is_success == -1)
