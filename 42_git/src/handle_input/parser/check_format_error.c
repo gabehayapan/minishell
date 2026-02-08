@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 11:04:25 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/02 11:06:10 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/08 21:48:23 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ int	check_format_error(t_token **tokens)
 	is_sep = 0;
 	while (current != NULL)
 	{
-		if (is_separator(current) == 1)
+		if (is_separator(current) == 1
+			|| current->tk_type == SGL_INRDT || current->tk_type == SGL_OUTRDT
+			|| current->tk_type == DBL_INRDT || current->tk_type == DBL_OUTRDT)
 		{
 			if (is_sep == 1)
 				return (format_error(current));
