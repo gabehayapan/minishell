@@ -33,6 +33,8 @@ t_token	*tokenize_single_quote(char **input, char **str, t_token *current)
 			if (current == NULL)
 				return (NULL);
 		}
+		if (*str == NULL)
+			return (NULL);
 	}
 	return (create_new_token(str, current, SGL_QTE));
 }

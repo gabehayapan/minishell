@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 23:11:26 by keitotak          #+#    #+#             */
-/*   Updated: 2026/02/05 16:09:34 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/02/05 16:28:55 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,17 @@ int	pass_to_builtin(t_command *command, t_env **env_lst, t_to_free *to_free)
 	return (res);
 }
 
+void	exit_errcase(char **cmdset)
+{
+	if (errno == ENOENT)
+		exit(handle_noexist_cmd(cmdset));
+	if (errno == ENOEXEC)
+		exit(EXIT_SUCCESS);
+	ft_dprintf(2, "-minishell: ");
+	perror(cmdset[0]);
+	exit(EXIT_FAILURE);
+}
+
 int	exec_command(t_command *command, t_env **env_lst, t_to_free *to_free)
 {
 	char	**cmdset;
@@ -82,12 +93,6 @@ int	exec_command(t_command *command, t_env **env_lst, t_to_free *to_free)
 	execve(cmdset[0], cmdset, envp);
 	free_arrs(envp);
 	free_vars(env_lst, to_free);
-	if (errno == ENOENT)
-		exit(handle_noexist_cmd(cmdset));
-	if (errno == ENOEXEC)
-		exit(EXIT_SUCCESS);
-	ft_dprintf(2, "-minishell: ");
-	perror(cmdset[0]);
-	exit(EXIT_FAILURE);
+	exit_errcase(cmdset);
 	return (EXIT_FAILURE);
 }

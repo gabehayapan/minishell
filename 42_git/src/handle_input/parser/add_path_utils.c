@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:42:47 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/05 16:11:37 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/09 20:00:30 by keitotak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,7 @@ int	check_execute_permission(char *cmd)
 	int	ret;
 
 	ret = file_type(cmd);
-	if (ret == NO_FILE_DIR)
-	{
-		ft_dprintf(2, "-minishell: %s: No such file or directory\n", cmd);
-		return (NO_COMMAND);
-	}
-	else if (ret == DIRECTORY)
+	if (ret == DIRECTORY || ret == NO_FILE_DIR)
 	{
 		ft_dprintf(2, "-minishell: %s: command not found\n", cmd);
 	}
