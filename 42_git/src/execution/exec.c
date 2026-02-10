@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 23:11:26 by keitotak          #+#    #+#             */
-/*   Updated: 2026/02/05 16:28:55 by keitotak         ###   ########.fr       */
+/*   Updated: 2026/02/10 08:58:29 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int	exec_command(t_command *command, t_env **env_lst, t_to_free *to_free)
 {
 	char	**cmdset;
 	char	**envp;
+	char	*pathname;
 
 	cmdset = command->command;
 	if (*cmdset == NULL)
@@ -84,13 +85,15 @@ int	exec_command(t_command *command, t_env **env_lst, t_to_free *to_free)
 		return (handle_noexist_cmd(cmdset));
 	if (is_builtin(cmdset[0]) != ELSE)
 		exit(pass_to_builtin(command, env_lst, to_free));
+	pathname = add_path_to_command(cmdset, *env_lst, to_free);
 	envp = convert_to_envp(*env_lst);
 	if (envp == NULL)
 	{
+		free(pathname);
 		free_vars(env_lst, to_free);
 		exit(EXIT_FAILURE);
 	}
-	execve(cmdset[0], cmdset, envp);
+	execve(pathname, cmdset, envp);
 	free_arrs(envp);
 	free_vars(env_lst, to_free);
 	exit_errcase(cmdset);

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/05 15:57:50 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/10 09:10:03 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,12 @@ typedef struct s_sub
 	unsigned char	exit_status;
 	t_his			*his;
 }	t_sub;
+
+typedef struct s_to_free
+{
+	t_exec	*top;
+	t_his	*his;
+}	t_to_free;
 
 // handle_input/handle_input.c
 int			handle_input(char **input, t_env **env_lst, t_exec **exec_tree,
@@ -275,10 +281,10 @@ int			add_exec_node(t_token **tokens, t_exec **head, t_exec *node_exec);
 t_exec		*create_exec_ast(t_exec *head);
 
 // handle_input/parser/add_path.c
-int			add_path_to_command(t_token *tokens, t_env *env_lst);
+char		*add_path_to_command(char **cmdset, t_env *env_lst, t_to_free *to_free);
 
 // handle_input/parser/add_path_utils.c
 int			check_file_type(char *cmd);
-int			check_execute_permission(char *cmd);
+char		*check_execute_permission(char *cmd);
 
 #endif

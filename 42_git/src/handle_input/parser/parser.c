@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:28:01 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/05 12:51:33 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/10 09:09:38 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,24 +42,20 @@ static char	**get_execution(t_token **tokens)
 	return (ret);
 }
 
-static int	new_command(t_token **tokens, t_command *command, t_env *env_lst)
+static int	new_command(t_token **tokens, t_command *command)
 {
 	int			ret;
 
 	ret = get_in_out_rdt(tokens, command);
 	if (ret == FAILURE)
 		return (FAILURE);
-	ret = add_path_to_command(*tokens, env_lst);
-	if (ret == FAILURE || ret == NO_COMMAND || ret == IS_DIR)
-		return (ret);
 	command->command = get_execution(tokens);
 	if (command->command == NULL)
 		return (FAILURE);
 	return (SUCCESS);
 }
 
-static int	get_piped_command(t_token **tokens, t_command **command,
-			t_env *env_lst)
+static int	get_piped_command(t_token **tokens, t_command **command)
 {
 	t_command	*current;
 	t_command	*last;
@@ -74,12 +70,12 @@ static int	get_piped_command(t_token **tokens, t_command **command,
 		ret = initialize_command(tokens, &current, &subshell);
 		if (ret == FAILURE || ret == FORMAT_ERROR)
 			return (ret);
-		ret = new_command(tokens, current, env_lst);
-		if (ret == FAILURE || ret == NO_COMMAND || ret == IS_DIR)
+		ret = new_command(tokens, current);
+		if (ret == FAILURE)
 		{
 			free(current);
 			free_command(*command);
-			return (ret);
+			return (FAILURE);
 		}
 		add_new_command(command, current, &last);
 		if (*tokens != NULL && (*tokens)->tk_type == PIPE)
@@ -88,7 +84,7 @@ static int	get_piped_command(t_token **tokens, t_command **command,
 	return (SUCCESS);
 }
 
-static int	new_exec_tree(t_token **tokens, t_exec **head, t_env *env_lst)
+static int	new_exec_tree(t_token **tokens, t_exec **head)
 {
 	t_exec	*node_exec;
 	int		ret;
@@ -97,9 +93,8 @@ static int	new_exec_tree(t_token **tokens, t_exec **head, t_env *env_lst)
 	if (node_exec == NULL)
 		return (FAILURE);
 	init_node_exec(node_exec);
-	ret = get_piped_command(tokens, &node_exec->command, env_lst);
-	if (ret == FAILURE || ret == FORMAT_ERROR || ret == NO_COMMAND
-		|| ret == IS_DIR)
+	ret = get_piped_command(tokens, &node_exec->command);
+	if (ret == FAILURE || ret == FORMAT_ERROR)
 	{
 		free(node_exec);
 		return (ret);
@@ -121,9 +116,8 @@ int	parser(t_token **tokens, t_env **env_lst, t_exec **exec_tree,
 		return (ret);
 	while (*tokens != NULL)
 	{
-		ret = new_exec_tree(tokens, &head, *env_lst);
-		if (ret == FAILURE || ret == FORMAT_ERROR || ret == NO_COMMAND
-			|| ret == IS_DIR)
+		ret = new_exec_tree(tokens, &head);
+		if (ret == FAILURE || ret == FORMAT_ERROR)
 			return (ret);
 	}
 	*exec_tree = create_exec_ast(head);

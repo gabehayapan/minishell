@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 08:44:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/05 16:11:48 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/10 09:11:13 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,48 +42,47 @@ static char	*add_pathset(char *path, char *command)
 	return (path_command);
 }
 
-static int	search_path_command(t_token *tokens, char *pathset)
+static int	search_path_command(char *cmd, char *pathset, char **pathname)
 {
 	char	*path_command;
 
-	path_command = add_pathset(pathset, tokens->word);
+	path_command = add_pathset(pathset, cmd);
 	if (path_command == NULL)
 		return (FAILURE);
 	if (access(path_command, X_OK) == SUCCESS)
 	{
-		free(tokens->word);
-		tokens->word = path_command;
+		*pathname = path_command;
 		return (SUCCESS);
 	}
 	free(path_command);
 	return (NOT_FOUND);
 }
 
-int	add_path_to_command(t_token *tokens, t_env *env_lst)
+char	*add_path_to_command(char **cmdset, t_env *env_lst, t_to_free *to_free)
 {
 	char	**pathset;
 	char	**ptr_pathset;
 	int		ret;
+	char	*pathname;
 
-	if (tokens == NULL || is_builtin(tokens->word) != ELSE)
-		return (SUCCESS);
-	ret = check_file_type(tokens->word);
+	(void)to_free;
+	ret = check_file_type(*cmdset);
 	if (ret == IS_DIR || ret == EXECUTABLE)
-		return (ret);
+		return (NULL);
 	pathset = NULL;
 	if (get_pathset(env_lst, &pathset) == FAILURE)
-		return (FAILURE);
+		return (NULL);
 	ptr_pathset = pathset;
 	while (pathset != NULL && *pathset != NULL)
 	{
-		ret = search_path_command(tokens, *pathset);
+		ret = search_path_command(*cmdset, *pathset, &pathname);
 		if (ret == FAILURE || ret == SUCCESS)
 		{
 			free_null_term_strs(ptr_pathset);
-			return (ret);
+			return (pathname);
 		}
 		pathset++;
 	}
 	free_null_term_strs(ptr_pathset);
-	return (check_execute_permission(tokens->word));
+	return (check_execute_permission(*cmdset));
 }

@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 17:16:22 by keitotak          #+#    #+#             */
-/*   Updated: 2026/02/05 15:19:10 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/10 09:08:33 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,6 @@ typedef enum s_bool
 	success,
 	failure
 }	t_bool;
-
-typedef struct s_to_free
-{
-	t_exec	*top;
-	t_his	*his;
-}	t_to_free;
 
 typedef struct s_pipe
 {
