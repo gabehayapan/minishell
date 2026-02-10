@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 08:44:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/10 09:11:13 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/10 10:08:59 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,10 @@ char	*add_path_to_command(char **cmdset, t_env *env_lst, t_to_free *to_free)
 
 	(void)to_free;
 	ret = check_file_type(*cmdset);
-	if (ret == IS_DIR || ret == EXECUTABLE)
-		return (NULL);
+	if (ret == IS_DIR)
+		exit(126);
+	else if (ret == EXECUTABLE)
+		return (*cmdset);
 	pathset = NULL;
 	if (get_pathset(env_lst, &pathset) == FAILURE)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 12:42:47 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/10 09:05:24 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/10 10:10:33 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,5 @@ char	*check_execute_permission(char *cmd)
 		else
 			ft_dprintf(2, "-minishell: %s: command not found\n", cmd);
 	}
-	return (NULL);
+	exit(127);
 }
