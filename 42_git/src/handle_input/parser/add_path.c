@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 08:44:14 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/10 10:36:06 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/10 10:45:56 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,13 @@ static int	search_path_command(char *cmd, char *pathset, char **pathname)
 	return (NOT_FOUND);
 }
 
-char	*add_path_to_command(char **cmdset, t_env *env_lst, t_to_free *to_free)
+char	*add_path_to_command(char **cmdset, t_env *env_lst)
 {
 	char	**pathset;
 	char	**ptr_pathset;
 	int		ret;
 	char	*pathname;
 
-	(void)to_free;
 	ret = check_file_type(*cmdset);
 	if (ret == EXECUTABLE)
 		return (ft_strdup(*cmdset));
@@ -76,11 +75,11 @@ char	*add_path_to_command(char **cmdset, t_env *env_lst, t_to_free *to_free)
 	while (pathset != NULL && *pathset != NULL)
 	{
 		ret = search_path_command(*cmdset, *pathset, &pathname);
-		if (ret == FAILURE || ret == SUCCESS)
-		{
-			free_null_term_strs(ptr_pathset);
+		free_null_term_strs(ptr_pathset);
+		if (ret == FAILURE)
+			exit(EXIT_FAILURE);
+		else if (ret == SUCCESS)
 			return (pathname);
-		}
 		pathset++;
 	}
 	free_null_term_strs(ptr_pathset);

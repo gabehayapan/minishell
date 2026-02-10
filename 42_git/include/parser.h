@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/10 09:10:03 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/02/10 10:45:10 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,7 +281,7 @@ int			add_exec_node(t_token **tokens, t_exec **head, t_exec *node_exec);
 t_exec		*create_exec_ast(t_exec *head);
 
 // handle_input/parser/add_path.c
-char		*add_path_to_command(char **cmdset, t_env *env_lst, t_to_free *to_free);
+char		*add_path_to_command(char **cmdset, t_env *env_lst);
 
 // handle_input/parser/add_path_utils.c
 int			check_file_type(char *cmd);
