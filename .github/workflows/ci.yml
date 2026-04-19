@@ -13,6 +13,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Install norminette
+      run: pip install norminette==3.3.55
     - name: Run norminette
       run: norminette
     - name: Compile
