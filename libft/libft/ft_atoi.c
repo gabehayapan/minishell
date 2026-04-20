@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 14:34:47 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/28 12:14:14 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/04/20 15:30:11 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int	ft_atoi(const char *nptr)
 	long	num;
 
 	sign = 1;
-	num = 0;
 	while ((*nptr >= 9 && *nptr <= 13) || *nptr == ' ')
 		nptr++;
 	if (*nptr == '-')
