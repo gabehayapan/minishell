@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: Install deps
       run: |
-        sudo apt upadate
+        sudo apt update
         sudo apt install -y gcc make libreadline-dev valgrind
         pip install norminette==3.3.55
     - name: Run norminette
