@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 10:24:21 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/03 11:37:14 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/04/20 09:10:00 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ static int	get_word(char **str, t_token *new_token, t_tk_type tk_type)
 		len = 2;
 	else if (tk_type == WORD || tk_type == SPACES)
 	{
-		len = 0;
 		while (get_token_type(tmp) == tk_type)
 			tmp++;
 		len = tmp - *str;
@@ -69,7 +68,10 @@ t_token	*new_token_str(const char *str, t_token *current, t_tk_type tk_type)
 		return (NULL);
 	new_token->word = ft_strdup(str);
 	if (new_token->word == NULL)
+	{
+		free(new_token);
 		return (NULL);
+	}
 	new_token->tk_type = tk_type;
 	new_token->is_join = false;
 	new_token->prev = current;
@@ -97,6 +99,5 @@ t_token	*new_token_quoted_str(char *start, char *end, t_token *current)
 		return (NULL);
 	}
 	current->next = new_token;
-	current = new_token;
 	return (new_token);
 }

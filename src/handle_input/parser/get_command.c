@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 14:25:58 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/03 11:42:45 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/04/20 09:12:42 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	get_command(char *exec, t_token *tokens)
 	int		is_space;
 
 	len_exec = 0;
-	len_word = 0;
 	is_space = 0;
 	while (tokens != NULL && tokens->tk_type != AND && tokens->tk_type != OR
 		&& tokens->tk_type != SEMI && tokens->tk_type != PIPE)
