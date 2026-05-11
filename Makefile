@@ -217,4 +217,7 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+test: $(OBJS) $(LIBFT_DIR)$(LIBFT)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT_DIR)$(LIBFT) -lcurses -lreadline -g -D TEST
+
+.PHONY: all clean fclean re test
