@@ -21,4 +21,4 @@ jobs:
     - name: Run norminette
       run: norminette
     - name: Compile and static analysis
-      run: scan-build --status-bugs make
+      run: scan-build --status-bugs make test
