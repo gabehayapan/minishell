@@ -6,13 +6,13 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/05/11 15:17:22 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/05/20 20:55:48 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	display_minishell(void)
+int	display_minishell(void)
 {
 	char		*bp;
 	const char	*term;
@@ -95,7 +95,7 @@ int	execute_input_command(char **input, t_env **env_lst, t_sub *sub,
 	return (SUCCESS);
 }
 
-static int	read_and_execute(t_env **env_lst)
+int	read_and_execute(t_env **env_lst)
 {
 	char	*input;
 	int		is_success;
@@ -144,32 +144,8 @@ int	main(int argc, char **argv, char **envp)
 	free_env_lst(env_lst);
 	if (is_success == FAILURE)
 		return (EXIT_FAILURE);
-	ft_dprintf(2, "exit\n");
-	return (EXIT_SUCCESS);
-}
-#endif
-
-#ifdef TEST
-
-int	main(int argc, char **argv, char **envp)
-{
-	t_env	*env_lst;
-	int		is_success;
-
-	(void)argv;
-	if (argc != 1)
-	{
-		ft_putstr_fd("Usage: ./minishell\n", 2);
-		return (EXIT_FAILURE);
-	}
-	env_lst = init_env_list(envp);
-	if (env_lst == NULL)
-		return (EXIT_FAILURE);
-	is_success = read_and_execute(&env_lst);
-	free_env_lst(env_lst);
-	if (is_success == FAILURE)
-		return (EXIT_FAILURE);
-	ft_dprintf(2, "exit\n");
+	if (isatty(STDIN_FILENO))
+		ft_dprintf(2, "exit\n");
 	return (EXIT_SUCCESS);
 }
 #endif
