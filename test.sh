@@ -30,4 +30,6 @@ run_test "echo hello"
 run_test "ls"
 run_test "./include"
 
+rm expected.txt expected_error.txt output.txt output_error.txt diff.txt
+
 exit $FAIL
