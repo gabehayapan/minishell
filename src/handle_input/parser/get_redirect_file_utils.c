@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 19:12:13 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/05/22 18:53:09 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/05/22 19:10:10 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ void	add_last(t_rdt **head, t_rdt *new_rdt)
 	last = *head;
 	while (last != NULL && last->next != NULL)
 		last = last->next;
-	last->next = new_rdt;
+	if (last != NULL)
+		last->next = new_rdt;
 }
 
 void	no_rdt_file(t_token *token)

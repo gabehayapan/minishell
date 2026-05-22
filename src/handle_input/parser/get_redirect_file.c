@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 17:37:05 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/05/22 19:00:59 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/05/22 19:08:17 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ int	get_in_out_rdt(t_token **tokens, t_command *command)
 	head_in = NULL;
 	head_out = NULL;
 	current = *tokens;
-	is_success = SUCCESS;
 	while (current != NULL && current->tk_type != AND && current->tk_type != OR
 		&& current->tk_type != SEMI && current->tk_type != PIPE)
 	{
