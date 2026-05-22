@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 15:23:42 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/05/22 19:17:11 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/05/22 19:28:44 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 	unsigned char		*cp_dest;
 	const unsigned char	*cp_src;
 
-	if (!dest && !src)
+	if ((!dest || !src) && n > 0)
 		return (NULL);
 	cp_dest = (unsigned char *)dest;
 	cp_src = (const unsigned char *)src;
