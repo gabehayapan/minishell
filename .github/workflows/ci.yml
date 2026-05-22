@@ -22,3 +22,5 @@ jobs:
       run: norminette
     - name: Compile and static analysis
       run: scan-build --status-bugs make test
+    - name: minishell test
+      run: bash test.sh
