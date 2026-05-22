@@ -6,29 +6,18 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 17:37:05 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/05 14:16:43 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/05/22 19:00:59 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-static int	is_numeric_word(char *str)
-{
-	while (*str != '\0')
-	{
-		if (ft_isdigit(*str) == 0)
-			return (FAILURE);
-		str++;
-	}
-	return (SUCCESS);
-}
 
 static int	get_fd_rdt(t_token **tokens, t_token *current, t_rdt_type rdt_type)
 {
 	int	fd;
 
 	if (current->prev == NULL || current->is_join == false
-		|| is_numeric_word(current->prev->word) == FAILURE)
+		|| is_all_digit(current->prev->word) == FAILURE)
 	{
 		if (rdt_type == INFILE || rdt_type == HEREDOC)
 			return (STDIN_FILENO);
@@ -83,12 +72,28 @@ static int	set_rdt_node(t_token **tokens, t_token **current, t_rdt **head)
 	return (SUCCESS);
 }
 
+int	handle_redirection(t_token **tokens, t_token **current,
+			t_rdt **head_in, t_rdt **head_out)
+{
+	int	is_success;
+
+	is_success = SUCCESS;
+	if ((*current)->tk_type == SGL_INRDT || (*current)->tk_type == DBL_INRDT)
+		is_success = set_rdt_node(tokens, current, head_in);
+	else if ((*current)->tk_type == SGL_OUTRDT
+		|| (*current)->tk_type == DBL_OUTRDT)
+		is_success = set_rdt_node(tokens, current, head_out);
+	else
+		*current = (*current)->next;
+	return (is_success);
+}
+
 int	get_in_out_rdt(t_token **tokens, t_command *command)
 {
 	t_rdt	*head_in;
 	t_rdt	*head_out;
-	t_token	*current;
 	int		is_success;
+	t_token	*current;
 
 	head_in = NULL;
 	head_out = NULL;
@@ -97,15 +102,13 @@ int	get_in_out_rdt(t_token **tokens, t_command *command)
 	while (current != NULL && current->tk_type != AND && current->tk_type != OR
 		&& current->tk_type != SEMI && current->tk_type != PIPE)
 	{
-		if (current->tk_type == SGL_INRDT || current->tk_type == DBL_INRDT)
-			is_success = set_rdt_node(tokens, &current, &head_in);
-		else if (current->tk_type == SGL_OUTRDT
-			|| current->tk_type == DBL_OUTRDT)
-			is_success = set_rdt_node(tokens, &current, &head_out);
-		else
-			current = current->next;
+		is_success = handle_redirection(tokens, &current, &head_in, &head_out);
 		if (is_success == FAILURE)
+		{
+			free_rdt(head_in);
+			free_rdt(head_out);
 			return (FAILURE);
+		}
 	}
 	command->inrdt = head_in;
 	command->outrdt = head_out;

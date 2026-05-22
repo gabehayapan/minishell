@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 09:27:16 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/02/05 15:57:50 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/05/22 18:52:42 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ size_t		get_size_command(t_token *tokens);
 int			get_in_out_rdt(t_token **tokens, t_command *command);
 
 // handle_input/parser/get_redirect_file_utils.c
+int			is_all_digit(char *str);
 void		free_rdt(t_rdt *rdt);
 t_rdt_type	get_rdt_type(t_token *token);
 void		add_last(t_rdt **head, t_rdt *new_rdt);

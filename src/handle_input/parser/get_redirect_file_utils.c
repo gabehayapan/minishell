@@ -6,11 +6,22 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 19:12:13 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/01/29 07:49:43 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/05/22 18:53:09 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+int	is_all_digit(char *str)
+{
+	while (*str != '\0')
+	{
+		if (ft_isdigit(*str) == 0)
+			return (FAILURE);
+		str++;
+	}
+	return (SUCCESS);
+}
 
 void	free_rdt(t_rdt *rdt)
 {
