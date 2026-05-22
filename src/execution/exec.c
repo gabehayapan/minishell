@@ -6,7 +6,7 @@
 /*   By: keitotak <keitotak@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 23:11:26 by keitotak          #+#    #+#             */
-/*   Updated: 2026/05/22 18:43:08 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/05/22 19:06:15 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	pass_to_builtin(t_command *command, t_env **env_lst, t_to_free *to_free)
 	char	**cmdset;
 	int		res;
 
+	res = SUCCESS;
 	cmdset = command->command;
 	if (is_builtin(cmdset[0]) == EXIT)
 		res = ft_exit(cmdset, *env_lst, to_free);
