@@ -23,10 +23,6 @@ SRCS =\
 	./src/builtin/pwd.c\
 	./src/builtin/unset.c\
 	./src/builtin/history.c\
-	./src/builtin/terminal0142/terminal0142.c\
-	./src/builtin/terminal0142/init_terminal0142.c\
-	./src/builtin/terminal0142/exec_terminal0142.c\
-	./src/builtin/google.c\
 	./src/execution/execution.c\
 	./src/handle_input/handle_input.c\
 	./src/handle_input/tokenizer/tokenizer.c\
@@ -105,10 +101,6 @@ OBJS =\
 	./obj/pwd.o\
 	./obj/unset.o\
 	./obj/history.o\
-	./obj/terminal0142.o\
-	./obj/init_terminal0142.o\
-	./obj/exec_terminal0142.o\
-	./obj/google.o\
 	./obj/execution.o\
 	./obj/handle_input.o\
 	./obj/tokenizer.o\
@@ -191,8 +183,7 @@ vpath %.c ./src/\
 	./src/handle_input/parser/expansion/history\
 	./src/execution/\
 	./src/signal/\
-	./src/builtin/\
-	./src/builtin/terminal0142/\
+	./src/builtin/
 
 ifdef TEST
 SRCS += ./src/test_main.c
