@@ -7,8 +7,8 @@ run_test() {
 
 	echo "$INPUT" | bash 2>expected_error.txt > expected.txt
 	EXPECTED_EXIT_STATUS="$?"
-	echo "$INPUT" | ./minishell 2>output_error.txt | tail -n +2 | head -n -1 > output.txt
-	MINISHELL_EXIT_STATUS="$(echo 'echo $?' | ./minishell | tail -n +2 | head -n -1)"
+	echo "$INPUT" | ./minishell 2>output_error.txt > output.txt
+	MINISHELL_EXIT_STATUS="$(echo 'echo $?' | ./minishell)"
 
 	if ! diff -u expected.txt output.txt > diff.txt; then
 		echo "FAIL: $INPUT"

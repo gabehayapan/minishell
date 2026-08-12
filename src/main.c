@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/08/12 20:17:38 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/08/12 20:57:14 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ int	execute_input_command(char **input, t_env **env_lst, t_sub *sub,
 int	read_and_execute(t_env **env_lst)
 {
 	char	*input;
-	int		is_success;
 	t_sub	sub;
 
 	init_input_and_sub(&input, &sub);
@@ -100,15 +99,16 @@ int	read_and_execute(t_env **env_lst)
 	{
 		if (readline_signal() == FAILURE)
 			return (free_his(sub.his), FAILURE);
-		input = readline("minishell> ");
+		if (isatty(STDIN_FILENO))
+			input = readline("minishell> ");
+		else
+			input = get_next_line(STDIN_FILENO);
 		if (input == NULL)
 			break ;
 		if (*input != '\0')
 		{
-			if (ignore_signal() == FAILURE)
-				return (free_input_his(input, &sub));
-			is_success = execute_input_command(&input, env_lst, &sub, 0);
-			if (is_success == FAILURE)
+			if (ignore_signal() == FAILURE
+				|| execute_input_command(&input, env_lst, &sub, 0) == FAILURE)
 				return (free_input_his(input, &sub));
 		}
 		free(input);
