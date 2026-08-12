@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:47:12 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/08/12 19:34:58 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/08/12 20:53:44 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include "libft.h"
 # include "ftprintf.h"
 # include "ft_dprintf.h"
+# include "get_next_line.h"
 # include "execution.h"
 
 // main.c
