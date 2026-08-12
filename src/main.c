@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:31:52 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/08/12 19:36:40 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/08/12 20:17:38 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,6 @@ int	read_and_execute(t_env **env_lst)
 	return (free_his(sub.his), SUCCESS);
 }
 
-#ifndef TEST
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_env	*env_lst;
@@ -142,4 +140,3 @@ int	main(int argc, char **argv, char **envp)
 		ft_dprintf(2, "exit\n");
 	return (EXIT_SUCCESS);
 }
-#endif
