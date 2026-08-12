@@ -6,7 +6,7 @@
 /*   By: hanakamu <hanakamu@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:47:12 by hanakamu          #+#    #+#             */
-/*   Updated: 2026/05/20 15:38:28 by hanakamu         ###   ########.fr       */
+/*   Updated: 2026/08/12 19:34:58 by hanakamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include "execution.h"
 
 // main.c
-int				display_minishell(void);
+void			display_minishell(void);
 int				read_and_execute(t_env **env_lst);
 
 // init_vars.c
