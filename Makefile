@@ -185,12 +185,6 @@ vpath %.c ./src/\
 	./src/signal/\
 	./src/builtin/
 
-ifdef TEST
-SRCS += ./src/test_main.c
-OBJS += ./obj/test_main.o
-endif
-
-TEST_FLAG = -g -D TEST
 
 all: $(NAME)
 
@@ -201,12 +195,7 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
 obj/%.o: %.c $(HEADERS) | $(OBJ_DIR)
-ifndef TEST
 	$(CC) $(CFLAGS) -o $@ -c $< -I./include/ -I./libft/header/
-endif
-ifdef TEST
-	$(CC) $(CFLAGS) $(TEST_FLAG) -o $@ -c $< -I./include/ -I./libft/header/
-endif
 
 $(LIBFT_DIR)$(LIBFT):
 	make -C $(LIBFT_DIR)
@@ -220,8 +209,4 @@ fclean: clean
 
 re: fclean all
 
-test:
-	make fclean
-	make TEST=1
-
-.PHONY: all clean fclean re test
+.PHONY: all clean fclean re
